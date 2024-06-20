@@ -13,6 +13,13 @@ function App() {
   return (
     <div className="App">
       <h1>Closet</h1>
+      {(typeof backendData.users === 'undefined') ? (
+        <p>Loading...</p>
+      ) : (
+        backendData.users.map((users, i) => (
+          <p key={i}>{users}</p>
+        ))
+      )}
     </div>
   );
 }

@@ -2,13 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home';
 import App from '../App';
 import MyCloset from '../pages/MyCloset';
-import Root from '../pages/Root';
 import OutfitGenerator from '../pages/OutfitGenerator';
 
 export const Routes = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: <App />,
     children: [
       {
         index: true,

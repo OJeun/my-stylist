@@ -9,7 +9,7 @@ const AlertMessage = () => {
     const getMessageFromURL = () => {
       const params = new URLSearchParams(window.location.search);
       const warning = params.get("error");
-      if (warning == "true") {
+      if (warning === "true") {
         setclassN("alert alert-danger alert-dismissible fade");
       } else {
         setclassN("alert alert-success alert-dismissible fade");
@@ -21,15 +21,16 @@ const AlertMessage = () => {
     // Set message state using the message from URL parameters
     setMessage(getMessageFromURL());
     if (message) {
+        console.log(message)
         // Set a timer to hide the alert after 3 seconds
         const timer = setTimeout(() => {
           setIsVisible(false);
-        }, 3000);
+        }, 2000);
   
         // Clean up the timer if the component unmounts or if message changes
         return () => clearTimeout(timer);
       }
-  }, []); // useEffect will only run once when the component mounts
+  }, [message]); // useEffect will only run once when the component mounts
   
 
   const handleClose = () => {

@@ -6,11 +6,14 @@ module.exports = {
       primary: {
         light: '#F6BDAC', // From color palette
         DEFAULT: '#EF8972', // From color palette
-        strong: '#f43f5e',
+        strong: '#EC765B',
+        stronger: '#EA6344',
       },
       secondary: {
-        light: 'CDDBC7', // From color palette
+        light: '#CDDBC7', // From color palette
         DEFAULT: '#89BEB7', // From color palette
+        strong: '#7BABA4',
+        stronger: '#6D9892',
       },
       white: {
         light: '#f9f9f9',
@@ -41,7 +44,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [require('@tailwindcss/forms')],
 };

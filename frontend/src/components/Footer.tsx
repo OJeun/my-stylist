@@ -4,8 +4,8 @@ export default function Footer() {
     // <footer className="text-center">
     //   <p>© {currentYear} Developed by Julie Oh and Diane Choi</p>
     // </footer>
-    <footer className="bg-neutral-200 text-center dark:bg-neutral-700 lg:text-left">
-      <div className="p-4 text-center text-neutral-700 dark:text-neutral-200">
+    <footer className="bg-neutral text-center dark:bg-neutral-strong lg:text-left">
+      <div className="p-4 text-center text-neutral-strong dark:text-neutral">
         © {currentYear} Copyright: blah blah blah
       </div>
     </footer>

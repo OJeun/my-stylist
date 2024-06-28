@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="mx-5">
+      <div className="mx-5 container">
         <Outlet />
       </div>
       <Footer />

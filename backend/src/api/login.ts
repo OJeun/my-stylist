@@ -32,7 +32,7 @@ router.post('/login', (req, res) => {
     const accessToken = jwt.sign({ name: user.name, uuid: user.uuid }, accessSecret, { expiresIn: '1h' });
     res.json({ accessToken, name: user.name, uuid: user.uuid, email: user.email });
   } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+    res.status(401).json({ message: 'Check the mssage' });
   }
 });
 

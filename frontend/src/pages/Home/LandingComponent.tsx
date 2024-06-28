@@ -1,3 +1,5 @@
+import Button from '../../components/ui/Button';
+
 export default function LandingComponent() {
   return (
     <div className="relative isolate lg:px-8 flex space-x-5">
@@ -5,15 +7,7 @@ export default function LandingComponent() {
         <img className="h-full w-full object-cover" src="" alt="Landing" />
       </div>
       <div className="w-1/2 mx-auto max-w-2xl py-16 sm:py-24 lg:py-32">
-        <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-          <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray ring-1 ring-gray-strong/10 hover:ring-gray-strong/20">
-            Announcing our next round of funding.{' '}
-            <a href="#" className="font-semibold text-indigo-600">
-              <span className="absolute inset-0" aria-hidden="true" />
-              Read more <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
-        </div>
+
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             Hello World
@@ -24,20 +18,12 @@ export default function LandingComponent() {
             fugiat aliqua.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-
-            <a
-              href="/outfit-generator"
-              className="rounded-md bg-primary hover:bg-primary-strong px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Get started
-            </a>
-
-            <a
-              href="#"
-              className="text-sm font-semibold leading-6 text-gray-strong"
-            >
-              Learn more <span aria-hidden="true">→</span>
-            </a>
+            <Button color="primary" href="/outfit-generator">
+              Get Styled
+            </Button>
+            <Button color="onlyText" href="#">
+              Learn more<span aria-hidden="true"> →</span>
+            </Button>
           </div>
         </div>
       </div>

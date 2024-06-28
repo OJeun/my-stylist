@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Home from '../pages/Home';
+import Home from '../pages/Home/Home';
 import App from '../App';
 import MyCloset from '../pages/MyCloset';
 import OutfitGenerator from '../pages/OutfitGenerator';

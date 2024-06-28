@@ -6,7 +6,7 @@ export default function LandingComponent() {
       </div>
       <div className="w-1/2 mx-auto max-w-2xl py-16 sm:py-24 lg:py-32">
         <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-          <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+          <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray ring-1 ring-gray-strong/10 hover:ring-gray-strong/20">
             Announcing our next round of funding.{' '}
             <a href="#" className="font-semibold text-indigo-600">
               <span className="absolute inset-0" aria-hidden="true" />
@@ -27,14 +27,14 @@ export default function LandingComponent() {
 
             <a
               href="/outfit-generator"
-              className="rounded-md bg-red-400 hover:bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="rounded-md bg-primary hover:bg-primary-strong px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Get started
             </a>
 
             <a
               href="#"
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className="text-sm font-semibold leading-6 text-gray-strong"
             >
               Learn more <span aria-hidden="true">→</span>
             </a>

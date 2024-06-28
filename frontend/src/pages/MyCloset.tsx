@@ -1,9 +1,10 @@
-import Footer from "../components/Footer";
+import ItemsGrid from "../components/ItemsGrid";
 
 export default function MyCloset() {
   return (
     <div>
-      <h1 className="text-2xl font-bold">My Closet</h1>
+      <h1>My Closet</h1>
+      <ItemsGrid />
     </div>
   );
 }

@@ -1,26 +1,9 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import users from '../database/fakedata'
 
 const router = express.Router();
-
-interface IUser {
-  email: string;
-  password: string;
-  name: string;
-  uuid: string;
-}
-
-const users: IUser[] = [
-  {
-    email: 'test@test.ca',
-    password: 'abc123',
-    name: 'Test User',
-    uuid: '1234-5678-9101-1121'
-  }
-];
-
 const accessSecret = 'access-secret';
-
 
 
 router.post('/login', (req, res) => {

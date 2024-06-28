@@ -1,6 +1,11 @@
 import ItemsGrid from '../components/ItemsGrid';
+import Input from '../components/ui/Input';
 
 export default function OutfitGenerator() {
+  const inputClassName =
+    'w-5 h-5 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600';
+  const labelClassName = 'ms-2 text-lg';
+
   return (
     <div>
       <h1>Outfit Suggestion</h1>
@@ -32,20 +37,51 @@ export default function OutfitGenerator() {
           </h3>
 
           {/* Category checkboxes */}
-          <div className="flex">
-            <div className="flex items-center me-4">
-              <input
-                id="red-checkbox"
+
+          <div className="flex justify-center">
+            <div className="grid grid-cols-3 gap-x-20 gap-y-5">
+              <Input
+                id="checkbox"
                 type="checkbox"
-                value=""
-                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                label="TOP"
+                inputClassName={inputClassName}
+                labelClassName={labelClassName}
               />
-              <label
-                htmlFor="red-checkbox"
-                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                TOP
-              </label>
+              <Input
+                id="bottom-checkbox"
+                type="checkbox"
+                label="BOTTOM"
+                inputClassName={inputClassName}
+                labelClassName={labelClassName}
+              />
+              <Input
+                id="outer-checkbox"
+                type="checkbox"
+                label="OUTER"
+                inputClassName={inputClassName}
+                labelClassName={labelClassName}
+              />
+              <Input
+                id="shose-checkbox"
+                type="checkbox"
+                label="SHOES"
+                inputClassName={inputClassName}
+                labelClassName={labelClassName}
+              />
+              <Input
+                id="bag-checkbox"
+                type="checkbox"
+                label="BAG"
+                inputClassName={inputClassName}
+                labelClassName={labelClassName}
+              />
+              <Input
+                id="accessory-checkbox"
+                type="checkbox"
+                label="ACCESSORY"
+                inputClassName={inputClassName}
+                labelClassName={labelClassName}
+              />
             </div>
           </div>
         </div>

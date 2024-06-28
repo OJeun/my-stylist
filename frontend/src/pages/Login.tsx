@@ -5,13 +5,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import hanger_icon from "../assets/icon_hanger.png";
 
+
 export default function Login() {
   const [error, setError] = useState("");
   const signIn = useSignIn();
   const navigate = useNavigate();
   const [showErrorModal, setShowErrorModal] = useState(false);
 
-  const handleClose = () => setShowErrorModal(false);
+  // const handleClose = () => setShowErrorModal(false);
   const handleShow = () => setShowErrorModal(true);
 
   const onSubmit = async (values: { email: string; password: string }) => {
@@ -137,7 +138,7 @@ export default function Login() {
           <p className="mt-10 text-center text-sm text-gray-500">
             You don't have an account?{' '}
             <a
-              href="#"
+              href="/signup"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
               Sign up

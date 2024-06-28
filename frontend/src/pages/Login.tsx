@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
+import hanger_icon from "../assets/icon_hanger.png";
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -55,9 +55,9 @@ export default function Login() {
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
+            className="mx-auto h-20 w-auto"
+            src={hanger_icon}
+            alt="My Stylist"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
@@ -135,7 +135,7 @@ export default function Login() {
           )}
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            You don't have an account?{" "}
+            You don't have an account?{' '}
             <a
               href="#"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"

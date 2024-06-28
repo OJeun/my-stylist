@@ -34,26 +34,14 @@ export default function OutfitGenerator() {
           {/* Category checkboxes */}
           <div className="flex">
             <div className="flex items-center me-4">
-              {/* <input
+              <input
                 id="red-checkbox"
                 type="checkbox"
                 value=""
-                className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
                 htmlFor="red-checkbox"
-                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                Red
-              </label> */}
-              <input
-                id="top-checkbox"
-                type="checkbox"
-                value=""
-                className="w-4 h-4 accent-primary-strong text-primary bg-gray-light border-gray rounded"
-              />
-              <label
-                htmlFor="bottom-checkbox"
                 className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 TOP

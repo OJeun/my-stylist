@@ -21,3 +21,13 @@ h1 {
   font-weight: bold;
   font-size:xx-large;
 }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: none;
+} */

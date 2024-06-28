@@ -4,6 +4,7 @@ import App from '../App';
 import MyCloset from '../pages/MyCloset';
 import OutfitGenerator from '../pages/OutfitGenerator';
 import Login from '../pages/Login';
+import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 
 export const Routes = createBrowserRouter([
   {
@@ -15,17 +16,23 @@ export const Routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/my-closet',
-        element: <MyCloset />,
-      },
-      {
-        path: '/outfit-generator',
-        element: <OutfitGenerator />,
-      },
-      {
         path: '/login',
         element: <Login />,
-      }
-    ],
-  },
-]);
+      },
+      {
+        element: <AuthOutlet fallbackPath="/login" />, 
+        children: [
+          {
+            path: '/outfit-generator',
+            element: <OutfitGenerator />,
+          },
+          {
+            path: '/my-closet',
+            element: <MyCloset />,
+          },
+          ],
+        }
+      ]
+    }
+  ]
+);

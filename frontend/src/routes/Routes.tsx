@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import App from '../App';
 import MyCloset from '../pages/MyCloset';
 import OutfitGenerator from '../pages/OutfitGenerator';
+import Login from '../pages/Login';
 
 export const Routes = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const Routes = createBrowserRouter([
       {
         path: '/outfit-generator',
         element: <OutfitGenerator />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       }
     ],
   },

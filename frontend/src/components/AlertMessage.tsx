@@ -10,27 +10,23 @@ const AlertMessage = () => {
       const params = new URLSearchParams(window.location.search);
       const warning = params.get("error");
       if (warning === "true") {
-        setclassN("alert alert-danger alert-dismissible fade");
+        setclassN("bg-red-100 border border-red text-red-700");
       } else {
-        setclassN("alert alert-success alert-dismissible fade");
+        setclassN("bg-green-100 border border-green text-green-700");
       }
 
       return params.get("message") || ""; // Get message parameter from URL, or empty string if not found
     };
 
-    // Set message state using the message from URL parameters
     setMessage(getMessageFromURL());
+
     if (message) {
-        console.log(message)
-        // Set a timer to hide the alert after 3 seconds
         const timer = setTimeout(() => {
           setIsVisible(false);
         }, 2000);
-  
-        // Clean up the timer if the component unmounts or if message changes
         return () => clearTimeout(timer);
       }
-  }, [message]); // useEffect will only run once when the component mounts
+  }, [message]); 
   
 
   const handleClose = () => {
@@ -39,33 +35,22 @@ const AlertMessage = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-center" style={{ width: "100%" }}>
+      <div className="flex justify-center" style={{ width: "100%" }}>
         {isVisible && message && (
           <div
-            className={classN}
-            role="alert"
+            className={`absolute min-w-80 bg-opacity-75 p-4 mt-8 mb-8 ${classN} transition-opacity duration-200 text-center`}
             style={{
-              position: "absolute",
-              minWidth: "30rem",
               top: "12rem",
               zIndex: "9999",
               opacity: isVisible ? 1 : 0,
-              transition: "opacity 2s ease-in-out",
             }}
           >
             <strong>{message}</strong>
-            {/* <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              onClick={handleClose}
-            ></button> */}
+         
           </div>
         )}
       </div>
     </>
   );
 };
-
 export default AlertMessage;

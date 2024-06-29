@@ -9,9 +9,10 @@ function App() {
   return (
     <>
       <Navbar />
-      <AlertMessage />
+
       <div className="mx-5 container">
         <Outlet />
+        <AlertMessage />
       </div>
       <Footer />
     </>

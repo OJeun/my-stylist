@@ -20,7 +20,7 @@ export default function SignUp() {
         values
       );
 
-      window.location.href = "/login?error=false&message=" + encodeURIComponent(response.data.message);
+      window.location.href = "/login?type=success&message=" + encodeURIComponent(response.data.message);
 
     } catch (err) {
       if (err && err instanceof AxiosError)

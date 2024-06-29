@@ -1,56 +1,81 @@
 import { useEffect, useState } from "react";
+import { toast, ToastContainer, ToastOptions } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const AlertMessage = () => {
   const [message, setMessage] = useState("");
-  const [classN, setclassN] = useState("");
-  const [isVisible, setIsVisible] = useState(true);
+  const [typeOfAlert, setTypeOfAlert] = useState<"info" | "success" | "warning" | "error">("info");
+
+  const notify = (message: string, typeOfAlert: "info" | "success" | "warning" | "error") => {
+    switch (typeOfAlert) {
+      case "info":
+        toast.info(message, getToastOptions());
+        break;
+      case "success":
+        toast.success(message, getToastOptions());
+        break;
+      case "warning":
+        toast.warning(message, getToastOptions());
+        break;
+      case "error":
+        toast.error(message, getToastOptions());
+        break;
+      default:
+        toast.info(message, getToastOptions());
+        break;
+    }
+  };
+
+  const getToastOptions = (): ToastOptions => ({
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
 
   useEffect(() => {
-    const getMessageFromURL = () => {
+    const getMessageAndAlertTypeFromURL = () => {
+      console.log("Fetching message and alert type from URL...");
       const params = new URLSearchParams(window.location.search);
-      const warning = params.get("error");
-      if (warning === "true") {
-        setclassN("bg-red-100 border border-red text-red-700");
-      } else {
-        setclassN("bg-green-100 border border-green text-green-700");
-      }
-
-      return params.get("message") || ""; // Get message parameter from URL, or empty string if not found
+      const alertType = params.get("type") as "info" | "success" | "warning" | "error";
+      setTypeOfAlert(alertType);
+      console.log("type", alertType)
+      return params.get("message") || "";
     };
 
-    setMessage(getMessageFromURL());
+    const fetchedMessage = getMessageAndAlertTypeFromURL();
+    setMessage(fetchedMessage);
 
-    if (message) {
-        const timer = setTimeout(() => {
-          setIsVisible(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-      }
-  }, [message]); 
-  
+    if (fetchedMessage) {
+      notify(fetchedMessage, typeOfAlert); 
+    }
 
-  const handleClose = () => {
-    setIsVisible(false);
-  };
+    return () => {
+      toast.dismiss(); // Dismiss any existing toasts when component unmounts or effect re-runs
+    };
+  }, [message, typeOfAlert]); // Empty dependency array to run only once on component mount
+
 
   return (
     <>
-      <div className="flex justify-center" style={{ width: "100%" }}>
-        {isVisible && message && (
-          <div
-            className={`absolute min-w-80 bg-opacity-75 p-4 mt-8 mb-8 ${classN} transition-opacity duration-200 text-center`}
-            style={{
-              top: "12rem",
-              zIndex: "9999",
-              opacity: isVisible ? 1 : 0,
-            }}
-          >
-            <strong>{message}</strong>
-         
-          </div>
-        )}
-      </div>
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
     </>
   );
 };
+
 export default AlertMessage;

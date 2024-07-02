@@ -1,10 +1,34 @@
-import ItemsGrid from "../components/ItemsGrid";
+import { useState } from 'react';
+import ItemsGrid from '../components/ItemsGrid';
+import Button from '../components/ui/Button';
+import ItemUploadForm from '../components/ItemUploadForm';
 
 export default function MyCloset() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleItemAdd = async () => {
+    setIsModalOpen(true);
+    try {
+      // TODO
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <h1>My Closet</h1>
-      <ItemsGrid />
+      <div className="flex justify-end">
+        <Button
+          color="secondary"
+          onClick={handleItemAdd}
+          additionalclassname={'mx-2'}
+        >
+          Add Your Item
+        </Button>
+      </div>
+      <ItemsGrid isInput={false} />
+      {isModalOpen && <ItemUploadForm />}
     </div>
   );
 }

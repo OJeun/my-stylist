@@ -1,8 +1,8 @@
 import { type ComponentPropsWithoutRef } from 'react';
 
 type ColorProps = {
-  color: 'primary' | 'secondary' | 'onlyText';
-  additionalClassName?: string;
+  color: 'primary' | 'secondary' | 'textOnly';
+  additionalclassname?: string;
 };
 
 type ButtonProps = ComponentPropsWithoutRef<'button'> &
@@ -28,7 +28,7 @@ export default function Button(props: ButtonProps | AnchorProps) {
       'text-white shadow-sm bg-primary hover:bg-primary-strong active:bg-primary-stronger focus:outline-none focus:ring focus:ring-neutral',
     secondary:
       'text-white shadow-sm bg-secondary hover:bg-secondary-strong active:bg-secondary-stronger focus:outline-none focus:ring focus:ring-neutral',
-    onlyText: 'leading-6 text-gray-strong',
+    textOnly: 'leading-6 text-gray-strong',
   };
 
   if (isAnchorProps(props)) {
@@ -37,7 +37,7 @@ export default function Button(props: ButtonProps | AnchorProps) {
         <a
           className={`${props.className} ${baseClassNames} ${
             colorClassNames[props.color]
-          } ${props.additionalClassName}`}
+          } ${props.additionalclassname}`}
           {...props}
         ></a>
       </div>
@@ -50,7 +50,7 @@ export default function Button(props: ButtonProps | AnchorProps) {
         type={props.type}
         className={`${props.className} ${baseClassNames} ${
           colorClassNames[props.color]
-        } ${props.additionalClassName}`}
+        } ${props.additionalclassname}`}
         {...props}
       ></button>
     </div>

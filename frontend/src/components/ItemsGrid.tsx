@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import ItemCard, { ClothingItem } from './ClothingCard';
+import ItemCard, { ClothingItem } from './ItemCard';
 
-export default function ItemsGrid() {
+type ClothingListProps = {
+  isInput: boolean;
+};
+
+export default function ItemsGrid({ isInput }: ClothingListProps) {
   const [clothings, setClothings] = useState<ClothingItem[]>([
     {
       id: 1,
@@ -58,6 +62,7 @@ export default function ItemsGrid() {
             index={index}
             selectedClothing={selectedClothing}
             setSelectedClothing={setSelectedClothing}
+            isInput={isInput}
           />
         ))}
       </div>

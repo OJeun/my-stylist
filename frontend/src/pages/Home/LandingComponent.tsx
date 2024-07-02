@@ -21,7 +21,7 @@ export default function LandingComponent() {
             <Button color="primary" href="/outfit-generator">
               Get Styled
             </Button>
-            <Button color="onlyText" href="#">
+            <Button color="textOnly" href="#">
               Learn more<span aria-hidden="true"> →</span>
             </Button>
           </div>

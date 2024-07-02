@@ -1,11 +1,11 @@
-type InputProps = {
+export type InputProps = {
   id: string;
   type: 'text' | 'checkbox' | 'radio';
   label?: string;
   // value: string;
   // name: string;
-  inputClassName: string;
-  labelClassName: string;
+  inputClassName?: string;
+  labelClassName?: string;
   // onChange: () => void;
 };
 

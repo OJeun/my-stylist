@@ -1,15 +1,23 @@
 import ItemsGrid from '../components/ItemsGrid';
 import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
+import { InputProps } from '../components/ui/Input';
 import { useState } from 'react';
 import { clothingCategory } from '../components/ItemCard';
+import InputGroup from '../components/ui/InputGroup';
+
+export const categories: InputProps[] = [
+  { id: 'checkbox', type: 'checkbox', label: 'TOP' },
+  { id: 'bottom-checkbox', type: 'checkbox', label: 'BOTTOM' },
+  { id: 'outer-checkbox', type: 'checkbox', label: 'OUTER' },
+  { id: 'shose-checkbox', type: 'checkbox', label: 'SHOES' },
+  { id: 'bag-checkbox', type: 'checkbox', label: 'BAG' },
+  { id: 'accessory-checkbox', type: 'checkbox', label: 'ACCESSORY' },
+];
 
 export default function OutfitGenerator() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const inputClassName =
-    'w-5 h-5 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600';
-  const labelClassName = 'ms-2 text-lg';
 
   return (
     <div>
@@ -17,19 +25,19 @@ export default function OutfitGenerator() {
       <div className="flex flex-1">
         <div className="pr-6">
           <ul className="text-xl tracking-tight text-gray-900">
-            {clothingCategory.map((item) => (
+            {clothingCategory.map((category) => (
               <li
-                key={item}
+                key={category}
                 className={`${
-                  selectedItem === item ? 'text-primary' : ''
+                  selectedCategory === category ? 'text-primary' : ''
                 } hover:cursor-pointer`}
                 onClick={() => {
-                  if (selectedItem !== item) {
-                    setSelectedItem(item);
+                  if (selectedCategory !== category) {
+                    setSelectedCategory(category);
                   }
                 }}
               >
-                {item}
+                {category}
               </li>
             ))}
           </ul>
@@ -50,54 +58,19 @@ export default function OutfitGenerator() {
 
           {/* Category checkboxes */}
           <div className="flex justify-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5">
-              <Input
-                id="checkbox"
-                type="checkbox"
-                label="TOP"
-                inputClassName={inputClassName}
-                labelClassName={labelClassName}
-              />
-              <Input
-                id="bottom-checkbox"
-                type="checkbox"
-                label="BOTTOM"
-                inputClassName={inputClassName}
-                labelClassName={labelClassName}
-              />
-              <Input
-                id="outer-checkbox"
-                type="checkbox"
-                label="OUTER"
-                inputClassName={inputClassName}
-                labelClassName={labelClassName}
-              />
-              <Input
-                id="shose-checkbox"
-                type="checkbox"
-                label="SHOES"
-                inputClassName={inputClassName}
-                labelClassName={labelClassName}
-              />
-              <Input
-                id="bag-checkbox"
-                type="checkbox"
-                label="BAG"
-                inputClassName={inputClassName}
-                labelClassName={labelClassName}
-              />
-              <Input
-                id="accessory-checkbox"
-                type="checkbox"
-                label="ACCESSORY"
-                inputClassName={inputClassName}
-                labelClassName={labelClassName}
-              />
-            </div>
+            <InputGroup
+              inputs={categories}
+              selected={selectedItem}
+              setSelected={setSelectedItem}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+            ></InputGroup>
           </div>
-          <Button color="secondary" additionalclassname="w-80 m-5">
-            Get Styled!
-          </Button>
+
+          <div className="flex flex-col items-center justify-center">
+            <Button color="secondary" additionalclassname="w-80 m-5">
+              Get Styled!
+            </Button>
+          </div>
         </div>
       </div>
     </div>

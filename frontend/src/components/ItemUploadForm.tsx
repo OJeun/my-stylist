@@ -4,6 +4,13 @@ import InputGroup from './ui/InputGroup';
 import Button from './ui/Button';
 import { InputProps } from './ui/Input';
 import { BsArrowRepeat } from 'react-icons/bs';
+import { categories } from '../pages/OutfitGenerator';
+
+const seasons: InputProps[] = [
+  { id: 'spring-fall-checkbox', type: 'checkbox', label: 'Spring/Fall' },
+  { id: 'summer-checkbox', type: 'checkbox', label: 'Summer' },
+  { id: 'winter-checkbox', type: 'checkbox', label: 'Winter' },
+];
 
 export default function ItemUploadForm() {
   const [open, setOpen] = useState(true);
@@ -11,20 +18,6 @@ export default function ItemUploadForm() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<string | null>(null);
 
-  const categories: InputProps[] = [
-    { id: 'checkbox', type: 'checkbox', label: 'Top' },
-    { id: 'bottom-checkbox', type: 'checkbox', label: 'Bottom' },
-    { id: 'outer-checkbox', type: 'checkbox', label: 'Outer' },
-    { id: 'shose-checkbox', type: 'checkbox', label: 'Shoes' },
-    { id: 'bag-checkbox', type: 'checkbox', label: 'Bag' },
-    { id: 'accessory-checkbox', type: 'checkbox', label: 'Accessory' },
-  ];
-
-  const seasons: InputProps[] = [
-    { id: 'spring-fall-checkbox', type: 'checkbox', label: 'Spring/Fall' },
-    { id: 'summer-checkbox', type: 'checkbox', label: 'Summer' },
-    { id: 'winter-checkbox', type: 'checkbox', label: 'Winter' },
-  ];
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -47,7 +40,6 @@ export default function ItemUploadForm() {
     e.preventDefault();
     setOpen(false);
   };
-
 
   const handleFormSubmit = async () => {
     if (!selectedCategory || !selectedSeason) {
@@ -142,18 +134,18 @@ export default function ItemUploadForm() {
                 </div>
                 <div>
                   <h1>Category</h1>
-                <InputGroup 
-                    inputs={categories} 
-                    selected={selectedCategory} 
-                    setSelected={setSelectedCategory} 
+                  <InputGroup
+                    inputs={categories}
+                    selected={selectedCategory}
+                    setSelected={setSelectedCategory}
                   />
                 </div>
                 <div>
-                <h1>Season</h1>
-                <InputGroup 
-                    inputs={seasons} 
-                    selected={selectedSeason} 
-                    setSelected={setSelectedSeason} 
+                  <h1>Season</h1>
+                  <InputGroup
+                    inputs={seasons}
+                    selected={selectedSeason}
+                    setSelected={setSelectedSeason}
                   />
                 </div>
               </div>
@@ -162,7 +154,11 @@ export default function ItemUploadForm() {
                 <Button color="textOnly" onClick={() => setOpen(false)}>
                   Cancel
                 </Button>
-                <Button color="secondary" additionalclassname="w-60" onClick={handleFormSubmit}>
+                <Button
+                  color="secondary"
+                  additionalclassname="w-60"
+                  onClick={handleFormSubmit}
+                >
                   Add Item
                 </Button>
               </div>

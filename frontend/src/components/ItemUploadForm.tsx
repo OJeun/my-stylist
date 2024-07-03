@@ -60,7 +60,6 @@ export default function ItemUploadForm() {
       season: selectedSeason,
     };
 
-    // Send data to backend
     const response = await fetch('/api/upload', {
       method: 'POST',
       headers: {

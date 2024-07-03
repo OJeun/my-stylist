@@ -26,6 +26,29 @@ export default function ItemUploadForm() {
     { id: 'winter-checkbox', type: 'checkbox', label: 'Winter' },
   ];
 
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const base64 = reader.result;
+      setImageBase64(base64 as string);
+
+      reader.readAsDataURL(file);
+    };
+  };
+
+  const handleDeleteImage = () => {
+    setImageBase64(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setOpen(false);
+  };
+
+
   const handleFormSubmit = async () => {
     if (!selectedCategory || !selectedSeason) {
       alert('Please select both a category and a season.');

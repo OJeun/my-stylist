@@ -1,17 +1,17 @@
 import { type ComponentPropsWithoutRef } from 'react';
 
-type ColorProps = {
-  color: 'primary' | 'secondary' | 'textOnly';
+type BasicProp = {
+  color: 'primary' | 'secondary' | 'textOnly' | null;
   additionalclassname?: string;
 };
 
 type ButtonProps = ComponentPropsWithoutRef<'button'> &
-  ColorProps & {
+  BasicProp & {
     href?: never;
   };
 
 type AnchorProps = ComponentPropsWithoutRef<'a'> &
-  ColorProps & {
+  BasicProp & {
     href?: string;
   };
 
@@ -21,6 +21,12 @@ function isAnchorProps(props: ButtonProps | AnchorProps): props is AnchorProps {
 }
 
 export default function Button(props: ButtonProps | AnchorProps) {
+  const baseClassNames: String
+
+  if (props.additionalclassname) {
+      base
+  }
+  
   const baseClassNames = 'rounded-md px-3.5 py-2.5 text-sm font-semibold';
 
   const colorClassNames = {
@@ -33,19 +39,17 @@ export default function Button(props: ButtonProps | AnchorProps) {
 
   if (isAnchorProps(props)) {
     return (
-      <div className="flex flex-col items-center justify-center">
         <a
           className={`${props.className} ${baseClassNames} ${
             colorClassNames[props.color]
           } ${props.additionalclassname}`}
           {...props}
         ></a>
-      </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
+
       <button
         type={props.type}
         className={`${props.className} ${baseClassNames} ${
@@ -53,6 +57,6 @@ export default function Button(props: ButtonProps | AnchorProps) {
         } ${props.additionalclassname}`}
         {...props}
       ></button>
-    </div>
+
   );
 }

@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ComponentPropsWithoutRef } from 'react';
 
 export type InputProps = {
   id: string;
@@ -6,12 +6,7 @@ export type InputProps = {
   label?: string;
   inputClassName?: string;
   labelClassName?: string;
-};
-
-type InputComponentProps = InputProps & {
-  checked?: boolean;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-};
+} & ComponentPropsWithoutRef<'input'>;
 
 export default function Input({
   id,
@@ -19,17 +14,15 @@ export default function Input({
   label,
   inputClassName,
   labelClassName,
-  checked,
-  onChange,
-}: InputComponentProps){
+  ...props
+}: InputProps){
   return (
-    <div className="flex items-center">
+    <p>
       <input
         id={id}
         type={type}
-        checked={checked}
-        onChange={onChange}
         className={`hover:cursor-pointer ` + inputClassName}
+        {...props}
       />
       <label
         htmlFor={id}
@@ -40,6 +33,6 @@ export default function Input({
       >
         {label}
       </label>
-    </div>
+      </p>
   );
 }

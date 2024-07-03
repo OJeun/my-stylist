@@ -3,6 +3,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import InputGroup from './ui/InputGroup';
 import Button from './ui/Button';
 import { InputProps } from './ui/Input';
+import { BsArrowRepeat } from 'react-icons/bs';
 
 export default function ItemUploadForm() {
   const [open, setOpen] = useState(true);
@@ -34,6 +35,10 @@ export default function ItemUploadForm() {
     };
 
     reader.readAsDataURL(file);
+  };
+
+  const handleDeleteImage = () => {
+    setImageBase64(null);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -82,12 +87,26 @@ export default function ItemUploadForm() {
                   </svg>
                 </button>
                 <div
-                  className="border-dashed border-2 border-primary p-8 text-center w-[200px] h-[200px] flex items-center"
+                  className="relative border-dashed border-2 border-primary p-8 text-center w-[200px] h-[200px] flex items-center justify-center"
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   style={{ border: '2px dashed #ccc' }}
                 >
-                  <p>Drag & Drop Your Clothing Photo!</p>
+                  <div
+                    className="btn delete-button absolute top-2 right-2"
+                    onClick={handleDeleteImage}
+                  >
+                    <BsArrowRepeat />
+                  </div>
+                  {!imageBase64 ? (
+                    <p>Drag & Drop Your Clothing Photo!</p>
+                  ) : (
+                    <img
+                      src={imageBase64}
+                      alt="Uploaded"
+                      style={{ maxWidth: '100%', maxHeight: '100%' }}
+                    />
+                  )}
                 </div>
                 <div>
                   <h5 className="text-2xl font-medium">Styles</h5>

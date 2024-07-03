@@ -8,6 +8,8 @@ import { BsArrowRepeat } from 'react-icons/bs';
 export default function ItemUploadForm() {
   const [open, setOpen] = useState(true);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedSeason, setSelectedSeason] = useState<string | null>(null);
 
   const categories: InputProps[] = [
     { id: 'checkbox', type: 'checkbox', label: 'Top' },
@@ -24,25 +26,33 @@ export default function ItemUploadForm() {
     { id: 'winter-checkbox', type: 'checkbox', label: 'Winter' },
   ];
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    const reader = new FileReader();
+  const handleFormSubmit = async () => {
+    if (!selectedCategory || !selectedSeason) {
+      alert('Please select both a category and a season.');
+      return;
+    }
 
-    reader.onload = () => {
-      const base64 = reader.result;
-      setImageBase64(base64 as string);
+    const data = {
+      category: selectedCategory,
+      season: selectedSeason,
     };
 
-    reader.readAsDataURL(file);
-  };
+    // Send data to backend
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
 
-  const handleDeleteImage = () => {
-    setImageBase64(null);
-  };
+    if (response.ok) {
+      console.log('Item uploaded successfully');
+    } else {
+      console.error('Failed to upload item');
+    }
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
+    setOpen(false);
   };
 
   return (
@@ -109,20 +119,28 @@ export default function ItemUploadForm() {
                   )}
                 </div>
                 <div>
-                  <h5 className="text-2xl font-medium">Styles</h5>
-                  <InputGroup inputs={categories} />
+                  <h1>Category</h1>
+                <InputGroup 
+                    inputs={categories} 
+                    selected={selectedCategory} 
+                    setSelected={setSelectedCategory} 
+                  />
                 </div>
                 <div>
-                  <h5 className="text-2xl font-medium">Seasons</h5>
-                  <InputGroup inputs={seasons} />
+                <h1>Season</h1>
+                <InputGroup 
+                    inputs={seasons} 
+                    selected={selectedSeason} 
+                    setSelected={setSelectedSeason} 
+                  />
                 </div>
               </div>
 
-              <div className="mt-4 flex justify-center space-x-4">
+              <div className="mt-6 flex justify-center space-x-4">
                 <Button color="textOnly" onClick={() => setOpen(false)}>
                   Cancel
                 </Button>
-                <Button color="secondary" additionalclassname="w-60">
+                <Button color="secondary" additionalclassname="w-60" onClick={handleFormSubmit}>
                   Add Item
                 </Button>
               </div>

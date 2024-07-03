@@ -1,12 +1,16 @@
+import { ChangeEvent } from "react";
+
 export type InputProps = {
   id: string;
   type: 'text' | 'checkbox' | 'radio';
   label?: string;
-  // value: string;
-  // name: string;
   inputClassName?: string;
   labelClassName?: string;
-  // onChange: () => void;
+};
+
+type InputComponentProps = InputProps & {
+  checked?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function Input({
@@ -15,12 +19,16 @@ export default function Input({
   label,
   inputClassName,
   labelClassName,
-}: InputProps) {
+  checked,
+  onChange,
+}: InputComponentProps){
   return (
     <div className="flex items-center">
       <input
         id={id}
         type={type}
+        checked={checked}
+        onChange={onChange}
         className={`hover:cursor-pointer ` + inputClassName}
       />
       <label

@@ -21,11 +21,6 @@ function isAnchorProps(props: ButtonProps | AnchorProps): props is AnchorProps {
 }
 
 export default function Button(props: ButtonProps | AnchorProps) {
-  const baseClassNames: String
-
-  if (props.additionalclassname) {
-      base
-  }
   
   const baseClassNames = 'rounded-md px-3.5 py-2.5 text-sm font-semibold';
 
@@ -37,26 +32,26 @@ export default function Button(props: ButtonProps | AnchorProps) {
     textOnly: 'leading-6 text-gray-strong',
   };
 
+  const classNames = props.additionalclassname && props.color ? `${props.additionalclassname}` : `${baseClassNames} ${colorClassNames[props.color]}`;
+
   if (isAnchorProps(props)) {
     return (
-        <a
-          className={`${props.className} ${baseClassNames} ${
-            colorClassNames[props.color]
-          } ${props.additionalclassname}`}
-          {...props}
-        ></a>
+      <a
+        className={classNames}
+        {...props}
+      >
+        {props.children}
+      </a>
     );
   }
 
   return (
-
-      <button
-        type={props.type}
-        className={`${props.className} ${baseClassNames} ${
-          colorClassNames[props.color]
-        } ${props.additionalclassname}`}
-        {...props}
-      ></button>
-
+    <button
+      type={props.type}
+      className={classNames}
+      {...props}
+    >
+      {props.children}
+    </button>
   );
 }

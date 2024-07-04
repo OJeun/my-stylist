@@ -6,18 +6,23 @@ export type InputProps = {
   label?: string;
   inputClassName?: string;
   labelClassName?: string;
+  imageSrc?: string;
+  imageAlt?: string;
 } & ComponentPropsWithoutRef<'input'>;
 
 export default function Input({
   id,
   type,
   label,
+  name,
   inputClassName,
   labelClassName,
+  imageSrc,
+  imageAlt,
   ...props
 }: InputProps){
   return (
-    <p>
+<>
       <input
         id={id}
         type={type}
@@ -32,7 +37,14 @@ export default function Input({
         }
       >
         {label}
+        {imageSrc && (
+          <img
+            src={imageSrc}
+            alt={imageAlt}
+            className="w-full h-full object-cover"
+          />
+        )}
       </label>
-      </p>
+      </>
   );
 }

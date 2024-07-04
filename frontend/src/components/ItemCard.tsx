@@ -1,3 +1,8 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
+
+// ItemCard consist of Input componenet or Button Component
 export const clothingCategory = [
   'Top',
   'Bottom',
@@ -17,16 +22,16 @@ export type ClothingItem = {
 type ItemCardProps = {
   clothing: ClothingItem;
   index: number;
-  selectedClothing: number | null;
-  setSelectedClothing: (index: number) => void;
   isInput: boolean;
+  selectedClothing?: number | null;
+  setSelectedClothing?: (index: number) => void;
 };
 
 export default function ItemCard({
   clothing,
   index,
-  selectedClothing,
   setSelectedClothing,
+  selectedClothing,
   isInput,
 }: ItemCardProps) {
   return (
@@ -34,33 +39,21 @@ export default function ItemCard({
       <div className="mb-4 h-[200px] w-[200px] overflow-hidden rounded-md group-hover:opacity-75">
         {isInput ? (
           <>
-            <input
-              id={`clothing-${index}`}
-              type="radio"
-              className="hidden peer"
-              name="clothing"
-              value={clothing.id}
-              onChange={() => setSelectedClothing(index)}
-              required
-            />
-            <label
-              htmlFor={`clothing-${index}`}
-              className={`inline-flex items-center border-gray-light border-2 peer-checked:border-primary justify-between w-full h-full bg-white rounded-lg cursor-pointer hover:bg-gray-light dark:bg-gray-strong dark:hover:bg-gray overflow-hidden rounded-md bg-gray group-hover:opacity-75 relative
-`}
-            >
-              <img
-                src={clothing.imageSrc}
-                alt={clothing.imageAlt}
-                className="w-full h-full object-cover"
-              />
-            </label>
+          <Input id={`clothing-${index}`} type="radio" inputClassName="hidden peer" name="clothing" value={clothing.id} required
+          labelClassName={`inline-flex items-center border-gray-light border-2 peer-checked:border-primary justify-between w-full h-full bg-white rounded-lg cursor-pointer hover:bg-gray-light dark:bg-gray-strong dark:hover:bg-gray overflow-hidden rounded-md bg-gray group-hover:opacity-75 relative`}
+          imageSrc={clothing.imageSrc} imageAlt={clothing.imageAlt}
+          >
+          </Input>
           </>
         ) : (
+          <>
+            <Button>
+            <XMarkIcon className="w-6 h-6" />
+            </Button>
           <img
-            src={clothing.imageSrc}
-            alt={clothing.imageAlt}
-            className="w-full h-full object-cover"
-          />
+              src={clothing.imageSrc}
+              alt={clothing.imageAlt}
+              className="w-full h-full object-cover" /></>
         )}
       </div>
     </div>

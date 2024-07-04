@@ -32,7 +32,10 @@ export default function Login() {
         },
         userState: { name: data.name, email: data.email, uid: data.uuid },
       });
-      navigate("/outfit-generator");
+      localStorage.setItem('name', data.name);
+      localStorage.setItem('email', data.email);
+      navigate('/outfit-generator');
+      
     } catch (err) {
       if (err && err instanceof AxiosError)
         setError(err.response?.data.message);

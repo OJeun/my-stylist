@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="m-4 sm:m-6 md:m-8 lg:m-10 xl:m-12">
+      <div className="mx-8 sm:mx-12 md:mx-24 lg:mx-48 xl:mx-80">
         <Outlet />
         <AlertMessage />
       </div>

@@ -133,20 +133,24 @@ export default function ItemUploadForm() {
                   )}
                 </div>
                 <div>
-                  <h1>Category</h1>
+                <div>
+                  <h2>Category</h2>
                   <InputGroup
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
                     inputs={categories}
                     selected={selectedCategory}
                     setSelected={setSelectedCategory}
                   />
                 </div>
                 <div>
-                  <h1>Season</h1>
+                  <h2 className="mt-[15px]">Season</h2>
                   <InputGroup
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
                     inputs={seasons}
                     selected={selectedSeason}
                     setSelected={setSelectedSeason}
                   />
+                </div>
                 </div>
               </div>
 

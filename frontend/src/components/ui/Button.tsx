@@ -32,7 +32,7 @@ export default function Button(props: ButtonProps | AnchorProps) {
     textOnly: 'leading-6 text-gray-strong',
   };
 
-  const classNames = props.additionalclassname && props.color !== undefined ? `${baseClassNames} ${colorClassNames[props.color]}` : `${props.additionalclassname}`;
+  const classNames = props.color !== undefined ? `${baseClassNames} ${colorClassNames[props.color]} ${props.additionalclassname}` : `${props.additionalclassname}`;
 
   if (isAnchorProps(props)) {
     return (

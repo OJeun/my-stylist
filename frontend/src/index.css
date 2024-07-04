@@ -17,7 +17,13 @@ code {
 }
 
 h1 {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-weight: bold;
   font-size:xx-large;
+}
+
+h2 {
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size:x-large;
 }

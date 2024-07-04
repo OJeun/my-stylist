@@ -17,7 +17,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="mx-4 sm:mx-6 md:mx-12 lg:mx-24 xl:mx-40">
+    <div>
       <div className="px-4 sm:px-0">
         <h1>My Profile</h1>
         <div className="flex justify-between">

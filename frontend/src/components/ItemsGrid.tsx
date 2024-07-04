@@ -54,7 +54,8 @@ export default function ItemsGrid({ isInput }: ClothingListProps) {
 
   return (
     <>
-      <div className="mt-6 flex overflow-x-scroll gap-6 max-w-5xl mx-auto">
+       <div className="mt-6 flex overflow-x-scroll gap-4 sm:gap-6 mx-auto max-w-full sm:max-w-lg md:max-w-xl lg:max-w-3xl xl:max-w-5xl">
+
         {clothings.map((clothing, index) => (
           <ItemCard
             key={clothing.id}

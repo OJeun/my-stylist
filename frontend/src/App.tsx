@@ -9,8 +9,7 @@ function App() {
   return (
     <>
       <Navbar />
-
-      <div className="mx-5 container">
+      <div className="m-4 sm:m-6 md:m-8 lg:m-10 xl:m-12">
         <Outlet />
         <AlertMessage />
       </div>

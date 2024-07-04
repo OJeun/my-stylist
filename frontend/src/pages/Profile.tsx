@@ -6,11 +6,11 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(localStorage.getItem('name') || '');
   const [email, setEmail] = useState(localStorage.getItem('email') || '');
-  
+
   const labelClassName =
-    'block mb-2 text-sm font-medium text-gray-strong dark:text-white';
+    'bloc text-sm font-medium text-gray-strong dark:text-white';
   const inputClassName =
-    'bg-gray-lighter border border-gray-light text-gray-strong text-sm rounded-lg focus:ring-secondary focus:border-secondary block w-full p-2.5 dark:bg-gray-strong dark:border-gray-strong dark:placeholder-gray dark:text-white dark:focus:ring-secondary dark:focus:border-secondary';
+    'w-full p-2.5 bg-gray-lighter border-gray-light text-gray-strong text-sm rounded-lg focus:ring-gray-light focus:border-gray-light block dark:bg-gray-strong dark:border-gray-strong dark:placeholder-gray dark:text-white dark:focus:ring-secondary dark:focus:border-secondary';
 
   const handleEdit = () => {
     setIsEditing(true);

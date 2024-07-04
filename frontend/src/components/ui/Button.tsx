@@ -1,7 +1,7 @@
 import { type ComponentPropsWithoutRef } from 'react';
 
 type BasicProp = {
-  color: 'primary' | 'secondary' | 'textOnly' | null;
+  color?: 'primary' | 'secondary' | 'textOnly' | null;
   additionalclassname?: string;
 };
 
@@ -32,7 +32,7 @@ export default function Button(props: ButtonProps | AnchorProps) {
     textOnly: 'leading-6 text-gray-strong',
   };
 
-  const classNames = props.additionalclassname && props.color ? `${props.additionalclassname}` : `${baseClassNames} ${colorClassNames[props.color]}`;
+  const classNames = props.additionalclassname && props.color !== undefined ? `${baseClassNames} ${colorClassNames[props.color]}` : `${props.additionalclassname}`;
 
   if (isAnchorProps(props)) {
     return (

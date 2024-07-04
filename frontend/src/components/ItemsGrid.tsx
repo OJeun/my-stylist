@@ -60,8 +60,6 @@ export default function ItemsGrid({ isInput }: ClothingListProps) {
             key={clothing.id}
             clothing={clothing}
             index={index}
-            selectedClothing={selectedClothing}
-            setSelectedClothing={setSelectedClothing}
             isInput={isInput}
           />
         ))}

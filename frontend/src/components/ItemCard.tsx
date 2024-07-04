@@ -38,9 +38,10 @@ export default function ItemCard({
     <div key={clothing.id} className="group relative aspect-w-1 aspect-h-1">
       <div className="mb-4 h-[200px] w-[200px] overflow-hidden rounded-md group-hover:opacity-75">
         {isInput ? (
+          
           <>
-          <Input id={`clothing-${index}`} type="radio" inputClassName="hidden peer" name="clothing" value={clothing.id} required
-          labelClassName={`inline-flex items-center border-gray-light border-2 peer-checked:border-primary justify-between w-full h-full bg-white rounded-lg cursor-pointer hover:bg-gray-light dark:bg-gray-strong dark:hover:bg-gray overflow-hidden rounded-md bg-gray group-hover:opacity-75 relative`}
+          <Input id={`clothing-${index}`} type="radio" inputClassName="peer" name="clothing" value={clothing.id} required
+          labelClassName={`inline-flex items-center border-gray-light border-2 justify-between w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative`}
           imageSrc={clothing.imageSrc} imageAlt={clothing.imageAlt}
           >
           </Input>

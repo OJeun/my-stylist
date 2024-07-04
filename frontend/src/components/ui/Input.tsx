@@ -4,6 +4,7 @@ export type InputProps = {
   id: string;
   type: 'text' | 'checkbox' | 'radio';
   label?: string;
+  name?: string;
   inputClassName?: string;
   labelClassName?: string;
   imageSrc?: string;
@@ -26,7 +27,10 @@ export default function Input({
       <input
         id={id}
         type={type}
-        className={`hover:cursor-pointer ` + inputClassName}
+        className={`${
+          imageSrc ? 'absolute top-2 right-2 z-10' : ''
+        } ${inputClassName}`}
+        name={name}
         {...props}
       />
       <label
@@ -45,6 +49,6 @@ export default function Input({
           />
         )}
       </label>
-      </>
+</>
   );
 }

@@ -15,8 +15,8 @@ const seasons: InputProps[] = [
 export default function ItemUploadForm() {
   const [open, setOpen] = useState(true);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSeason, setSelectedSeason] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | string[]>("");
+  const [selectedSeason, setSelectedSeason] = useState<string | string[]>("");
 
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {

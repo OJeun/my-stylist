@@ -16,7 +16,7 @@ export const categories: InputProps[] = [
 
 export default function OutfitGenerator() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedCategoryCheckbox, setCategoryCheckbox] = useState<string | string[]>([""]);
 
   return (
     <div className="">
@@ -59,8 +59,8 @@ export default function OutfitGenerator() {
           <div className="flex justify-center">
             <InputGroup
               inputs={categories}
-              selected={selectedItem}
-              setSelected={setSelectedItem}
+              selected={selectedCategoryCheckbox}
+              setSelected={setCategoryCheckbox}
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
             ></InputGroup>
           </div>

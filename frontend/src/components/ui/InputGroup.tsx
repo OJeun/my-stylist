@@ -1,10 +1,10 @@
-import { ChangeEvent, ComponentPropsWithoutRef } from 'react';
+import { ChangeEvent, ComponentPropsWithoutRef, Dispatch, SetStateAction} from 'react';
 import Input, { InputProps } from './Input';
 
 type InputGroupProps = {
   inputs: InputProps[];
-  selected: string | null;
-  setSelected: (selected: string) => void;
+  selected: string | string[]; 
+  setSelected: Dispatch<SetStateAction<string | string[]>>;
 } & ComponentPropsWithoutRef<'div'>;
 
 export default function InputGroup({
@@ -18,22 +18,32 @@ export default function InputGroup({
   const labelClassName = 'ms-2 pl-2 text-lg';
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { id } = e.target;
-    setSelected(id);
+    const { id, checked } = e.target;
+    
+    if (typeof selected === 'string') {
+      setSelected(id); // Update to a single string
+    } else {
+      setSelected((prevSelected) =>
+        checked ? [...prevSelected as string[], id] : (prevSelected as string[]).filter((item) => item !== id)
+      ); // Update to an array of strings
+    }
+  };
+
+  const isChecked = (id: string) => {
+    return Array.isArray(selected) ? selected.includes(id) : selected === id;
   };
 
   return (
     <div {...props}>
       {inputs.map((input) => (
-        <div>
-        <Input
-          key={input.id}
-          inputClassName={inputClassName}
-          labelClassName={labelClassName}
-          {...input}
-          checked={selected === input.id}
-          onChange={handleChange}
-        />
+        <div key={input.id}>
+          <Input
+            inputClassName={inputClassName}
+            labelClassName={labelClassName}
+            {...input}
+            checked={isChecked(input.id)}
+            onChange={handleChange}
+          />
         </div>
       ))}
     </div>

@@ -5,8 +5,9 @@ import MyCloset from '../pages/MyCloset';
 import OutfitGenerator from '../pages/OutfitGenerator';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
-import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
+import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
 import Profile from '../pages/Profile';
+import Favorites from '../pages/Favorites';
 
 export const Routes = createBrowserRouter([
   {
@@ -35,9 +36,14 @@ export const Routes = createBrowserRouter([
           {
             path: '/my-closet',
             element: <MyCloset />,
-          },          {
+          },
+          {
             path: '/profile',
             element: <Profile />,
+          },
+          {
+            path: '/favorites',
+            element: <Favorites />,
           },
         ],
       },

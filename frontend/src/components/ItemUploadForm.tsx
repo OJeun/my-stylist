@@ -12,12 +12,16 @@ const seasons: InputProps[] = [
   { id: 'winter-checkbox', type: 'checkbox', label: 'Winter' },
 ];
 
-export default function ItemUploadForm() {
-  const [open, setOpen] = useState(true);
+export default function ItemUploadForm({
+  isModalOpen,
+  setIsModalOpen,
+}: {
+  isModalOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+}) {
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | string[]>("");
   const [selectedSeason, setSelectedSeason] = useState<string | string[]>("");
-
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -27,9 +31,8 @@ export default function ItemUploadForm() {
     reader.onload = () => {
       const base64 = reader.result;
       setImageBase64(base64 as string);
-
-      reader.readAsDataURL(file);
     };
+    reader.readAsDataURL(file);
   };
 
   const handleDeleteImage = () => {
@@ -38,7 +41,6 @@ export default function ItemUploadForm() {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    setOpen(false);
   };
 
   const handleFormSubmit = async () => {
@@ -66,14 +68,18 @@ export default function ItemUploadForm() {
       console.error('Failed to upload item');
     }
 
-    setOpen(false);
+    setIsModalOpen(false);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
     <Dialog
       className="relative z-10"
-      open={open}
-      onClose={() => setOpen(false)}
+      open={isModalOpen}
+      onClose={handleCloseModal}
     >
       <DialogBackdrop
         transition
@@ -92,7 +98,7 @@ export default function ItemUploadForm() {
                 <button
                   type="button"
                   className="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-3 right-3"
-                  onClick={() => setOpen(false)}
+                  onClick={handleCloseModal}
                   aria-label="Close"
                 >
                   <svg
@@ -110,52 +116,50 @@ export default function ItemUploadForm() {
                     />
                   </svg>
                 </button>
+
                 <div
-                  className="relative border-dashed border-2 border-primary p-8 text-center w-[200px] h-[200px] flex items-center justify-center"
+                  className="relative bg-white border-dashed rounded-lg p-8 border-2 border-gray-light text-center w-[200px] h-[200px] flex items-center justify-center"
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
-                  style={{ border: '2px dashed #ccc' }}
                 >
                   <div
-                    className="btn delete-button absolute top-2 right-2"
+                    className="btn delete-button text-gray hover:text-black absolute top-2 right-2 hover:cursor-pointer"
                     onClick={handleDeleteImage}
                   >
                     <BsArrowRepeat />
                   </div>
                   {!imageBase64 ? (
-                    <p>Drag & Drop Your Clothing Photo!</p>
+                    <p className="text-gray">
+                      <strong>Drag & Drop</strong> Your Clothing Photo!
+                    </p>
                   ) : (
-                    <img
-                      src={imageBase64}
-                      alt="Uploaded"
-                      style={{ maxWidth: '100%', maxHeight: '100%' }}
-                    />
+                    <img src={imageBase64} alt="Uploaded" />
                   )}
                 </div>
                 <div>
-                <div>
-                  <h2>Category</h2>
-                  <InputGroup
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
-                    inputs={categories}
-                    selected={selectedCategory}
-                    setSelected={setSelectedCategory}
-                  />
-                </div>
-                <div>
-                  <h2 className="mt-[15px]">Season</h2>
-                  <InputGroup
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
-                    inputs={seasons}
-                    selected={selectedSeason}
-                    setSelected={setSelectedSeason}
-                  />
-                </div>
+                  <div>
+                    <h2>Category</h2>
+                    <InputGroup
+                      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+                      inputs={categories}
+                      selected={selectedCategory}
+                      setSelected={setSelectedCategory}
+                    />
+                  </div>
+                  <div>
+                    <h2 className="mt-[15px]">Season</h2>
+                    <InputGroup
+                      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+                      inputs={seasons}
+                      selected={selectedSeason}
+                      setSelected={setSelectedSeason}
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="mt-6 flex justify-center space-x-4">
-                <Button color="textOnly" onClick={() => setOpen(false)}>
+                <Button color="textOnly" onClick={handleCloseModal}>
                   Cancel
                 </Button>
                 <Button

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ItemsGrid from '../components/ItemsGrid';
 import Button from '../components/ui/Button';
 import ItemUploadForm from '../components/ItemUploadForm';
+// import Dropdown from '../components/ui/Dropdown';
 
 export default function MyCloset() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +19,8 @@ export default function MyCloset() {
   return (
     <div>
       <h1>My Closet</h1>
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        {/* <Dropdown /> */}
         <Button
           color="secondary"
           onClick={handleItemAdd}
@@ -28,7 +30,12 @@ export default function MyCloset() {
         </Button>
       </div>
       <ItemsGrid isInput={false} />
-      {isModalOpen && <ItemUploadForm />}
+      {isModalOpen && (
+        <ItemUploadForm
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </div>
   );
 }

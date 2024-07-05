@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import loginRouter from './api/login';
 import signupRouter from './api/signup';
+import generatorRouter from './api/aiGenerator'
 import cors from 'cors';
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(cors());
 
 app.use('/api', loginRouter);
 app.use('/api', signupRouter)
+app.use('/api', generatorRouter)
 
 
 const PORT = 8888;

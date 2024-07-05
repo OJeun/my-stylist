@@ -42,6 +42,9 @@ module.exports = {
         info: '#48a2ff',
         error: '#F02417',
       },
+      black: {
+        DEFAULT: '#000000',
+      }
     },
     extend: {},
   },

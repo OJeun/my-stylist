@@ -23,7 +23,7 @@ router.post("/ai-generator", (req, res) => {
   const base64Image = convertImageToBase64(imagePath);
 
   setTimeout(()=> {
-    res.json({ image: base64Image });
+    res.json({ image: [base64Image] });
   }, 4000)
 
 });

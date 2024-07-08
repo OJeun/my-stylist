@@ -152,10 +152,11 @@ export default function OutfitGenerator() {
                   </div>
                 )}
               </div>
-              <div>
+              <div className="mt-6 flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
                 {generatedImages.length > 0 && !loading && (
                   <InputGroup
                     inputs={generatedImageInputProps}
+                    inputClassName="peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2"
                     className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
                   />
                 )}

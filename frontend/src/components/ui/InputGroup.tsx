@@ -1,11 +1,16 @@
-import { ChangeEvent, ComponentPropsWithoutRef, Dispatch, SetStateAction} from 'react';
-import Input, { InputProps } from './Input';
+import {
+  ChangeEvent,
+  ComponentPropsWithoutRef,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import Input, { InputProps } from "./Input";
 
 type InputGroupProps = {
   inputs: InputProps[];
-  selected: string | string[]; 
-  setSelected: Dispatch<SetStateAction<string | string[]>>;
-} & ComponentPropsWithoutRef<'div'>;
+  selected?: string | string[];
+  setSelected?: Dispatch<SetStateAction<string | string[]>>;
+} & ComponentPropsWithoutRef<"div">;
 
 export default function InputGroup({
   inputs,
@@ -14,18 +19,20 @@ export default function InputGroup({
   ...props
 }: InputGroupProps) {
   const inputClassName =
-    'w-5 h-5 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600';
-  const labelClassName = 'ms-2 pl-2 text-lg';
+    "w-5 h-5 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600";
+  const labelClassName = "ms-2 pl-2 text-lg";
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target;
-    
-    if (typeof selected === 'string') {
-      setSelected(id); // Update to a single string
-    } else {
+
+    if (selected && setSelected && typeof selected === "string") {
+      setSelected(id);
+    } else if (selected && setSelected) {
       setSelected((prevSelected) =>
-        checked ? [...prevSelected as string[], id] : (prevSelected as string[]).filter((item) => item !== id)
-      ); // Update to an array of strings
+        checked
+          ? [...(prevSelected as string[]), id]
+          : (prevSelected as string[]).filter((item) => item !== id)
+      );
     }
   };
 

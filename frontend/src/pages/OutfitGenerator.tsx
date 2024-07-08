@@ -1,34 +1,42 @@
-import ItemsGrid from '../components/ItemsGrid';
-import Button from '../components/ui/Button';
-import { InputProps } from '../components/ui/Input';
-import { useState } from 'react';
-import { ClothingItem, clothingCategory } from '../components/ItemCard';
-import InputGroup from '../components/ui/InputGroup';
+import ItemsGrid from "../components/ItemsGrid";
+import Button from "../components/ui/Button";
+import { InputProps } from "../components/ui/Input";
+import { useState } from "react";
+import { ClothingItem, clothingCategory } from "../components/ItemCard";
+import InputGroup from "../components/ui/InputGroup";
+import { convertImgToInputProps } from "../utils/convertImgToInputPros";
 
 export const categories: InputProps[] = [
-  { id: 'checkbox', type: 'checkbox', label: 'TOP' },
-  { id: 'bottom-checkbox', type: 'checkbox', label: 'BOTTOM' },
-  { id: 'outer-checkbox', type: 'checkbox', label: 'OUTER' },
-  { id: 'shose-checkbox', type: 'checkbox', label: 'SHOES' },
-  { id: 'bag-checkbox', type: 'checkbox', label: 'BAG' },
-  { id: 'accessory-checkbox', type: 'checkbox', label: 'ACCESSORY' },
+  { id: "checkbox", type: "checkbox", label: "TOP" },
+  { id: "bottom-checkbox", type: "checkbox", label: "BOTTOM" },
+  { id: "outer-checkbox", type: "checkbox", label: "OUTER" },
+  { id: "shose-checkbox", type: "checkbox", label: "SHOES" },
+  { id: "bag-checkbox", type: "checkbox", label: "BAG" },
+  { id: "accessory-checkbox", type: "checkbox", label: "ACCESSORY" },
 ];
 
 export default function OutfitGenerator() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedCategoryCheckbox, setCategoryCheckbox] = useState<
     string | string[]
-  >(['']);
+  >([""]);
   const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
-  const [generatedImage, setgeneratedImage] = useState<string>('');
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [generatedImageInputProps, setImageInputProps] = useState<InputProps[]>(
+    []
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSelectItem = (item: ClothingItem) => {
     setSelectedItem(item);
   };
 
+  const handleImageInputProps = (inputProps: InputProps) => {
+    setImageInputProps((prevInputs) => [...prevInputs, inputProps]);
+  };
+
   const handleAIrequest = async () => {
-    setLoading(true); // Set loading state to true when making the request
+    setLoading(true);
 
     const data = {
       selectedCategory,
@@ -36,27 +44,37 @@ export default function OutfitGenerator() {
       selectedItem,
     };
 
-    try {
-      console.log('Sending data to backend:', data);
+    const processedInputProps = generatedImages.map((base64, index) =>
+      convertImgToInputProps(base64, index)
+    );
 
-      const response = await fetch('/api/ai-generator', {
-        method: 'POST',
+    try {
+      console.log("Sending data to backend:", data);
+
+      const response = await fetch("/api/ai-generator", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log('Successfully received response from AI generator');
-        console.log(result.image);
-        setgeneratedImage(result.image);
+        console.log("API Response:", result.image);
+        setGeneratedImages(result.image);
+
+        if (Array.isArray(generatedImages)) {
+          setImageInputProps(processedInputProps);
+          console.log(generatedImages);
+        } else {
+          console.error("generatedImages is not an array:", generatedImages);
+        }
       } else {
-        console.error('Failed to generate AI recommendation');
+        console.error("Failed to generate AI recommendation");
       }
     } catch (error) {
-      console.error('Error occurred while fetching data:', error);
+      console.error("Error occurred while fetching data:", error);
     } finally {
       setLoading(false);
     }
@@ -75,7 +93,7 @@ export default function OutfitGenerator() {
                   <li
                     key={category}
                     className={`${
-                      selectedCategory === category ? 'text-primary' : ''
+                      selectedCategory === category ? "text-primary" : ""
                     } hover:cursor-pointer mr-4 mb-4 text-lg`}
                     onClick={() => {
                       if (selectedCategory !== category) {
@@ -141,13 +159,14 @@ export default function OutfitGenerator() {
                   </div>
                 )}
               </div>
-              {generatedImage && !loading && (
-                <img
-                  src={generatedImage}
-                  alt="fail"
-                  className="w-full h-full object-cover"
-                ></img>
-              )}
+              <div>
+                {generatedImages.length > 0 && !loading && (
+                  <InputGroup
+                    inputs={generatedImageInputProps}
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

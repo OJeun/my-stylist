@@ -1,7 +1,7 @@
 import ItemsGrid from "../components/ItemsGrid";
 import Button from "../components/ui/Button";
 import { InputProps } from "../components/ui/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ClothingItem, clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { convertImgToInputProps } from "../utils/convertImgToInputPros";
@@ -31,10 +31,14 @@ export default function OutfitGenerator() {
     setSelectedItem(item);
   };
 
-  const handleImageInputProps = (inputProps: InputProps) => {
-    setImageInputProps((prevInputs) => [...prevInputs, inputProps]);
+  const addImages = (newBase64s: string[]) => {
+    setGeneratedImages(newBase64s);
+    const newInputProps = newBase64s.map((base64, index) =>
+      convertImgToInputProps(base64, index)
+    );
+    setImageInputProps(newInputProps);
   };
-
+  
   const handleAIrequest = async () => {
     setLoading(true);
 
@@ -43,10 +47,6 @@ export default function OutfitGenerator() {
       selectedCategoryCheckbox,
       selectedItem,
     };
-
-    const processedInputProps = generatedImages.map((base64, index) =>
-      convertImgToInputProps(base64, index)
-    );
 
     try {
       console.log("Sending data to backend:", data);
@@ -61,15 +61,7 @@ export default function OutfitGenerator() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("API Response:", result.image);
-        setGeneratedImages(result.image);
-
-        if (Array.isArray(generatedImages)) {
-          setImageInputProps(processedInputProps);
-          console.log(generatedImages);
-        } else {
-          console.error("generatedImages is not an array:", generatedImages);
-        }
+        addImages(result.image);
       } else {
         console.error("Failed to generate AI recommendation");
       }
@@ -79,6 +71,7 @@ export default function OutfitGenerator() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="">

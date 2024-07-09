@@ -1,7 +1,7 @@
 import ItemsGrid from "../components/ItemsGrid";
 import Button from "../components/ui/Button";
 import { InputProps } from "../components/ui/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ClothingItem, clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { convertImgToInputProps } from "../utils/convertImgToInputPros";
@@ -38,6 +38,10 @@ export default function OutfitGenerator() {
     );
     setImageInputProps(newInputProps);
   };
+
+  useEffect(() => {
+    console.log(generatedImages);
+  }, [generatedImages]);
 
   const handleAIrequest = async () => {
     setLoading(true);
@@ -151,12 +155,23 @@ export default function OutfitGenerator() {
                   </div>
                 )}
               </div>
-              <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-1xl xl:max-w-2xl">
+              <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
                 {generatedImages.length > 0 && !loading && (
-                  <InputGroup
-                    inputs={generatedImageInputProps}
-                    className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4"
-                  />
+                  <div
+                    className={`grid grid-cols-1 ${
+                      generatedImageInputProps.length > 3
+                        ? "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
+                        : `sm:grid-cols-${generatedImageInputProps.length -2} md:grid-cols-${generatedImageInputProps.length-1} lg:grid-cols-${generatedImageInputProps.length} xl:grid-cols-${generatedImageInputProps.length}`
+                    } gap-4`}
+                  >
+                    {generatedImageInputProps.map((inputProps, index) => (
+                      <InputGroup
+                        key={index}
+                        inputs={[inputProps]}
+                        className="flex justify-center"
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

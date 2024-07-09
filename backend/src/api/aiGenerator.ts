@@ -24,7 +24,7 @@ router.post("/ai-generator", (req, res) => {
   const imgUrl = 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg'
 
   setTimeout(()=> {
-    res.json({ image: [imgUrl] });
+    res.json({ image: [imgUrl, imgUrl, imgUrl] });
   }, 1000)
 
 });

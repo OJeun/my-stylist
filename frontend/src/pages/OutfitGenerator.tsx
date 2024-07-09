@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { ClothingItem, clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { convertImgToInputProps } from "../utils/convertImgToInputPros";
+import { fetchAIRecommendation } from '../utils/api/ai';
+
 
 export const categories: InputProps[] = [
   { id: "checkbox", type: "checkbox", label: "TOP" },
@@ -51,24 +53,9 @@ export default function OutfitGenerator() {
       selectedCategoryCheckbox,
       selectedItem,
     };
-
     try {
-      console.log("Sending data to backend:", data);
-
-      const response = await fetch("/api/ai-generator", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        addImages(result.image);
-      } else {
-        console.error("Failed to generate AI recommendation");
-      }
+      const result = await fetchAIRecommendation(data);
+      addImages(result.image);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
@@ -77,7 +64,7 @@ export default function OutfitGenerator() {
   };
 
   return (
-    <div className="">
+<>
       <h1 className="">Outfit Suggestion</h1>
       <div className="flex items-center">
         <div>
@@ -157,9 +144,8 @@ export default function OutfitGenerator() {
               </div>
               {generatedImages.length > 0 && !loading && (
                 <>
-                  <div className="text-center">
-                    <h2>Recommendation for You!</h2>
-                  </div>
+                  <h2 className="text-primary">Recommendation for You!</h2>
+
                   <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
                     <div
                       className={`grid grid-cols-1 ${
@@ -183,12 +169,21 @@ export default function OutfitGenerator() {
                       ))}
                     </div>
                   </div>
+                  <div className="flex flex-col items-center justify-center">
+                    <Button
+                      color="secondary"
+                      additionalclassname="w-80 m-9"
+                      onClick={handleAIrequest}
+                    >
+                      Save to Favourite
+                    </Button>
+                  </div>
                 </>
               )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+      </>
   );
 }

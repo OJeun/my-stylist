@@ -9,6 +9,7 @@ export type InputProps = {
   labelClassName?: string;
   imageSrc?: string;
   imageAlt?: string;
+  imageClassName?: string;
 } & ComponentPropsWithoutRef<'input'>;
 
 export default function Input({
@@ -18,6 +19,7 @@ export default function Input({
   name,
   inputClassName,
   labelClassName,
+  imageClassName,
   imageSrc,
   imageAlt,
   ...props
@@ -47,7 +49,7 @@ export default function Input({
               <img
                 src={imageSrc}
                 alt={imageAlt}
-                className="w-full h-full object-cover"
+                className={imageClassName}
               />
             )}
           </label>

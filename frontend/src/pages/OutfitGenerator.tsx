@@ -1,7 +1,7 @@
 import ItemsGrid from "../components/ItemsGrid";
 import Button from "../components/ui/Button";
 import { InputProps } from "../components/ui/Input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ClothingItem, clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { convertImgToInputProps } from "../utils/convertImgToInputPros";
@@ -38,7 +38,7 @@ export default function OutfitGenerator() {
     );
     setImageInputProps(newInputProps);
   };
-  
+
   const handleAIrequest = async () => {
     setLoading(true);
 
@@ -71,7 +71,6 @@ export default function OutfitGenerator() {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="">
@@ -123,7 +122,7 @@ export default function OutfitGenerator() {
               <div className="flex flex-col items-center justify-center">
                 <Button
                   color="secondary"
-                  additionalclassname="w-80 m-5"
+                  additionalclassname="w-80 m-9"
                   onClick={handleAIrequest}
                 >
                   Get Styled!
@@ -152,12 +151,11 @@ export default function OutfitGenerator() {
                   </div>
                 )}
               </div>
-              <div className="mt-6 flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
+              <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-1xl xl:max-w-2xl">
                 {generatedImages.length > 0 && !loading && (
                   <InputGroup
                     inputs={generatedImageInputProps}
-                    inputClassName="peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2"
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+                    className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4"
                   />
                 )}
               </div>

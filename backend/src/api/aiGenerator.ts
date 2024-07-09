@@ -20,10 +20,11 @@ router.post("/ai-generator", (req, res) => {
   );
 
   const imagePath = path.join(__dirname, "image.jpeg");
-  const base64Image = convertImageToBase64(imagePath);
+  // const base64Image = convertImageToBase64(imagePath);
+  const imgUrl = 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg'
 
   setTimeout(()=> {
-    res.json({ image: [base64Image, base64Image, base64Image, base64Image, base64Image] });
+    res.json({ image: [imgUrl] });
   }, 1000)
 
 });

@@ -6,6 +6,7 @@ import { ClothingItem, clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { convertImgToInputProps } from "../utils/convertImgToInputPros";
 import { fetchAIRecommendation } from '../utils/api/ai';
+import { saveImagesToFavourite } from "../utils/api/favouriteItems";
 
 
 export const categories: InputProps[] = [
@@ -41,11 +42,8 @@ export default function OutfitGenerator() {
     setImageInputProps(newInputProps);
   };
 
-  useEffect(() => {
-    console.log(generatedImages);
-  }, [generatedImages]);
-
   const handleAIrequest = async () => {
+    
     setLoading(true);
 
     const data = {
@@ -53,11 +51,32 @@ export default function OutfitGenerator() {
       selectedCategoryCheckbox,
       selectedItem,
     };
+
     try {
       const result = await fetchAIRecommendation(data);
       addImages(result.image);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveFavourite = async () => {
+    if (!selectedItem || generatedImages.length === 0) return;
+
+    const data = {
+      selectedItem,
+      generatedImages,
+    };
+
+    setLoading(true);
+
+    try {
+      const result = await saveImagesToFavourite(data);
+      console.log('Save successful:', result);
+    } catch (error) {
+      console.error('Error occurred while saving data:', error);
     } finally {
       setLoading(false);
     }
@@ -173,7 +192,7 @@ export default function OutfitGenerator() {
                     <Button
                       color="secondary"
                       additionalclassname="w-80 m-9"
-                      onClick={handleAIrequest}
+                      onClick={handleSaveFavourite}
                     >
                       Save to Favourite
                     </Button>

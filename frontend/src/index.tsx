@@ -1,26 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { RouterProvider } from "react-router-dom";
+import { Routes } from "./routes/Routes";
+import { authStore, store } from "./stores/store";
 
-import { RouterProvider } from 'react-router-dom';
-import { Routes } from './routes/Routes';
-import { store } from './stores/Auth'
-
-import  AuthProvider  from 'react-auth-kit';
-
+import AuthProvider from "react-auth-kit";
+import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AuthProvider store={store}>
-    <RouterProvider router={Routes} />
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider store={authStore}>
+        <RouterProvider router={Routes} />
+      </AuthProvider>
+    </Provider>
   </React.StrictMode>
 );
 

@@ -43,7 +43,7 @@ export const saveFavouriteItems = createAsyncThunk(
   }
 );
 
-export const FavourtieSlice= createSlice({
+export const FavourtieItemSlice= createSlice({
   name: "favouriteItem",
   initialState,
   reducers: {
@@ -77,5 +77,5 @@ export const FavourtieSlice= createSlice({
   },
 });
 
-export default FavourtieSlice.reducer;
-export const { addFavouriteItems } = FavourtieSlice.actions;
+export default FavourtieItemSlice.reducer;
+export const { addFavouriteItems } = FavourtieItemSlice.actions;

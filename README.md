@@ -8,6 +8,9 @@ npm run dev
 To start frontend server
 npm start
 
+To run temporal json database backend (in the folder where a json file locates)
+json-server --watch favouriteItems.json --port 3001
+
 
 Dependencies:
 express

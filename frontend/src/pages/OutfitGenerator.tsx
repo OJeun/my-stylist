@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { ClothingItem, clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { convertImgToInputProps } from "../utils/convertImgToInputPros";
-import { fetchAIRecommendation } from '../utils/api/ai';
-import { saveImagesToFavourite } from "../utils/api/favouriteItems";
-
+import { fetchAIRecommendation } from "../utils/api/ai";
+import { saveFavouriteItems } from "../stores/features/favouriteItems";
+import { useAppDispatch } from "../stores/store";
 
 export const categories: InputProps[] = [
   { id: "checkbox", type: "checkbox", label: "TOP" },
@@ -29,6 +29,7 @@ export default function OutfitGenerator() {
     []
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const handleSelectItem = (item: ClothingItem) => {
     setSelectedItem(item);
@@ -43,7 +44,6 @@ export default function OutfitGenerator() {
   };
 
   const handleAIrequest = async () => {
-    
     setLoading(true);
 
     const data = {
@@ -65,25 +65,25 @@ export default function OutfitGenerator() {
   const handleSaveFavourite = async () => {
     if (!selectedItem || generatedImages.length === 0) return;
 
-    const data = {
-      selectedItem,
-      generatedImages,
-    };
-
     setLoading(true);
 
+    const data = {
+      id: selectedItem.id,
+      selectedItem,
+      generatedItems: generatedImages
+    };
+  
     try {
-      const result = await saveImagesToFavourite(data);
-      console.log('Save successful:', result);
+      dispatch(saveFavouriteItems(data));
     } catch (error) {
-      console.error('Error occurred while saving data:', error);
+      console.error("Error occurred while saving data:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-<>
+    <>
       <h1 className="">Outfit Suggestion</h1>
       <div className="flex items-center">
         <div>
@@ -203,6 +203,6 @@ export default function OutfitGenerator() {
           </div>
         </div>
       </div>
-      </>
+    </>
   );
 }

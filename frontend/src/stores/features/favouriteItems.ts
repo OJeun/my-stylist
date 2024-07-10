@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ClothingItem } from "../../components/ItemCard";
 
 export interface FavouriteItem {
   id: number | string;
-  selectedItem: string;
+  selectedItem: ClothingItem;
   generatedItems: string[];
 }
 
@@ -14,7 +15,8 @@ const initialState: FavouriteItemState = {
   favouriteItems: [],
 };
 
-export const fetchFavouriteItemState = createAsyncThunk(
+
+export const fetchFavouriteItems = createAsyncThunk(
   "favouriteItems/fetch",
   async (thunkAPI) => {
     const response = await fetch("http://localhost:3001/favourites", {
@@ -27,15 +29,16 @@ export const fetchFavouriteItemState = createAsyncThunk(
 
 export const saveFavouriteItems = createAsyncThunk(
   "favouriteItems/save",
-  async ({ selectedItem, generatedItems }: FavouriteItem, thunkAPI) => {
+  async ({ selectedItem, generatedItems, id } : FavouriteItem, thunkAPI) => {
     const response = await fetch("http://localhost:3001/favourites", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        id,
         selectedItem,
-        generatedItems,
+        generatedItems
       }),
     });
     const data = response.json();
@@ -52,7 +55,7 @@ export const FavourtieItemSlice= createSlice({
       action: PayloadAction<FavouriteItem>
     ) => {
       state.favouriteItems.push({
-        id: state.favouriteItems.length,
+        id: action.payload.id,
         selectedItem: action.payload.selectedItem,
         generatedItems: action.payload.generatedItems,
       });
@@ -60,7 +63,7 @@ export const FavourtieItemSlice= createSlice({
   },
   extraReducers: (builder: any) => {
     builder.addCase(
-      fetchFavouriteItemState.fulfilled,
+        fetchFavouriteItems.fulfilled,
       (
         state: FavouriteItemState,
         action: PayloadAction<FavouriteItemState>

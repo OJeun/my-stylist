@@ -69,7 +69,7 @@ export default function OutfitGenerator() {
 
     const data = {
       id: selectedItem.id,
-      selectedItem,
+      selectedItem: selectedItem.imageSrc,
       generatedItems: generatedImages
     };
   

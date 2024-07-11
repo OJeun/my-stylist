@@ -3,7 +3,7 @@ import { ClothingItem } from "../../components/ItemCard";
 
 export interface FavouriteItem {
   id: number | string;
-  selectedItem: ClothingItem;
+  selectedItem: string;
   generatedItems: string[];
 }
 
@@ -68,7 +68,7 @@ export const FavourtieItemSlice= createSlice({
         state: FavouriteItemState,
         action: PayloadAction<FavouriteItemState>
       ) => {
-        state.favouriteItems = action.payload.favouriteItems;
+        state.favouriteItems = action.payload as unknown as FavouriteItem[];
       }
     );
     builder.addCase(

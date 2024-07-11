@@ -19,12 +19,16 @@
     },
     {
       "id": 1,
-      "selectedItem": {
-        "id": 1,
-        "name": "Basic Tee",
-        "imageSrc": "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-        "imageAlt": "Front of men's Basic Tee in black."
-      },
+      "selectedItem": "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+      "generatedItems": [
+        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
+      ]
+    },
+    {
+      "id": 2,
+      "selectedItem": "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       "generatedItems": [
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",

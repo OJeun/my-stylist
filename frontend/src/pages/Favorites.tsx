@@ -41,13 +41,14 @@ export default function Favorites() {
               type="checkbox"
               imageSrc={favouriteItem.selectedItem}
               inputClassName="hidden"
-              labelClassName="group-hover:opacity-75 inline-flex items-center mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
+              labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
             />
             <ItemsGrid
               isInput={true}
               clothingImages={favouriteItem.generatedItems}
               inputClassName="hidden"
-              labelClassName="group-hover:opacity-75 inline-flex items-center mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
+              labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
+              imageClassName="object-cover max-h-full max-w-full mx-auto"
               />
 
           </div>

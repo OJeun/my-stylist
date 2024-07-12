@@ -28,6 +28,7 @@ type ItemCardProps = {
   isSelected: boolean;
   inputClassName?: string;
   labelClassName?: string;
+  imageClassName?: string;
   onSelect: () => void;
 } & ComponentPropsWithoutRef<"input">;
 
@@ -40,6 +41,7 @@ export default function ItemCard({
   isSelected,
   inputClassName,
   labelClassName,
+  imageClassName,
   onSelect,
 }: ItemCardProps) {
   return (
@@ -59,6 +61,7 @@ export default function ItemCard({
               labelClassName={labelClassName}
               imageSrc={clothing.imageSrc}
               imageAlt={clothing.imageAlt}
+              imageClassName={imageClassName}
             ></Input>
           </>
         ) : (

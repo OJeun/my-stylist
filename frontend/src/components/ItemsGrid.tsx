@@ -7,6 +7,7 @@ type ClothingListProps = {
   clothingImages?: string[];
   inputClassName?: string;
   labelClassName?: string;
+  imageClassName?: string;
 } & ComponentPropsWithoutRef<"input">;
 
 export type ImageAndID = {
@@ -21,6 +22,7 @@ export default function ItemsGrid({
   clothingImages,
   inputClassName,
   labelClassName,
+  imageClassName,
 }: ClothingListProps) {
   const [clothings, setClothings] = useState<ClothingItem[]>([
     {
@@ -87,7 +89,7 @@ export default function ItemsGrid({
 
     return (
       <>
-        <div className="mt-6 flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-2xl">
+        <div className="mt-6 flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
           {clothingList.map((items, index) => (
             <ItemCard
               key={index}
@@ -98,6 +100,7 @@ export default function ItemsGrid({
               isSelected={selectedClothing === index}
               onSelect={() => handleSelectClothing(index)}
               isInput={isInput}
+              imageClassName={imageClassName}
             />
           ))}
         </div>

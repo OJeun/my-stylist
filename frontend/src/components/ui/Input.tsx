@@ -50,6 +50,7 @@ export default function Input({
                 src={imageSrc}
                 alt={imageAlt}
                 className={imageClassName}
+                
               />
             )}
           </label>

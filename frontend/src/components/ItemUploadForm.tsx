@@ -21,7 +21,7 @@ export default function ItemUploadForm({
 }) {
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | string[]>([]);
-  const [selectedSeason, setSelectedSeason] = useState<string | string[]>("");
+  const [selectedSeason, setSelectedSeason] = useState<string | string[]>([]);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -52,7 +52,10 @@ export default function ItemUploadForm({
     const data = {
       category: selectedCategory,
       season: selectedSeason,
+      imageBase64: imageBase64
     };
+
+    console.log(data)
 
     const response = await fetch('/api/upload', {
       method: 'POST',
@@ -154,6 +157,7 @@ export default function ItemUploadForm({
                       inputs={seasons}
                       selected={selectedSeason}
                       setSelected={setSelectedSeason}
+                      singleSelection={true}
                     />
                   </div>
                 </div>

@@ -20,7 +20,7 @@ export default function ItemUploadForm({
   setIsModalOpen: (isOpen: boolean) => void;
 }) {
   const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | string[]>("");
+  const [selectedCategory, setSelectedCategory] = useState<string | string[]>([]);
   const [selectedSeason, setSelectedSeason] = useState<string | string[]>("");
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -144,6 +144,7 @@ export default function ItemUploadForm({
                       inputs={categories}
                       selected={selectedCategory}
                       setSelected={setSelectedCategory}
+                      singleSelection={true}
                     />
                   </div>
                   <div>

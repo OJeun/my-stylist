@@ -25,8 +25,6 @@ export default function ItemsGrid({
   inputClassName,
   labelClassName,
   imageClassName,
-  onScrollLeft,
-  onScrollRight,
 }: ClothingListProps) {
   const [clothings, setClothings] = useState<ClothingItem[]>([
     {
@@ -75,28 +73,12 @@ export default function ItemsGrid({
 
   const [selectedClothing, setSelectedClothing] = useState<number | null>(null);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const handleScrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollLeft -= 100; // Adjust scroll distance as needed
-    }
-    if (onScrollLeft) onScrollLeft();
-  };
-
-  const handleScrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollLeft += 100; // Adjust scroll distance as needed
-    }
-    if (onScrollRight) onScrollRight();
-  };
-
   const handleSelectClothing = (index: number) => {
     setSelectedClothing(index);
+    console.log(index)
     if (onSelectItem) onSelectItem(clothings[index]);
   };
 
-  console.log(clothingImages)
   const clothingList = clothingImages
     ? clothingImages.map((image, index) => ({
         id: index + 1,
@@ -104,8 +86,6 @@ export default function ItemsGrid({
         imageAlt: `index ${index}`
       }))
     : clothings;
-
-    console.log(clothingList)
 
     return (
 

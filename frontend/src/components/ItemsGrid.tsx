@@ -111,7 +111,7 @@ export default function ItemsGrid({
 
 <div className="flex items-center mb-4">
 
-        <div className="flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
+        <div className="flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-2xl">
           {clothingList.map((items, index) => (
             <ItemCard
               key={index}

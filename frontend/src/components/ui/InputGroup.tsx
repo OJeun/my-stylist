@@ -28,11 +28,11 @@ export default function InputGroup({
     const { id, checked } = e.target;
 
     if (singleSelection && setSelected) {
-      setSelected(id); // For single selection
+      setSelected(id); 
     } else if (setSelected) {
       setSelected((prevSelected) =>
         checked
-          ? [...(prevSelected as string[]), id] // For multiple selection
+          ? [...(prevSelected as string[]), id] 
           : (prevSelected as string[]).filter((item) => item !== id)
       );
     }

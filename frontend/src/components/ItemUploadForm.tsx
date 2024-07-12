@@ -133,7 +133,7 @@ export default function ItemUploadForm({
                       <strong>Drag & Drop</strong> Your Clothing Photo!
                     </p>
                   ) : (
-                    <img src={imageBase64} alt="Uploaded" />
+                    <img className="object-cover max-h-full max-w-full" src={imageBase64} alt="Uploaded" />
                   )}
                 </div>
                 <div>

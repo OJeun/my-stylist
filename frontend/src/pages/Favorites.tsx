@@ -10,6 +10,13 @@ export default function Favorites() {
     (state) => state.favouriteItem.favouriteItems
   );
 
+  const fetchedclosetItems = useAppSelector(
+    (state) => state.closetItem.closetItems
+  );
+
+  useEffect(() => {
+    dispatch(fetchClosetItems(selectedCategory as string));
+  }, [dispatch]);
   useEffect(() => {
     dispatch(fetchFavouriteItems());
   }, [dispatch]);

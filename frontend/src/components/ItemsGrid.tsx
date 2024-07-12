@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, useRef, useState } from "react";
 import ItemCard, { ClothingItem } from "./ItemCard";
 
 type ClothingListProps = {
@@ -8,6 +8,8 @@ type ClothingListProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
+  onScrollLeft?: () => void;
+  onScrollRight?: () => void;
 } & ComponentPropsWithoutRef<"input">;
 
 export type ImageAndID = {
@@ -23,6 +25,8 @@ export default function ItemsGrid({
   inputClassName,
   labelClassName,
   imageClassName,
+  onScrollLeft,
+  onScrollRight,
 }: ClothingListProps) {
   const [clothings, setClothings] = useState<ClothingItem[]>([
     {
@@ -71,6 +75,22 @@ export default function ItemsGrid({
 
   const [selectedClothing, setSelectedClothing] = useState<number | null>(null);
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft -= 100; // Adjust scroll distance as needed
+    }
+    if (onScrollLeft) onScrollLeft();
+  };
+
+  const handleScrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft += 100; // Adjust scroll distance as needed
+    }
+    if (onScrollRight) onScrollRight();
+  };
+
   const handleSelectClothing = (index: number) => {
     setSelectedClothing(index);
     if (onSelectItem) onSelectItem(clothings[index]);
@@ -88,8 +108,10 @@ export default function ItemsGrid({
     console.log(clothingList)
 
     return (
-      <>
-        <div className="mt-6 flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
+
+<div className="flex items-center mb-4">
+
+        <div className="flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-3xl">
           {clothingList.map((items, index) => (
             <ItemCard
               key={index}
@@ -104,6 +126,6 @@ export default function ItemsGrid({
             />
           ))}
         </div>
-      </>
+        </div>
     );
 }

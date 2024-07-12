@@ -27,30 +27,31 @@ export default function Favorites() {
   //     imageAlt: `image ${index}`,
   //   })),
   // }));
-  
-  
 
   return (
     <>
       <h1>My Favorites</h1>
       <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
         {fetchedFavouriteItems.map((favouriteItem) => (
-          <div key={favouriteItem.id} className="mb-4">
-            <Input
-              id={String(favouriteItem.id)}
-              type="checkbox"
-              imageSrc={favouriteItem.selectedItem}
-              inputClassName="hidden"
-              labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
-            />
-            <ItemsGrid
-              isInput={true}
-              clothingImages={favouriteItem.generatedItems}
-              inputClassName="hidden"
-              labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
-              imageClassName="object-cover max-h-full max-w-full mx-auto"
+          <div key={favouriteItem.id} className="mb-4 flex">
+            <div>
+              <Input
+                id={String(favouriteItem.id)}
+                type="checkbox"
+                imageSrc={favouriteItem.selectedItem}
+                inputClassName="hidden"
+                labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
               />
-
+            </div>
+            <div className="ml-7">
+              <ItemsGrid
+                isInput={true}
+                clothingImages={favouriteItem.generatedItems}
+                inputClassName="hidden"
+                labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
+                imageClassName="object-cover max-h-full max-w-full mx-auto"
+              />
+            </div>
           </div>
         ))}
       </div>

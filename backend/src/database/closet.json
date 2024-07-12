@@ -1,0 +1,35 @@
+{
+    "items": {
+      "Top": {
+        "summer": [],
+        "springFall": [],
+        "winter": []
+      },
+      "Bottom": {
+        "summer": [],
+        "springFall": [],
+        "winter": []
+      },
+      "Outer": {
+        "summer": [],
+        "springFall": [],
+        "winter": []
+      },
+      "Shoes": {
+        "summer": [],
+        "springFall": [],
+        "winter": []
+      },
+      "Bag": {
+        "summer": [],
+        "springFall": [],
+        "winter": []
+      },
+      "Accessory": {
+        "summer": [],
+        "springFall": [],
+        "winter": []
+      }
+    }
+  }
+  

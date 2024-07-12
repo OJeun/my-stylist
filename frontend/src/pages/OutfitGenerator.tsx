@@ -114,7 +114,7 @@ export default function OutfitGenerator() {
               <h3 className="mb-5 text-lg font-medium text-gray-strong">
                 Select the type of clothes you want to match!
               </h3>
-              <ItemsGrid isInput={true} onSelectItem={handleSelectItem} />
+              <ItemsGrid isInput={true} onSelectItem={handleSelectItem} inputClassName={"peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2"} labelClassName={"group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"}/>
               <h3 className="my-5 text-lg font-medium text-gray-strong">
                 Which type of clothing would you like to match?
               </h3>

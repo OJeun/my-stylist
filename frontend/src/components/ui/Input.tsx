@@ -1,4 +1,5 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { ChangeEvent, ComponentPropsWithoutRef } from 'react';
+import { onChange } from 'react-toastify/dist/core/store';
 
 export type InputProps = {
   id: string;
@@ -10,6 +11,7 @@ export type InputProps = {
   imageSrc?: string;
   imageAlt?: string;
   imageClassName?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 } & ComponentPropsWithoutRef<'input'>;
 
 export default function Input({
@@ -22,6 +24,7 @@ export default function Input({
   imageClassName,
   imageSrc,
   imageAlt,
+  onChange,
   ...props
 }: InputProps) {
   return (
@@ -35,6 +38,7 @@ export default function Input({
               imageSrc ? 'absolute top-2 right-2 z-10' : ''
             } ${inputClassName}`}
             name={name}
+            onChange={onChange}
             {...props}
           />
           <label

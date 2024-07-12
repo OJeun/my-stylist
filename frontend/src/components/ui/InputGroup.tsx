@@ -10,12 +10,14 @@ type InputGroupProps = {
   inputs: InputProps[];
   selected?: string | string[];
   setSelected?: Dispatch<SetStateAction<string | string[]>>;
+  singleSelection?: boolean;
 } & ComponentPropsWithoutRef<"div">;
 
 export default function InputGroup({
   inputs,
   selected,
   setSelected,
+  singleSelection,
   ...props
 }: InputGroupProps) {
   const inputClassName =
@@ -25,16 +27,17 @@ export default function InputGroup({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target;
 
-    if (selected && setSelected && typeof selected === "string") {
-      setSelected(id);
-    } else if (selected && setSelected) {
+    if (singleSelection && setSelected) {
+      setSelected(id); // For single selection
+    } else if (setSelected) {
       setSelected((prevSelected) =>
         checked
-          ? [...(prevSelected as string[]), id]
+          ? [...(prevSelected as string[]), id] // For multiple selection
           : (prevSelected as string[]).filter((item) => item !== id)
       );
     }
-  };
+  }
+  
 
   const isChecked = (id: string) => {
     return Array.isArray(selected) ? selected.includes(id) : selected === id;

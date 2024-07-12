@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { fetchFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import Input from "../components/ui/Input";
+import ItemsGrid, { ImageAndID } from "../components/ItemsGrid";
 
 export default function Favorites() {
   const dispatch = useAppDispatch();
@@ -12,6 +13,22 @@ export default function Favorites() {
   useEffect(() => {
     dispatch(fetchFavouriteItems());
   }, [dispatch]);
+
+  // const clothingList: {
+  //   id: string | number;
+  //   selectedItem: string;
+  //   generatedItems: ImageAndID[];
+  // }[] = fetchedFavouriteItems.map((favouriteItem) => ({
+  //   id: favouriteItem.id,
+  //   selectedItem: favouriteItem.selectedItem,
+  //   generatedItems: favouriteItem.generatedItems.map((item, index) => ({
+  //     id: index,
+  //     imageSrc: item,
+  //     imageAlt: `image ${index}`,
+  //   })),
+  // }));
+  
+  
 
   return (
     <>
@@ -24,9 +41,15 @@ export default function Favorites() {
               type="checkbox"
               imageSrc={favouriteItem.selectedItem}
               inputClassName="hidden"
-              labelClassName="group-hover:opacity-75 inline-flex items-center mb-4 h-[200px] w-[200px] bg-white rounded-md cursor-pointer overflow-hidden relative"
+              labelClassName="group-hover:opacity-75 inline-flex items-center mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+            <ItemsGrid
+              isInput={true}
+              clothingImages={favouriteItem.generatedItems}
+              inputClassName="hidden"
+              labelClassName="group-hover:opacity-75 inline-flex items-center mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
+              />
+
           </div>
         ))}
       </div>

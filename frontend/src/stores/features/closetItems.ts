@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface ClosetItem {
   category: string;
   season: string;
-  imageBase64: string;
+  imageString: string;
 }
 
 interface ClosetItemState {
@@ -29,7 +29,7 @@ export const fetchClosetItems = createAsyncThunk(
 
 export const saveClosetItems = createAsyncThunk(
   "closetItems/save",
-  async ({ category, season, imageBase64 } : ClosetItem, thunkAPI) => {
+  async ({ category, season, imageString } : ClosetItem, thunkAPI) => {
     const formatedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
     const response = await fetch(`http://localhost:3002/${formatedCategory}`, {
       method: "POST",
@@ -37,7 +37,7 @@ export const saveClosetItems = createAsyncThunk(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        imageBase64
+        imageString
       }),
     });
     const data = response.json();
@@ -46,17 +46,17 @@ export const saveClosetItems = createAsyncThunk(
 );
 
 export const ClosetItemSlice= createSlice({
-  name: "favouriteItem",
+  name: "closetItem",
   initialState,
   reducers: {
-    addFavouriteItems: (
+    addClosetItems: (
       state: ClosetItemState,
       action: PayloadAction<ClosetItem>
     ) => {
       state.closetItems.push({
         category: action.payload.category,
         season: action.payload.season,
-        imageBase64: action.payload.imageBase64,
+        imageString: action.payload.imageString,
       });
     },
   },
@@ -80,4 +80,4 @@ export const ClosetItemSlice= createSlice({
 });
 
 export default ClosetItemSlice.reducer;
-export const { addFavouriteItems } = ClosetItemSlice.actions;
+export const { addClosetItems } = ClosetItemSlice.actions;

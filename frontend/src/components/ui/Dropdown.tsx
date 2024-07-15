@@ -3,16 +3,23 @@ import { useState } from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { categories } from '../../pages/OutfitGenerator';
+import { useAppDispatch } from '../../stores/store';
+import { fetchClosetItems } from '../../stores/features/closetItems';
 
 type DropdownProps = {
   title: string;
   categories: string[];
 };
 
+
+
 export default function Dropdown({title, categories}: DropdownProps) {
   const buttonClassName =
     'w-full block px-4 py-2 text-sm text-gray-strong data-[focus]:bg-gray-lighter data-[focus]:font-semibold';
-
+  const dispatch = useAppDispatch();
+  const handleCategorySelect = (category: string) => {
+    dispatch(fetchClosetItems(category.toLowerCase()))
+  }
   return (
     <div>
       <Menu as="div" className="relative inline-block text-left">
@@ -34,7 +41,7 @@ export default function Dropdown({title, categories}: DropdownProps) {
             <div>
               {categories.map((category) => (
                 <MenuItem>
-                  <Button className={buttonClassName}>{category}</Button>
+                  <Button className={buttonClassName} onClick={() => handleCategorySelect(category)}>{category}</Button>
                 </MenuItem>
               ))}
             </div>

@@ -5,6 +5,8 @@ import Button from './ui/Button';
 import { InputProps } from './ui/Input';
 import { BsArrowRepeat } from 'react-icons/bs';
 import { categories } from '../pages/OutfitGenerator';
+import { ClosetItem, addClosetItems, saveClosetItems } from '../stores/features/closetItems';
+import { useAppDispatch } from '../stores/store';
 
 const seasons: InputProps[] = [
   { id: 'spring-fall-checkbox', type: 'checkbox', label: 'Spring/Fall' },
@@ -22,6 +24,7 @@ export default function ItemUploadForm({
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | string[]>([]);
   const [selectedSeason, setSelectedSeason] = useState<string | string[]>([]);
+  const dispatch = useAppDispatch();
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -49,28 +52,14 @@ export default function ItemUploadForm({
       return;
     }
 
-    const data = {
-      category: selectedCategory,
-      season: selectedSeason,
-      imageBase64: imageBase64
+    const data: ClosetItem  = {
+      category: selectedCategory as string,
+      season: selectedSeason as string,
+      imageString: imageBase64 as string
     };
-
     console.log(data)
 
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (response.ok) {
-      console.log('Item uploaded successfully');
-    } else {
-      console.error('Failed to upload item');
-    }
-
+    dispatch(saveClosetItems(data))
     setIsModalOpen(false);
   };
 
@@ -182,3 +171,5 @@ export default function ItemUploadForm({
     </Dialog>
   );
 }
+
+

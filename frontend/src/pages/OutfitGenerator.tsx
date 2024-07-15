@@ -10,7 +10,7 @@ import { saveFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch } from "../stores/store";
 
 export const categories: InputProps[] = [
-  { id: "checkbox", type: "checkbox", label: "TOP" },
+  { id: "top-checkbox", type: "checkbox", label: "TOP" },
   { id: "bottom-checkbox", type: "checkbox", label: "BOTTOM" },
   { id: "outer-checkbox", type: "checkbox", label: "OUTER" },
   { id: "shose-checkbox", type: "checkbox", label: "SHOES" },

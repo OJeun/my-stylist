@@ -3,6 +3,7 @@ import { fetchFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import Input from "../components/ui/Input";
 import ItemsGrid, { ImageAndID } from "../components/ItemsGrid";
+import { fetchClosetItems } from "../stores/features/closetItems";
 
 export default function Favorites() {
   const dispatch = useAppDispatch();
@@ -10,30 +11,9 @@ export default function Favorites() {
     (state) => state.favouriteItem.favouriteItems
   );
 
-  const fetchedclosetItems = useAppSelector(
-    (state) => state.closetItem.closetItems
-  );
-
-  useEffect(() => {
-    dispatch(fetchClosetItems(selectedCategory as string));
-  }, [dispatch]);
   useEffect(() => {
     dispatch(fetchFavouriteItems());
   }, [dispatch]);
-
-  // const clothingList: {
-  //   id: string | number;
-  //   selectedItem: string;
-  //   generatedItems: ImageAndID[];
-  // }[] = fetchedFavouriteItems.map((favouriteItem) => ({
-  //   id: favouriteItem.id,
-  //   selectedItem: favouriteItem.selectedItem,
-  //   generatedItems: favouriteItem.generatedItems.map((item, index) => ({
-  //     id: index,
-  //     imageSrc: item,
-  //     imageAlt: `image ${index}`,
-  //   })),
-  // }));
 
   return (
     <>

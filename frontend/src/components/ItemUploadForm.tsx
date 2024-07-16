@@ -7,6 +7,8 @@ import { BsArrowRepeat } from 'react-icons/bs';
 import { categories } from '../pages/OutfitGenerator';
 import { ClosetItem, addClosetItems, saveClosetItems } from '../stores/features/closetItems';
 import { useAppDispatch } from '../stores/store';
+import { v4 as uuidv4 } from 'uuid';
+
 
 const seasons: InputProps[] = [
   { id: 'spring-fall-checkbox', type: 'checkbox', label: 'Spring/Fall' },
@@ -24,6 +26,11 @@ export default function ItemUploadForm({
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | string[]>([]);
   const [selectedSeason, setSelectedSeason] = useState<string | string[]>([]);
+  const [imageId, setImageId] = useState<string>("");
+
+
+
+
   const dispatch = useAppDispatch();
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -52,10 +59,13 @@ export default function ItemUploadForm({
       return;
     }
 
+    setImageId(uuidv4())
+
     const data: ClosetItem  = {
       category: selectedCategory as string,
       season: selectedSeason as string,
-      imageString: imageBase64 as string
+      imageString: imageBase64 as string,
+      imageId: imageId
     };
     console.log(data)
 

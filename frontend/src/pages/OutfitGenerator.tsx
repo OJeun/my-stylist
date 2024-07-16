@@ -6,9 +6,9 @@ import { clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { fetchAIRecommendation } from "../utils/api/ai";
 import { saveFavouriteItems } from "../stores/features/favouriteItems";
-import { useAppDispatch } from "../stores/store";
-import { ClosetItem } from "../stores/features/closetItems";
-import { v4 as uuidv4 } from 'uuid';
+import { useAppDispatch, useAppSelector } from "../stores/store";
+import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
+import { v4 as uuidv4 } from "uuid";
 
 export const categories: InputProps[] = [
   { id: "top-checkbox", type: "checkbox", label: "TOP" },
@@ -23,7 +23,7 @@ export default function OutfitGenerator() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedCategoryCheckbox, setCategoryCheckbox] = useState<
     string | string[]
-  >([""]);
+  >([]);
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
   const [generatedImages, setGeneratedImages] = useState<ClosetItem[]>([]);
   const [generatedImageInputProps, setImageInputProps] = useState<InputProps[]>(
@@ -32,17 +32,17 @@ export default function OutfitGenerator() {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
+  const fetchedClosetItems = useAppSelector(
+    (state) => state.closetItem.closetItems
+  );
+
+  useEffect(() => {
+    dispatch(fetchClosetItems("top"));
+  }, [dispatch]);
+
   const handleSelectItem = (item: ClosetItem) => {
     setSelectedItem(item);
   };
-
-  // const addImages = (newBase64s: string[]) => {
-  //   setGeneratedImages(newBase64s);
-  //   const newInputProps = newBase64s.map((base64, index) =>
-  //     convertImgToInputProps(base64, index)
-  //   );
-  //   setImageInputProps(newInputProps);
-  // };
 
   const handleAIrequest = async () => {
     setLoading(true);
@@ -55,6 +55,7 @@ export default function OutfitGenerator() {
 
     try {
       const result = await fetchAIRecommendation(data);
+      console.log(result);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
@@ -71,9 +72,9 @@ export default function OutfitGenerator() {
     const data = {
       id: aiGeneratedItemsGroupdId,
       selectedItem: selectedItem,
-      generatedItems: generatedImages
+      generatedItems: generatedImages,
     };
-  
+
     try {
       dispatch(saveFavouriteItems(data));
     } catch (error) {
@@ -101,6 +102,7 @@ export default function OutfitGenerator() {
                     onClick={() => {
                       if (selectedCategory !== category) {
                         setSelectedCategory(category);
+                        dispatch(fetchClosetItems(category.toLocaleLowerCase()))
                       }
                     }}
                   >
@@ -115,7 +117,17 @@ export default function OutfitGenerator() {
               <h3 className="mb-5 text-lg font-medium text-gray-strong">
                 Select the type of clothes you want to match!
               </h3>
-              <ItemsGrid isInput={true} onSelectItem={handleSelectItem} inputClassName={"peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2"} labelClassName={"group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"}/>
+              <ItemsGrid
+                isInput={true}
+                onSelectItem={handleSelectItem}
+                inputClassName={
+                  "peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2"
+                }
+                labelClassName={
+                  "group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
+                }
+                clothingItems={fetchedClosetItems}
+              />
               <h3 className="my-5 text-lg font-medium text-gray-strong">
                 Which type of clothing would you like to match?
               </h3>
@@ -207,5 +219,3 @@ export default function OutfitGenerator() {
     </>
   );
 }
-
-

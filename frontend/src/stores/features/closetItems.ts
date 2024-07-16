@@ -52,9 +52,7 @@ export const deleteClosetItems = createAsyncThunk(
   "closetItems/delete",
   async ({ category, imageId }:  {category: string; imageId: string}  , thunkAPI)  => {
     try {
-      console.log("in delete func", category, imageId)
-      const formattedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
-      const response = await fetch(`http://localhost:3002/${formattedCategory}/${imageId}`, {
+      const response = await fetch(`http://localhost:3002/${category}/${imageId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

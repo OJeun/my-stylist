@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { fetchFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import Input from "../components/ui/Input";
-import ItemsGrid, { ImageAndID } from "../components/ItemsGrid";
-import { fetchClosetItems } from "../stores/features/closetItems";
+import ItemsGrid from "../components/ItemsGrid";
 
 export default function Favorites() {
   const dispatch = useAppDispatch();

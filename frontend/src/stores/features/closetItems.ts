@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ClosetItem {
+  imageId: string;
   category: string;
   season: string;
   imageString: string;
@@ -29,7 +30,7 @@ export const fetchClosetItems = createAsyncThunk(
 
 export const saveClosetItems = createAsyncThunk(
   "closetItems/save",
-  async ({ category, season, imageString } : ClosetItem, thunkAPI) => {
+  async ({ category, season, imageString, imageId } : ClosetItem, thunkAPI) => {
     const formatedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
     const response = await fetch(`http://localhost:3002/${formatedCategory}`, {
       method: "POST",
@@ -37,11 +38,36 @@ export const saveClosetItems = createAsyncThunk(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        imageString
+        imageString,
+        imageId
       }),
     });
     const data = response.json();
     return data;
+  }
+);
+
+export const deleteClosetItems = createAsyncThunk(
+  "closetItems/delete",
+  async ({ category, imageId }: ClosetItem , thunkAPI)  => {
+    try {
+      const formattedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
+      const response = await fetch(`http://localhost:3002/${formattedCategory}/${imageId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to delete item");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
 );
 
@@ -57,6 +83,7 @@ export const ClosetItemSlice= createSlice({
         category: action.payload.category,
         season: action.payload.season,
         imageString: action.payload.imageString,
+        imageId: action.payload.imageId
       });
     },
   },

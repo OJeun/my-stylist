@@ -33,8 +33,8 @@ export default function MyCloset() {
     }
   };
 
-  function handleDeleteItem(deletedItem: ClosetItem): void {
-    dispatch(deleteClosetItems({ category: deletedItem.category, imageId: deletedItem.id }))
+  function handleDeleteItem(category: string, deletedItemId: string): void {
+    dispatch(deleteClosetItems({ category: category, imageId: deletedItemId }))
   }
 
   return (

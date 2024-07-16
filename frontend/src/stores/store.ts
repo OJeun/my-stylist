@@ -3,13 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import createStore from "react-auth-kit/createStore";
 import { ClosetItemSlice } from "./features/closetItems";
-import { CategorySeasonImageSlice } from "./features/categorySeasonImage";
+import { CategorySlice } from "./features/category";
 
 export const store = configureStore({
   reducer: {
     favouriteItem: FavourtieItemSlice.reducer,
     closetItem: ClosetItemSlice.reducer,
-    categorySeasonImage: CategorySeasonImageSlice.reducer
+    category: CategorySlice.reducer
   },
 });
 

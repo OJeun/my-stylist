@@ -5,6 +5,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { categories } from '../../pages/OutfitGenerator';
 import { useAppDispatch } from '../../stores/store';
 import { fetchClosetItems } from '../../stores/features/closetItems';
+import { setCategory } from '../../stores/features/category';
 
 type DropdownProps = {
   title: string;
@@ -19,6 +20,7 @@ export default function Dropdown({title, categories}: DropdownProps) {
   const dispatch = useAppDispatch();
   const handleCategorySelect = (category: string) => {
     dispatch(fetchClosetItems(category.toLowerCase()))
+    dispatch(setCategory(category.toLowerCase()))
   }
   return (
     <div>

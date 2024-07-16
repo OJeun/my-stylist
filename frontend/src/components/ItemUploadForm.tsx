@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import InputGroup from './ui/InputGroup';
-import Button from './ui/Button';
-import { InputProps } from './ui/Input';
-import { BsArrowRepeat } from 'react-icons/bs';
-import { categories } from '../pages/OutfitGenerator';
-import { ClosetItem, saveClosetItems } from '../stores/features/closetItems';
-import { useAppDispatch } from '../stores/store';
-import { v4 as uuidv4 } from 'uuid';
-
+import { useState } from "react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import InputGroup from "./ui/InputGroup";
+import Button from "./ui/Button";
+import { InputProps } from "./ui/Input";
+import { BsArrowRepeat } from "react-icons/bs";
+import { categories } from "../pages/OutfitGenerator";
+import { ClosetItem, saveClosetItems } from "../stores/features/closetItems";
+import { useAppDispatch } from "../stores/store";
+import { v4 as uuidv4 } from "uuid";
+import { setCategory } from "../stores/features/category";
 
 const seasons: InputProps[] = [
-  { id: 'spring-fall-checkbox', type: 'checkbox', label: 'Spring/Fall' },
-  { id: 'summer-checkbox', type: 'checkbox', label: 'Summer' },
-  { id: 'winter-checkbox', type: 'checkbox', label: 'Winter' },
+  { id: "spring-fall-checkbox", type: "checkbox", label: "Spring/Fall" },
+  { id: "summer-checkbox", type: "checkbox", label: "Summer" },
+  { id: "winter-checkbox", type: "checkbox", label: "Winter" },
 ];
 
 export default function ItemUploadForm({
@@ -24,7 +24,9 @@ export default function ItemUploadForm({
   setIsModalOpen: (isOpen: boolean) => void;
 }) {
   const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | string[]>(
+    []
+  );
   const [selectedSeason, setSelectedSeason] = useState<string | string[]>([]);
 
   const dispatch = useAppDispatch();
@@ -51,21 +53,22 @@ export default function ItemUploadForm({
 
   const handleFormSubmit = async () => {
     if (!selectedCategory || !selectedSeason) {
-      alert('Please select both a category and a season.');
+      alert("Please select both a category and a season.");
       return;
     }
     const imageId = uuidv4();
 
-    const data: ClosetItem  = {
+    const data: ClosetItem = {
       id: imageId as string,
       season: selectedSeason as string,
       imageSrc: imageBase64 as string,
-      category: selectedCategory as string
+      category: selectedCategory as string,
     };
 
-    console.log("in upload form", data)
+    console.log("in upload form", data);
 
-    dispatch(saveClosetItems(data))
+    dispatch(saveClosetItems(data));
+    dispatch(setCategory(selectedCategory as string));
     setIsModalOpen(false);
   };
 
@@ -131,7 +134,11 @@ export default function ItemUploadForm({
                       <strong>Drag & Drop</strong> Your Clothing Photo!
                     </p>
                   ) : (
-                    <img className="object-cover max-h-full max-w-full" src={imageBase64} alt="Uploaded" />
+                    <img
+                      className="object-cover max-h-full max-w-full"
+                      src={imageBase64}
+                      alt="Uploaded"
+                    />
                   )}
                 </div>
                 <div>
@@ -177,5 +184,3 @@ export default function ItemUploadForm({
     </Dialog>
   );
 }
-
-

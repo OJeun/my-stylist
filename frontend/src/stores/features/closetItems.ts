@@ -4,7 +4,7 @@ export interface ClosetItem {
   imageId: string;
   category: string;
   season: string;
-  imageString: string;
+  imageSrc: string;
 }
 
 interface ClosetItemState {
@@ -30,7 +30,7 @@ export const fetchClosetItems = createAsyncThunk(
 
 export const saveClosetItems = createAsyncThunk(
   "closetItems/save",
-  async ({ category, season, imageString, imageId } : ClosetItem, thunkAPI) => {
+  async ({ category, season, imageSrc, imageId } : ClosetItem, thunkAPI) => {
     const formatedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
     const response = await fetch(`http://localhost:3002/${formatedCategory}`, {
       method: "POST",
@@ -38,8 +38,9 @@ export const saveClosetItems = createAsyncThunk(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        imageString,
-        imageId
+        imageSrc,
+        imageId,
+        season
       }),
     });
     const data = response.json();
@@ -82,8 +83,8 @@ export const ClosetItemSlice= createSlice({
       state.closetItems.push({
         category: action.payload.category,
         season: action.payload.season,
-        imageString: action.payload.imageString,
-        imageId: action.payload.imageId
+        imageSrc: action.payload.imageSrc,
+        imageId: action.payload.imageId,
       });
     },
   },
@@ -103,6 +104,12 @@ export const ClosetItemSlice= createSlice({
         state.closetItems.push(action.payload);
       }
     );
+    builder.addCase(
+      deleteClosetItems.fulfilled,
+      (state: ClosetItemState, action: PayloadAction<ClosetItem>) => {
+        state.closetItems = state.closetItems.filter(item => item.imageId !== action.payload.imageId);
+      }
+    )
   },
 });
 

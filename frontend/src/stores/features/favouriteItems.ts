@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ClothingItem } from "../../components/ItemCard";
+import { ClosetItem } from "../features/closetItems"
 
 export interface FavouriteItem {
   id: number | string;
-  selectedItem: string;
-  generatedItems: string[];
+  selectedItem: ClosetItem;
+  generatedItems: ClosetItem[];
 }
 
 interface FavouriteItemState {

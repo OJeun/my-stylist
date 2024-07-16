@@ -2,12 +2,13 @@ import ItemsGrid from "../components/ItemsGrid";
 import Button from "../components/ui/Button";
 import { InputProps } from "../components/ui/Input";
 import { useEffect, useState } from "react";
-import { ClothingItem, clothingCategory } from "../components/ItemCard";
+import { clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
 import { convertImgToInputProps } from "../utils/convertImgToInputPros";
 import { fetchAIRecommendation } from "../utils/api/ai";
 import { saveFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch } from "../stores/store";
+import { ClosetItem } from "../stores/features/closetItems";
 
 export const categories: InputProps[] = [
   { id: "top-checkbox", type: "checkbox", label: "TOP" },
@@ -23,25 +24,25 @@ export default function OutfitGenerator() {
   const [selectedCategoryCheckbox, setCategoryCheckbox] = useState<
     string | string[]
   >([""]);
-  const [selectedItem, setSelectedItem] = useState<ClothingItem | null>(null);
-  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
+  const [generatedImages, setGeneratedImages] = useState<ClosetItem[]>([]);
   const [generatedImageInputProps, setImageInputProps] = useState<InputProps[]>(
     []
   );
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  const handleSelectItem = (item: ClothingItem) => {
+  const handleSelectItem = (item: ClosetItem) => {
     setSelectedItem(item);
   };
 
-  const addImages = (newBase64s: string[]) => {
-    setGeneratedImages(newBase64s);
-    const newInputProps = newBase64s.map((base64, index) =>
-      convertImgToInputProps(base64, index)
-    );
-    setImageInputProps(newInputProps);
-  };
+  // const addImages = (newBase64s: string[]) => {
+  //   setGeneratedImages(newBase64s);
+  //   const newInputProps = newBase64s.map((base64, index) =>
+  //     convertImgToInputProps(base64, index)
+  //   );
+  //   setImageInputProps(newInputProps);
+  // };
 
   const handleAIrequest = async () => {
     setLoading(true);
@@ -54,7 +55,6 @@ export default function OutfitGenerator() {
 
     try {
       const result = await fetchAIRecommendation(data);
-      addImages(result.image);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
@@ -68,8 +68,8 @@ export default function OutfitGenerator() {
     setLoading(true);
 
     const data = {
-      id: selectedItem.id,
-      selectedItem: selectedItem.imageSrc,
+      id: selectedItem.imageId,
+      selectedItem: selectedItem,
       generatedItems: generatedImages
     };
   

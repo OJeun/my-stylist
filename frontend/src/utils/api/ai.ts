@@ -1,9 +1,9 @@
-import { ClothingItem } from "../../components/ItemCard";
+import { ClosetItem } from "../../stores/features/closetItems";
 
 type data = {
     selectedCategory: string | null;
     selectedCategoryCheckbox: string | string[];
-    selectedItem: ClothingItem | null;
+    selectedItem: ClosetItem | null;
 }
 
 export const fetchAIRecommendation = async (data: data) => {

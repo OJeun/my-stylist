@@ -1,10 +1,11 @@
 import { ComponentPropsWithoutRef, useRef, useState } from "react";
-import ItemCard, { ClothingItem } from "./ItemCard";
+import { ClosetItem } from "../stores/features/closetItems";
+import ItemCard from "./ItemCard";
 
 type ClothingListProps = {
   isInput: boolean;
-  onSelectItem?: (item: ClothingItem) => void;
-  clothingImages?: string[];
+  onSelectItem?: (item: ClosetItem) => void;
+  clothingItems?: ClosetItem[];
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
@@ -12,62 +13,57 @@ type ClothingListProps = {
   onScrollRight?: () => void;
 } & ComponentPropsWithoutRef<"input">;
 
-export type ImageAndID = {
-  id: string | number;
-  imageSrc: string;
-  imageAlt: string;
-};
 
 export default function ItemsGrid({
   isInput,
   onSelectItem,
-  clothingImages,
+  clothingItems,
   inputClassName,
   labelClassName,
   imageClassName,
 }: ClothingListProps) {
-  const [clothings, setClothings] = useState<ClothingItem[]>([
+  const [clothings, setClothings] = useState<ClosetItem[]>([
     {
-      id: 1,
-      name: "Basic Tee",
+      imageId: "1",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      imageAlt: "Front of men's Basic Tee in black.",
+      season: "summer",
+      category: "top"
     },
     {
-      id: 2,
-      name: "Pretty Tee",
+      imageId: "2",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      imageAlt: "Front of men's Basic Tee in black.",
+      season: "summer",
+      category: "top"
     },
     {
-      id: 3,
-      name: "Pretty Tee",
+      imageId: "3",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      imageAlt: "Front of men's Basic Tee in black.",
+      season: "summer",
+      category: "top"
     },
     {
-      id: 4,
-      name: "Pretty Tee",
+      imageId: "4",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      imageAlt: "Front of men's Basic Tee in black.",
+      season: "summer",
+      category: "top"
     },
     {
-      id: 5,
-      name: "Pretty Tee",
+      imageId: "5",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      imageAlt: "Front of men's Basic Tee in black.",
+      season: "summer",
+      category: "top"
     },
     {
-      id: 6,
-      name: "Pretty Tee",
+      imageId: "6",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      imageAlt: "Front of men's Basic Tee in black.",
+      season: "summer",
+      category: "top"
     },
   ]);
 
@@ -79,11 +75,10 @@ export default function ItemsGrid({
     if (onSelectItem) onSelectItem(clothings[index]);
   };
 
-  const clothingList = clothingImages
-    ? clothingImages.map((image, index) => ({
-        id: index + 1,
-        imageSrc: image,
-        imageAlt: `index ${index}`
+  const clothingList = clothingItems
+    ? clothingItems.map((item, index) => ({
+        ...item,
+        imageAlt: `index ${item.imageId}`
       }))
     : clothings;
 

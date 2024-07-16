@@ -5,7 +5,7 @@ import Button from './ui/Button';
 import { InputProps } from './ui/Input';
 import { BsArrowRepeat } from 'react-icons/bs';
 import { categories } from '../pages/OutfitGenerator';
-import { ClosetItem, addClosetItems, saveClosetItems } from '../stores/features/closetItems';
+import { ClosetItem, saveClosetItems } from '../stores/features/closetItems';
 import { useAppDispatch } from '../stores/store';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -27,9 +27,6 @@ export default function ItemUploadForm({
   const [selectedCategory, setSelectedCategory] = useState<string | string[]>([]);
   const [selectedSeason, setSelectedSeason] = useState<string | string[]>([]);
   const [imageId, setImageId] = useState<string>("");
-
-
-
 
   const dispatch = useAppDispatch();
 
@@ -64,7 +61,7 @@ export default function ItemUploadForm({
     const data: ClosetItem  = {
       category: selectedCategory as string,
       season: selectedSeason as string,
-      imageString: imageBase64 as string,
+      imageSrc: imageBase64 as string,
       imageId: imageId
     };
     console.log(data)

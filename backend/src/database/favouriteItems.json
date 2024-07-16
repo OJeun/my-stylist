@@ -2,20 +2,60 @@
   "favourites": [
     {
       "id": "0",
-      "selectedItem": "https://m.media-amazon.com/images/I/61YRmRIt8uL._AC_SX679_.jpg",
+      "selectedItem": {
+        "imageId": "100",
+        "category": "top",
+        "season": "summer",
+        "imageSrc": "https://m.media-amazon.com/images/I/61YRmRIt8uL._AC_SX679_.jpg"
+      },
       "generatedItems": [
-        "https://m.media-amazon.com/images/I/618yBikFo+L._AC_SY695_.jpg",
-        "https://smartwool.ca/media/catalog/product/cache/7b241bfd6c26fd1ffc0d56d7717f5c2b/s/w/sw016335001-1-p_2.jpg"
+        {
+          "imageId": "101",
+          "category": "top",
+          "season": "spring",
+          "imageSrc": "https://m.media-amazon.com/images/I/618yBikFo+L._AC_SY695_.jpg"
+        },
+        {
+          "imageId": "102",
+          "category": "top",
+          "season": "winter",
+          "imageSrc": "https://smartwool.ca/media/catalog/product/cache/7b241bfd6c26fd1ffc0d56d7717f5c2b/s/w/sw016335001-1-p_2.jpg"
+        }
       ]
     },
     {
       "id": "10",
-      "selectedItem": "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Ff8%2F1a%2Ff81ac0b1c39780fa105fce9bf2aa3bb6f8d3fa08.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url[file:/product/main]",
+      "selectedItem": {
+        "imageId": "103",
+        "category": "jacket",
+        "season": "spring",
+        "imageSrc": "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Ff8%2F1a%2Ff81ac0b1c39780fa105fce9bf2aa3bb6f8d3fa08.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url[file:/product/main]"
+      },
       "generatedItems": [
-        "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F22%2F51%2F2251666463798f5f44387cdc56de52e6db245798.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
-        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F18%2F37%2F18377f56050cd399c4cbb8f8a1460540c2a5a086.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bladies_tops_bodys%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url[file:/product/main]",
-        "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F24%2F9a%2F249a7e35b42276584291552c6773f7886474b2c9.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
-        "https://smartwool.ca/media/catalog/product/cache/7b241bfd6c26fd1ffc0d56d7717f5c2b/s/w/sw016335001-1-p_2.jpg"
+        {
+          "imageId": "104",
+          "category": "jacket",
+          "season": "summer",
+          "imageSrc": "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F22%2F51%2F2251666463798f5f44387cdc56de52e6db245798.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D"
+        },
+        {
+          "imageId": "105",
+          "category": "jacket",
+          "season": "fall",
+          "imageSrc": "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F18%2F37%2F18377f56050cd399c4cbb8f8a1460540c2a5a086.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bladies_tops_bodys%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url[file:/product/main]"
+        },
+        {
+          "imageId": "106",
+          "category": "jacket",
+          "season": "winter",
+          "imageSrc": "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F24%2F9a%2F249a7e35b42276584291552c6773f7886474b2c9.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D"
+        },
+        {
+          "imageId": "107",
+          "category": "jacket",
+          "season": "spring",
+          "imageSrc": "https://smartwool.ca/media/catalog/product/cache/7b241bfd6c26fd1ffc0d56d7717f5c2b/s/w/sw016335001-1-p_2.jpg"
+        }
       ]
     }
   ]

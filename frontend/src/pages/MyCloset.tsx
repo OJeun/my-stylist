@@ -17,10 +17,9 @@ export default function MyCloset() {
   const fetchedClosetItems = useAppSelector(
     (state) => state.closetItem.closetItems
   );
-  const fetchedImages = fetchedClosetItems.map(
-    (item, index) => item.imageString
-  );
 
+  console.log("Fetched Closet Items:", fetchedClosetItems);
+  
   useEffect(() => {
     dispatch(fetchClosetItems("top"));
   }, [dispatch]);
@@ -48,7 +47,7 @@ export default function MyCloset() {
       </div>
       <ItemsGrid
         isInput={false}
-        clothingImages={fetchedImages}
+        clothingItems={fetchedClosetItems}
         labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
         imageClassName="object-cover max-h-full max-w-full mx-auto"
       />

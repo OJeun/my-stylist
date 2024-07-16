@@ -1,7 +1,7 @@
-import { ClothingItem } from "../../components/ItemCard";
+import { ClosetItem } from "../../stores/features/closetItems";
 
 type FavoriteItemData = {
-    selectedItem: ClothingItem;
+    selectedItem: ClosetItem;
     generatedImages: string[];
 }
 

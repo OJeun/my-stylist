@@ -3,6 +3,7 @@ import Button from "./ui/Button";
 import Input from "./ui/Input";
 import { ComponentPropsWithoutRef } from "react";
 import { ClosetItem } from "../stores/features/closetItems";
+import { useAppSelector } from "../stores/store";
 
 // ItemCard consist of Input componenet or Button Component
 export const clothingCategory = [
@@ -23,7 +24,7 @@ type ItemCardProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
-  onDelete?: (item: ClosetItem) => void; 
+  onDelete?: (category: string, deletedItemId: string) => void; 
   onSelect: () => void;
   
 } & ComponentPropsWithoutRef<"input">;
@@ -43,8 +44,13 @@ export default function ItemCard({
   onSelect,
 }: ItemCardProps) {
 
+  const fetchedCategory = useAppSelector(
+    (state) => state.category.category
+  );
+
   const handleDelete = () => {
-    if (onDelete) onDelete(clothing); // Call onDelete if defined
+
+    if (onDelete) onDelete(fetchedCategory, clothing.id); // Call onDelete if defined
     console.log("deleted", clothing)
   };
   return (

@@ -9,7 +9,7 @@ type ClothingListProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
-  onDelete?: (item: ClosetItem) => void; 
+  onDelete?: (category: string, deletedItemId: string) => void; 
   onScrollLeft?: () => void;
   onScrollRight?: () => void;
 } & ComponentPropsWithoutRef<"input">;

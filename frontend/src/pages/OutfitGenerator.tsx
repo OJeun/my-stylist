@@ -4,11 +4,11 @@ import { InputProps } from "../components/ui/Input";
 import { useEffect, useState } from "react";
 import { clothingCategory } from "../components/ItemCard";
 import InputGroup from "../components/ui/InputGroup";
-import { convertImgToInputProps } from "../utils/convertImgToInputPros";
 import { fetchAIRecommendation } from "../utils/api/ai";
 import { saveFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch } from "../stores/store";
 import { ClosetItem } from "../stores/features/closetItems";
+import { v4 as uuidv4 } from 'uuid';
 
 export const categories: InputProps[] = [
   { id: "top-checkbox", type: "checkbox", label: "TOP" },
@@ -67,8 +67,9 @@ export default function OutfitGenerator() {
 
     setLoading(true);
 
+    const aiGeneratedItemsGroupdId = uuidv4();
     const data = {
-      id: selectedItem.imageId,
+      id: aiGeneratedItemsGroupdId,
       selectedItem: selectedItem,
       generatedItems: generatedImages
     };
@@ -206,3 +207,5 @@ export default function OutfitGenerator() {
     </>
   );
 }
+
+

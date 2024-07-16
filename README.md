@@ -10,6 +10,7 @@ npm start
 
 To run temporal json database backend (in the folder where a json file locates)
 json-server --watch favouriteItems.json --port 3001
+json-server --watch closetItems.json --port 3002
 
 
 Dependencies:

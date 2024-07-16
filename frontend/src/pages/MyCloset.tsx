@@ -5,7 +5,8 @@ import ItemUploadForm from "../components/ItemUploadForm";
 import Dropdown from "../components/ui/Dropdown";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import {
-  addClosetItems,
+  ClosetItem,
+  deleteClosetItems,
   fetchClosetItems,
 } from "../stores/features/closetItems";
 
@@ -32,6 +33,10 @@ export default function MyCloset() {
     }
   };
 
+  function handleDeleteItem(deletedItem: ClosetItem): void {
+    dispatch(deleteClosetItems({ category: deletedItem.category, imageId: deletedItem.id }))
+  }
+
   return (
     <div>
       <h1>My Closet</h1>
@@ -48,6 +53,7 @@ export default function MyCloset() {
       <ItemsGrid
         isInput={false}
         clothingItems={fetchedClosetItems}
+        onDelete={handleDeleteItem}
         labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
         imageClassName="object-cover max-h-full max-w-full mx-auto"
       />

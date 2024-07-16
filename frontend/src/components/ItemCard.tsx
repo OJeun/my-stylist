@@ -23,10 +23,13 @@ type ItemCardProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
+  onDelete?: (item: ClosetItem) => void; 
   onSelect: () => void;
+  
 } & ComponentPropsWithoutRef<"input">;
 
 const baseInputClass = "group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
+
 
 export default function ItemCard({
   clothing,
@@ -36,10 +39,16 @@ export default function ItemCard({
   inputClassName,
   labelClassName,
   imageClassName,
+  onDelete,
   onSelect,
 }: ItemCardProps) {
+
+  const handleDelete = () => {
+    if (onDelete) onDelete(clothing); // Call onDelete if defined
+    console.log("deleted", clothing)
+  };
   return (
-    <div key={clothing.imageId} className="group relative aspect-w-1 aspect-h-1">
+    <div key={clothing.id} className="group relative aspect-w-1 aspect-h-1">
       <div className="mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
         {isInput ? (
           <>
@@ -54,18 +63,18 @@ export default function ItemCard({
               onChange={onSelect}
               labelClassName={labelClassName}
               imageSrc={clothing.imageSrc}
-              imageAlt={`index ${clothing.imageId}`}
+              imageAlt={`index ${clothing.id}`}
               imageClassName={imageClassName}
             ></Input>
           </>
         ) : (
           <>
-            <Button className="absolute top-2 right-2 z-10">
+            <Button className="absolute top-2 right-2 z-10" onClick={handleDelete}>
               <XMarkIcon className="w-6 h-6" />
             </Button>
             <img
               src={clothing.imageSrc}
-              alt={`index ${clothing.imageId}`}
+              alt={`index ${clothing.id}`}
               className="w-full h-full object-cover"
             />
           </>

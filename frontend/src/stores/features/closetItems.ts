@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ClosetItem {
-  imageId: string;
+  id: string;
   category: string;
   season: string;
   imageSrc: string;
@@ -30,7 +30,7 @@ export const fetchClosetItems = createAsyncThunk(
 
 export const saveClosetItems = createAsyncThunk(
   "closetItems/save",
-  async ({ category, season, imageSrc, imageId } : ClosetItem, thunkAPI) => {
+  async ({ category, season, imageSrc, id } : ClosetItem, thunkAPI) => {
     const formatedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
     const response = await fetch(`http://localhost:3002/${formatedCategory}`, {
       method: "POST",
@@ -39,7 +39,7 @@ export const saveClosetItems = createAsyncThunk(
       },
       body: JSON.stringify({
         imageSrc,
-        imageId,
+        id,
         season
       }),
     });
@@ -50,8 +50,9 @@ export const saveClosetItems = createAsyncThunk(
 
 export const deleteClosetItems = createAsyncThunk(
   "closetItems/delete",
-  async ({ category, imageId }: ClosetItem , thunkAPI)  => {
+  async ({ category, imageId }:  {category: string; imageId: string}  , thunkAPI)  => {
     try {
+      console.log("in delete func", category, imageId)
       const formattedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
       const response = await fetch(`http://localhost:3002/${formattedCategory}/${imageId}`, {
         method: "DELETE",
@@ -84,7 +85,7 @@ export const ClosetItemSlice= createSlice({
         category: action.payload.category,
         season: action.payload.season,
         imageSrc: action.payload.imageSrc,
-        imageId: action.payload.imageId,
+        id: action.payload.id,
       });
     },
   },
@@ -107,7 +108,7 @@ export const ClosetItemSlice= createSlice({
     builder.addCase(
       deleteClosetItems.fulfilled,
       (state: ClosetItemState, action: PayloadAction<ClosetItem>) => {
-        state.closetItems = state.closetItems.filter(item => item.imageId !== action.payload.imageId);
+        state.closetItems = state.closetItems.filter(item => item.id !== action.payload.id);
       }
     )
   },

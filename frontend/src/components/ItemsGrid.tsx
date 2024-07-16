@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useRef, useState } from "react";
+import { ComponentPropsWithoutRef, useState } from "react";
 import { ClosetItem } from "../stores/features/closetItems";
 import ItemCard from "./ItemCard";
 
@@ -9,6 +9,7 @@ type ClothingListProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
+  onDelete?: (item: ClosetItem) => void; 
   onScrollLeft?: () => void;
   onScrollRight?: () => void;
 } & ComponentPropsWithoutRef<"input">;
@@ -17,6 +18,7 @@ type ClothingListProps = {
 export default function ItemsGrid({
   isInput,
   onSelectItem,
+  onDelete,
   clothingItems,
   inputClassName,
   labelClassName,
@@ -24,42 +26,42 @@ export default function ItemsGrid({
 }: ClothingListProps) {
   const [clothings, setClothings] = useState<ClosetItem[]>([
     {
-      imageId: "1",
+      id: "1",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       season: "summer",
       category: "top"
     },
     {
-      imageId: "2",
+      id: "2",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       season: "summer",
       category: "top"
     },
     {
-      imageId: "3",
+      id: "3",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       season: "summer",
       category: "top"
     },
     {
-      imageId: "4",
+      id: "4",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       season: "summer",
       category: "top"
     },
     {
-      imageId: "5",
+      id: "5",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       season: "summer",
       category: "top"
     },
     {
-      imageId: "6",
+      id: "6",
       imageSrc:
         "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       season: "summer",
@@ -78,7 +80,7 @@ export default function ItemsGrid({
   const clothingList = clothingItems
     ? clothingItems.map((item, index) => ({
         ...item,
-        imageAlt: `index ${item.imageId}`
+        imageAlt: `index ${item.id}`
       }))
     : clothings;
 
@@ -96,6 +98,7 @@ export default function ItemsGrid({
               index={index}
               isSelected={selectedClothing === index}
               onSelect={() => handleSelectClothing(index)}
+              onDelete={onDelete} 
               isInput={isInput}
               imageClassName={imageClassName}
             />

@@ -26,7 +26,6 @@ export default function ItemUploadForm({
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | string[]>([]);
   const [selectedSeason, setSelectedSeason] = useState<string | string[]>([]);
-  const [imageId, setImageId] = useState<string>("");
 
   const dispatch = useAppDispatch();
 
@@ -55,16 +54,16 @@ export default function ItemUploadForm({
       alert('Please select both a category and a season.');
       return;
     }
-
-    setImageId(uuidv4())
+    const imageId = uuidv4();
 
     const data: ClosetItem  = {
-      category: selectedCategory as string,
+      id: imageId as string,
       season: selectedSeason as string,
       imageSrc: imageBase64 as string,
-      imageId: imageId
+      category: selectedCategory as string
     };
-    console.log(data)
+
+    console.log("in upload form", data)
 
     dispatch(saveClosetItems(data))
     setIsModalOpen(false);

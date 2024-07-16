@@ -23,17 +23,17 @@
   ],
   "bottom": [
     {
-      "id": 1,
+      "id": "1",
       "season": "summer",
       "imageSrc": "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F14%2F00%2F1400b9088a14450e25f05399e83b0118f41d2b93.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B3%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D"
     },
     {
-      "id": 2,
+      "id": "2",
       "season": "spring",
       "imageSrc": "https://lsco.scene7.com/is/image/lsco/726930130-front-pdp-ld?fmt=jpeg&qlt=70&resMode=sharp2&fit=crop,1&op_usm=0.6,0.6,8&wid=2000&hei=1840"
     },
     {
-      "id": 3,
+      "id": "3",
       "season": "winter",
       "imageSrc": "https://img.abercrombie.com/is/image/anf/KIC_156-3099-0935-435_prod1?policy=product-large"
     }

@@ -25,7 +25,7 @@ export default function OutfitGenerator() {
     string | string[]
   >([]);
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
-  const [fetchedGeneratedItems, setfetchedGeneratedItems] = useState<ClosetItem[]>([]);
+  const [fetchedGeneratedItems, setFetchedGeneratedItems] = useState<ClosetItem[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -53,7 +53,7 @@ export default function OutfitGenerator() {
 
     try {
       const result = await fetchAIRecommendation(data);
-      setfetchedGeneratedItems(result)
+      setFetchedGeneratedItems(result)
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {

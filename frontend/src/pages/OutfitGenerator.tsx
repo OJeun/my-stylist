@@ -52,10 +52,11 @@ export default function OutfitGenerator() {
       selectedCategoryCheckbox,
       selectedItem,
     };
+    console.log("request data from outfitgenerator", data)
 
     try {
       const result = await fetchAIRecommendation(data);
-      console.log(result);
+      console.log(result)
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
@@ -69,6 +70,7 @@ export default function OutfitGenerator() {
     setLoading(true);
 
     const aiGeneratedItemsGroupdId = uuidv4();
+    
     const data = {
       id: aiGeneratedItemsGroupdId,
       selectedItem: selectedItem,
@@ -97,12 +99,12 @@ export default function OutfitGenerator() {
                   <li
                     key={category}
                     className={`${
-                      selectedCategory === category ? "text-primary" : ""
+                      selectedCategory === category.toLowerCase() ? "text-primary" : ""
                     } hover:cursor-pointer mr-4 mb-4 text-lg`}
                     onClick={() => {
                       if (selectedCategory !== category) {
-                        setSelectedCategory(category);
-                        dispatch(fetchClosetItems(category.toLocaleLowerCase()))
+                        setSelectedCategory(category.toLowerCase());
+                        dispatch(fetchClosetItems(category.toLowerCase()))
                       }
                     }}
                   >

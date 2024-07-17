@@ -5,9 +5,11 @@ import {
   SetStateAction,
 } from "react";
 import Input, { InputProps } from "./Input";
+import { ClosetItem } from "../../stores/features/closetItems";
 
 type InputGroupProps = {
-  inputs: InputProps[];
+  inputs?: InputProps[];
+  generatedItems?: ClosetItem[];
   selected?: string | string[];
   setSelected?: Dispatch<SetStateAction<string | string[]>>;
   singleSelection?: boolean;
@@ -18,6 +20,7 @@ export default function InputGroup({
   selected,
   setSelected,
   singleSelection,
+  generatedItems,
   ...props
 }: InputGroupProps) {
   const inputClassName =
@@ -28,16 +31,15 @@ export default function InputGroup({
     const { id, checked } = e.target;
 
     if (singleSelection && setSelected) {
-      setSelected(id); 
+      setSelected(id);
     } else if (setSelected) {
       setSelected((prevSelected) =>
         checked
-          ? [...(prevSelected as string[]), id] 
+          ? [...(prevSelected as string[]), id]
           : (prevSelected as string[]).filter((item) => item !== id)
       );
     }
-  }
-  
+  };
 
   const isChecked = (id: string) => {
     return Array.isArray(selected) ? selected.includes(id) : selected === id;
@@ -45,17 +47,34 @@ export default function InputGroup({
 
   return (
     <div {...props}>
-      {inputs.map((input) => (
-        <div key={input.id}>
+      {inputs && (
+        inputs.map((input) => (
+          <div key={input.id}>
+            <Input
+              inputClassName={inputClassName}
+              labelClassName={labelClassName}
+              {...input}
+              checked={isChecked(input.id)}
+              onChange={handleChange}
+            />
+          </div>
+        ))
+      )}
+      {generatedItems && (
+        generatedItems.map((item) => (
           <Input
-            inputClassName={inputClassName}
-            labelClassName={labelClassName}
-            {...input}
-            checked={isChecked(input.id)}
-            onChange={handleChange}
-          />
-        </div>
-      ))}
+              type="radio"
+              id={item.id}
+              imageSrc={item.imageSrc}
+              imageAlt={`image ${item.id}`}
+              inputClassName={`hidden ${inputClassName}`}
+              labelClassName={labelClassName}
+            />
+        )
+        )
+      )}
+      
+   
     </div>
   );
 }

@@ -1,14 +1,16 @@
+import { json } from "body-parser";
 import express from "express";
+import readClosetItems, { ClosetItem } from "../utils/parseJSON";
+
+
 const fs = require("fs");
 const path = require("path");
+const jsonData = require('../database/closetItems.json');
+
+
 const app = express();
 
 const router = express.Router();
-
-function convertImageToBase64(imagePath: string) {
-  const imageBuffer = fs.readFileSync(imagePath);
-  return `data:image/jpeg;base64,${imageBuffer.toString("base64")}`;
-}
 
 router.post("/ai-generator", (req, res) => {
   const { selectedCategory, selectedCategoryCheckbox, selectedItem } = req.body;
@@ -18,13 +20,25 @@ router.post("/ai-generator", (req, res) => {
     selectedCategoryCheckbox,
     selectedItem
   );
+  
+  
+  const formattedCategory = selectedCategoryCheckbox.map((category: string) =>
+    category.split('-')[0].toLowerCase()
+  );
+  console.log(__dirname)
+  const filePath = path.resolve(__dirname, '../database/closetItems.json');
 
-  const imagePath = path.join(__dirname, "image.jpeg");
-  // const base64Image = convertImageToBase64(imagePath);
-  const imgUrl = 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg'
+  let eachItem: ClosetItem[];
+  const response: ClosetItem[] = [];
+
+  formattedCategory.forEach((category: string) => {
+    eachItem = readClosetItems(filePath, category)
+    response.push(eachItem[0])
+  }
+  )
 
   setTimeout(()=> {
-    res.json({ image: [imgUrl, imgUrl, imgUrl] });
+    res.json(response);
   }, 1000)
 
 });

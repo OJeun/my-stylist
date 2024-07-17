@@ -73,7 +73,6 @@ export default function ItemsGrid({
 
   const handleSelectClothing = (index: number) => {
     setSelectedClothing(index);
-    console.log(index)
     if (onSelectItem) onSelectItem(clothings[index]);
   };
 

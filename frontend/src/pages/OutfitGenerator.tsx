@@ -25,10 +25,8 @@ export default function OutfitGenerator() {
     string | string[]
   >([]);
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
-  const [generatedImages, setGeneratedImages] = useState<ClosetItem[]>([]);
-  const [generatedImageInputProps, setImageInputProps] = useState<InputProps[]>(
-    []
-  );
+  const [fetchedGeneratedItems, setfetchedGeneratedItems] = useState<ClosetItem[]>([]);
+
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -52,11 +50,10 @@ export default function OutfitGenerator() {
       selectedCategoryCheckbox,
       selectedItem,
     };
-    console.log("request data from outfitgenerator", data)
 
     try {
       const result = await fetchAIRecommendation(data);
-      console.log(result)
+      setfetchedGeneratedItems(result)
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
@@ -65,7 +62,7 @@ export default function OutfitGenerator() {
   };
 
   const handleSaveFavourite = async () => {
-    if (!selectedItem || generatedImages.length === 0) return;
+    if (!selectedItem || fetchedGeneratedItems.length === 0) return;
 
     setLoading(true);
 
@@ -74,7 +71,7 @@ export default function OutfitGenerator() {
     const data = {
       id: aiGeneratedItemsGroupdId,
       selectedItem: selectedItem,
-      generatedItems: generatedImages,
+      generatedItems: fetchedGeneratedItems,
     };
 
     try {
@@ -176,31 +173,29 @@ export default function OutfitGenerator() {
                   </div>
                 )}
               </div>
-              {generatedImages.length > 0 && !loading && (
+              {fetchedGeneratedItems.length > 0 && !loading && (
                 <>
                   <h2 className="text-primary">Recommendation for You!</h2>
 
                   <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
                     <div
                       className={`grid grid-cols-1 ${
-                        generatedImageInputProps.length > 3
+                        fetchedGeneratedItems.length > 3
                           ? "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
                           : `sm:grid-cols-${
-                              generatedImageInputProps.length - 2
+                              fetchedGeneratedItems.length - 2
                             } md:grid-cols-${
-                              generatedImageInputProps.length - 1
+                              fetchedGeneratedItems.length - 1
                             } lg:grid-cols-${
-                              generatedImageInputProps.length
-                            } xl:grid-cols-${generatedImageInputProps.length}`
+                              fetchedGeneratedItems.length
+                            } xl:grid-cols-${fetchedGeneratedItems.length}`
                       } gap-4`}
                     >
-                      {generatedImageInputProps.map((inputProps, index) => (
                         <InputGroup
-                          key={index}
-                          inputs={[inputProps]}
+                          generatedItems={fetchedGeneratedItems}
                           className="flex justify-center"
                         />
-                      ))}
+
                     </div>
                   </div>
                   <div className="flex flex-col items-center justify-center">

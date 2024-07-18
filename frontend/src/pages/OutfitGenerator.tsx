@@ -14,7 +14,7 @@ export const categories: InputProps[] = [
   { id: "top-checkbox", type: "checkbox", label: "TOP" },
   { id: "bottom-checkbox", type: "checkbox", label: "BOTTOM" },
   { id: "outer-checkbox", type: "checkbox", label: "OUTER" },
-  { id: "shose-checkbox", type: "checkbox", label: "SHOES" },
+  { id: "shoes-checkbox", type: "checkbox", label: "SHOES" },
   { id: "bag-checkbox", type: "checkbox", label: "BAG" },
   { id: "accessory-checkbox", type: "checkbox", label: "ACCESSORY" },
 ];

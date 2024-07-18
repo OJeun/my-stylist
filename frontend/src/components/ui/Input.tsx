@@ -44,7 +44,7 @@ export default function Input({
           <label
             htmlFor={id}
             className={
-              `hover:cursor-pointer font-medium text-gray-strong` +
+              `font-medium text-gray-strong` +
               labelClassName
             }
           >

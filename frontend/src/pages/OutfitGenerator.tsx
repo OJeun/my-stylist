@@ -25,7 +25,9 @@ export default function OutfitGenerator() {
     string | string[]
   >([]);
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
-  const [fetchedGeneratedItems, setFetchedGeneratedItems] = useState<ClosetItem[]>([]);
+  const [fetchedGeneratedItems, setFetchedGeneratedItems] = useState<
+    ClosetItem[]
+  >([]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -53,7 +55,7 @@ export default function OutfitGenerator() {
 
     try {
       const result = await fetchAIRecommendation(data);
-      setFetchedGeneratedItems(result)
+      setFetchedGeneratedItems(result);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
@@ -67,7 +69,7 @@ export default function OutfitGenerator() {
     setLoading(true);
 
     const aiGeneratedItemsGroupdId = uuidv4();
-    
+
     const data = {
       id: aiGeneratedItemsGroupdId,
       selectedItem: selectedItem,
@@ -96,12 +98,14 @@ export default function OutfitGenerator() {
                   <li
                     key={category}
                     className={`${
-                      selectedCategory === category.toLowerCase() ? "text-primary" : ""
+                      selectedCategory === category.toLowerCase()
+                        ? "text-primary"
+                        : ""
                     } hover:cursor-pointer mr-4 mb-4 text-lg`}
                     onClick={() => {
                       if (selectedCategory !== category) {
                         setSelectedCategory(category.toLowerCase());
-                        dispatch(fetchClosetItems(category.toLowerCase()))
+                        dispatch(fetchClosetItems(category.toLowerCase()));
                       }
                     }}
                   >
@@ -178,25 +182,23 @@ export default function OutfitGenerator() {
                   <h2 className="text-primary">Recommendation for You!</h2>
 
                   <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
-                    <div
-                      className={`grid grid-cols-1 ${
+                    <ItemsGrid
+                      clothingItems={fetchedGeneratedItems}
+                      wrapCustomClassName={`grid grid-cols-1 ${
                         fetchedGeneratedItems.length > 3
                           ? "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
-                          : `sm:grid-cols-${
+                          : `sm:grid-cols-${Math.max(
+                              1,
                               fetchedGeneratedItems.length - 2
-                            } md:grid-cols-${
-                              fetchedGeneratedItems.length - 1
-                            } lg:grid-cols-${
-                              fetchedGeneratedItems.length
-                            } xl:grid-cols-${fetchedGeneratedItems.length}`
-                      } gap-4`}
-                    >
-                        <InputGroup
-                          generatedItems={fetchedGeneratedItems}
-                          className="flex justify-center"
-                        />
-
-                    </div>
+                            )} 
+           md:grid-cols-${Math.max(1, fetchedGeneratedItems.length - 1)} 
+           lg:grid-cols-${Math.max(1, fetchedGeneratedItems.length)} 
+           xl:grid-cols-${Math.max(1, fetchedGeneratedItems.length)}`
+                      } gap-4 items-center justify-center `}
+                      inputClassName="hidden"
+                      labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg overflow-hidden relative"
+                      isInput={true}
+                    />
                   </div>
                   <div className="flex flex-col items-center justify-center">
                     <Button

@@ -1,19 +1,16 @@
 import { ComponentPropsWithoutRef, useState } from "react";
 import { ClosetItem } from "../stores/features/closetItems";
 import ItemCard from "./ItemCard";
-import { wrap } from "module";
 
 type ClothingListProps = {
   isInput: boolean;
-  onSelectItem?: (item: ClosetItem) => void;
   clothingItems?: ClosetItem[];
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
   wrapCustomClassName?: string;
+  onSelectItem?: (item: ClosetItem) => void;
   onDelete?: (category: string, deletedItemId: string) => void;
-  onScrollLeft?: () => void;
-  onScrollRight?: () => void;
 } & ComponentPropsWithoutRef<"input">;
 
 export default function ItemsGrid({
@@ -73,9 +70,9 @@ export default function ItemsGrid({
 
   const [selectedClothing, setSelectedClothing] = useState<number | null>(null);
 
-  const handleSelectClothing = (index: number) => {
+  const handleSelectClothing = (index: number, item: ClosetItem) => {
     setSelectedClothing(index);
-    if (onSelectItem) onSelectItem(clothings[index]);
+    if (onSelectItem) onSelectItem(item);
   };
 
   const clothingList = clothingItems
@@ -101,7 +98,7 @@ export default function ItemsGrid({
             clothing={items}
             index={index}
             isSelected={selectedClothing === index}
-            onSelect={() => handleSelectClothing(index)}
+            onSelect={() => handleSelectClothing(index, items)}
             onDelete={onDelete}
             isInput={isInput}
             imageClassName={imageClassName}

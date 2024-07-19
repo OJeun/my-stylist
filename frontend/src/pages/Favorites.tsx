@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {
+  deleteFavouriteItems,
   FavouriteItem,
   fetchFavouriteItems,
 } from "../stores/features/favouriteItems";
@@ -17,10 +18,10 @@ export default function Favorites() {
 
   useEffect(() => {
     dispatch(fetchFavouriteItems());
-  }, [dispatch]);
+  }, [dispatch, fetchedFavouriteItems]);
 
   const handleDelete = (items: FavouriteItem) => {
-    console.log(items);
+    dispatch(deleteFavouriteItems(items.id))
   };
 
   return (

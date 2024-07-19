@@ -4,12 +4,15 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import createStore from "react-auth-kit/createStore";
 import { ClosetItemSlice } from "./features/closetItems";
 import { CategorySlice } from "./features/category";
+import { ToastSlice } from "./features/toast"
+
 
 export const store = configureStore({
   reducer: {
     favouriteItem: FavourtieItemSlice.reducer,
     closetItem: ClosetItemSlice.reducer,
-    category: CategorySlice.reducer
+    category: CategorySlice.reducer,
+    toast: ToastSlice.reducer
   },
 });
 

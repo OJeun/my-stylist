@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ClosetItem } from "../features/closetItems"
 
 export interface FavouriteItem {
-  id: number | string;
+  id: string;
   selectedItem: ClosetItem;
   generatedItems: ClosetItem[];
 }
@@ -46,6 +46,29 @@ export const saveFavouriteItems = createAsyncThunk(
   }
 );
 
+export const deleteFavouriteItems = createAsyncThunk(
+  "favouriteItems/delete",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await fetch(`http://localhost:3001/favourites/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to delete the item with id ${id}. Server responded with status ${response.status}`);
+      }
+      return id;
+    } catch (error) {
+      console.error('Error deleting the item:', error);
+      return thunkAPI.rejectWithValue('Failed to delete the item');
+    }
+  }
+);
+
+
+
 export const FavourtieItemSlice= createSlice({
   name: "favouriteItem",
   initialState,
@@ -59,6 +82,14 @@ export const FavourtieItemSlice= createSlice({
         selectedItem: action.payload.selectedItem,
         generatedItems: action.payload.generatedItems,
       });
+    },
+    deleteFavouriteItem: (
+      state: FavouriteItemState,
+      action: PayloadAction<string>
+    ) => {
+      state.favouriteItems = state.favouriteItems.filter(
+        item => item.id !== action.payload
+      );
     },
   },
   extraReducers: (builder: any) => {
@@ -77,8 +108,16 @@ export const FavourtieItemSlice= createSlice({
         state.favouriteItems.push(action.payload);
       }
     );
+    builder.addCase(
+      deleteFavouriteItems.fulfilled,
+      (state: FavouriteItemState, action: PayloadAction<FavouriteItem>) => {
+        state.favouriteItems = state.favouriteItems.filter(
+          item => item.id !== action.payload.id
+        );
+      }
+    );
   },
 });
 
 export default FavourtieItemSlice.reducer;
-export const { addFavouriteItems } = FavourtieItemSlice.actions;
+export const { addFavouriteItems, deleteFavouriteItem } = FavourtieItemSlice.actions;

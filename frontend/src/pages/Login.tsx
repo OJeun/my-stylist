@@ -38,7 +38,7 @@ export default function Login() {
       
     } catch (err) {
       if (err && err instanceof AxiosError)
-        setError(err.response?.data.message);
+        setError("Check your address and password again");
       else if (err && err instanceof Error) setError(err.message);
 
       console.log("Error: ", err);

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useAppSelector } from "../stores/store";
+import { setToast } from "../stores/features/toast";
 
 const AlertMessage = () => {
-  const [message, setMessage] = useState("");
-  const [typeOfAlert, setTypeOfAlert] = useState<"info" | "success" | "warning" | "error">("info");
+  const dispatch = useDispatch();
+  const { message, type } = useAppSelector((state) => state.toast);
 
   const notify = (message: string, typeOfAlert: "info" | "success" | "warning" | "error") => {
     switch (typeOfAlert) {
@@ -39,26 +42,25 @@ const AlertMessage = () => {
 
   useEffect(() => {
     const getMessageAndAlertTypeFromURL = () => {
-      console.log("Fetching message and alert type from URL...");
       const params = new URLSearchParams(window.location.search);
       const alertType = params.get("type") as "info" | "success" | "warning" | "error";
-      setTypeOfAlert(alertType);
-      console.log("type", alertType)
-      return params.get("message") || "";
+      const alertMessage = params.get("message") || "";
+      dispatch(setToast({ message: alertMessage, type: alertType} ))
     };
 
-    const fetchedMessage = getMessageAndAlertTypeFromURL();
-    setMessage(fetchedMessage);
-
-    if (fetchedMessage) {
-      notify(fetchedMessage, typeOfAlert); 
-    }
+    getMessageAndAlertTypeFromURL()
 
     return () => {
       toast.dismiss(); // Dismiss any existing toasts when component unmounts or effect re-runs
     };
-  }, [message, typeOfAlert]); // Empty dependency array to run only once on component mount
+  }, [dispatch]); // Empty dependency array to run only once on component mount
 
+
+  useEffect(() => {
+    if (message) {
+      notify(message, type);
+    }
+  }, [message, type]); 
 
   return (
     <>

@@ -9,6 +9,7 @@ import { saveFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
 import { v4 as uuidv4 } from "uuid";
+import { setToast } from "../stores/features/toast";
 
 export const categories: InputProps[] = [
   { id: "top-checkbox", type: "checkbox", label: "TOP" },
@@ -31,6 +32,7 @@ export default function OutfitGenerator() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  console.log("Fetching message and alert type from URL...");
 
   const fetchedClosetItems = useAppSelector(
     (state) => state.closetItem.closetItems
@@ -80,7 +82,15 @@ export default function OutfitGenerator() {
       dispatch(saveFavouriteItems(data));
     } catch (error) {
       console.error("Error occurred while saving data:", error);
+      dispatch(setToast({
+        message: error as string,
+        type: "error"
+      }))
     } finally {
+      dispatch(setToast({
+        message: "Succesfully added to Favourite!",
+        type: "success"
+      }))
       setLoading(false);
     }
   };

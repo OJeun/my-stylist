@@ -30,13 +30,13 @@ export default function Favorites() {
         {fetchedFavouriteItems.map((favouriteItem) => (
           <div
             key={favouriteItem.id}
-            className="relative mb-4 pt-6 pl-6 flex items-stretch rounded-lg hover:border-2 hover:border-gray hover:bg-gray-200 hover:bg-opacity-50 group"
+            className="relative mb-1 pt-6 pl-6 flex items-stretch rounded-lg hover:border-2 hover:border-background hover:bg-gray-200 hover:bg-opacity-50 group"
           >
             <Button
               className="absolute -top-2 -right-8 z-30 opacity-0 group-hover:opacity-100 text-color-primary"
               onClick={() => handleDelete(favouriteItem)}
             >
-              <XCircleIcon className="w-6 h-6 text-gray hover:text-gray-light" />
+              <XCircleIcon className="w-6 h-6 text-gray hover:text-background" />
             </Button>
 
             <div className="flex-shrink-0">

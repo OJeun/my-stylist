@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   deleteFavouriteItems,
-  FavouriteItem,
   fetchFavouriteItems,
 } from "../stores/features/favouriteItems";
 import { useAppDispatch, useAppSelector } from "../stores/store";
@@ -23,19 +22,19 @@ export default function Favorites() {
   useEffect(() => {
     dispatch(fetchFavouriteItems());
   }, [dispatch, fetchedFavouriteItems]);
-
-  const handleDelete = (itemsId: string) => {
-    dispatch(deleteFavouriteItems(itemsId));
-  };
-
+  
   const openModal = (itemId: string) => {
     setItemIdToDelete(itemId);
     setIsModalOpen(true);
   };
-
+  
   const closeModal = () => {
     setIsModalOpen(false);
     setItemIdToDelete(null);
+  };
+  
+  const handleDelete = (itemsId: string) => {
+    dispatch(deleteFavouriteItems(itemsId));
   };
 
   const handleConfirm = async () => {
@@ -64,7 +63,7 @@ export default function Favorites() {
               className="absolute -top-2 -right-8 z-30 opacity-0 group-hover:opacity-100 text-color-primary"
               onClick={() => openModal(favouriteItem.id)}
             >
-              <XCircleIcon className="w-6 h-6 text-gray hover:text-background" />
+              <XMarkIcon className="w-7 h-7 text-gray hover:text-background" />
             </Button>
 
             <div className="flex-shrink-0">

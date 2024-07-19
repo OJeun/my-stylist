@@ -55,7 +55,7 @@ export default function ItemCard({
   };
   return (
     <div key={clothing.id} className="group relative aspect-w-1 aspect-h-1">
-      <div className="mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
+      <div className="mb-2 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
         {isInput ? (
           <>
             <Input

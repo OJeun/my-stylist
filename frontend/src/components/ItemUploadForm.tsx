@@ -64,9 +64,6 @@ export default function ItemUploadForm({
       imageSrc: imageBase64 as string,
       category: selectedCategory as string,
     };
-
-    console.log("in upload form", data);
-
     dispatch(saveClosetItems(data));
     dispatch(setCategory(selectedCategory as string));
     setIsModalOpen(false);

@@ -18,8 +18,6 @@ export default function MyCloset() {
   const fetchedClosetItems = useAppSelector(
     (state) => state.closetItem.closetItems
   );
-
-  console.log("Fetched Closet Items:", fetchedClosetItems);
   
   useEffect(() => {
     dispatch(fetchClosetItems("top"));

@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useAppSelector } from "../stores/store";
-import { setToast } from "../stores/features/toast";
+import { clearToast, setToast } from "../stores/features/toast";
 
 const AlertMessage = () => {
   const dispatch = useDispatch();
   const { message, type } = useAppSelector((state) => state.toast);
+  const isVisible = useAppSelector((state) => state.toast.visible);
 
   const notify = (message: string, typeOfAlert: "info" | "success" | "warning" | "error") => {
     switch (typeOfAlert) {
@@ -31,7 +32,7 @@ const AlertMessage = () => {
 
   const getToastOptions = (): ToastOptions => ({
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -45,37 +46,41 @@ const AlertMessage = () => {
       const params = new URLSearchParams(window.location.search);
       const alertType = params.get("type") as "info" | "success" | "warning" | "error";
       const alertMessage = params.get("message") || "";
-      dispatch(setToast({ message: alertMessage, type: alertType} ))
+      if (alertType && alertMessage) {
+        dispatch(setToast({ message: alertMessage, type: alertType, visible: true}));
+      }
     };
 
-    getMessageAndAlertTypeFromURL()
+    getMessageAndAlertTypeFromURL();
 
     return () => {
-      toast.dismiss(); // Dismiss any existing toasts when component unmounts or effect re-runs
+      toast.dismiss(); 
+      dispatch(clearToast());
     };
-  }, [dispatch]); // Empty dependency array to run only once on component mount
-
+  }, [dispatch]);
 
   useEffect(() => {
     if (message) {
       notify(message, type);
     }
-  }, [message, type]); 
+  }, [message, type, isVisible, dispatch]);
 
   return (
     <>
-        <ToastContainer
-          position="top-center"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
+      {isVisible && <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        className="z-50"
+      />
     </>
   );
 };

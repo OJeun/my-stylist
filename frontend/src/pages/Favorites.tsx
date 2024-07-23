@@ -47,7 +47,7 @@ export default function Favorites() {
   return (
     <>
       <h1>My Favorites</h1>
-      <div className="flex flex-wrap items-center">
+      <div className="flex flex-col items-start">
         <ConfirmationModal
           isOpen={isModalOpen}
           onClose={closeModal}

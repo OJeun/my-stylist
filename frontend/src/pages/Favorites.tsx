@@ -81,7 +81,7 @@ export default function Favorites() {
                 clothingItems={favouriteItem.generatedItems}
                 inputClassName="hidden"
                 labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
-                imageClassName="object-cover max-h-full max-w-full mx-auto"
+         
               />
             </div>
           </div>

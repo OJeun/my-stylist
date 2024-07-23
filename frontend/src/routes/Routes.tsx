@@ -8,6 +8,7 @@ import SignUp from '../pages/SignUp';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
 import Profile from '../pages/Profile';
 import Favorites from '../pages/Favorites';
+import RecentlyViewed from '../pages/RecentlyViewed';
 
 export const Routes = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const Routes = createBrowserRouter([
           {
             path: '/favorites',
             element: <Favorites />,
+          },
+          {
+            path: '/recently-viewed',
+            element: <RecentlyViewed />,
           },
         ],
       },

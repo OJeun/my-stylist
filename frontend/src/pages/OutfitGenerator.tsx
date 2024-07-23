@@ -17,7 +17,7 @@ export const categories: InputProps[] = [
   { id: "outer-checkbox", type: "checkbox", label: "OUTER" },
   { id: "shoes-checkbox", type: "checkbox", label: "SHOES" },
   { id: "bag-checkbox", type: "checkbox", label: "BAG" },
-  { id: "accessory-checkbox", type: "checkbox", label: "ACCESSORY" },
+  { id: "accessories-checkbox", type: "checkbox", label: "ACCESSORIES" },
 ];
 
 export default function OutfitGenerator() {
@@ -64,6 +64,7 @@ export default function OutfitGenerator() {
   };
 
   const handleAIrequest = async () => {
+    setLoading(false)
     if (fetchedClosetItems.length === 0) {
       setAlertMessage(`Save your item category first!`)
       return;

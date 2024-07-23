@@ -83,7 +83,7 @@ export default function ItemsGrid({
     : clothings;
 
   const defaultWrapClassName =
-    "flex overflow-x-scroll gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-2xl";
+    "flex overflow-x-auto gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-2xl";
 
   const wrapClassName = wrapCustomClassName ? wrapCustomClassName : defaultWrapClassName
 

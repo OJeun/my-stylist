@@ -9,7 +9,7 @@ import { useAppSelector } from "../stores/store";
 export const clothingCategory = [
   "Top",
   "Bottom",
-  "Jacket",
+  "Outer",
   "Shoes",
   "Bag",
   "Accessories",

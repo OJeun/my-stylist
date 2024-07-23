@@ -7,9 +7,9 @@ import AlertMessage from './components/AlertMessage';
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
       <Navbar />
-      <div className="flex-grow mx-8 sm:mx-12 md:mx-24 lg:mx-48 xl:mx-80">
+      <div className="flex-grow mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 2xl:mx-40">
         <Outlet />
         <AlertMessage />
       </div>

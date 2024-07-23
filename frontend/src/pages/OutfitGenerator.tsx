@@ -9,7 +9,7 @@ import { saveFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
 import { v4 as uuidv4 } from "uuid";
-import { setToast } from "../stores/features/toast";
+import { clearToast, setToast } from "../stores/features/toast";
 
 export const categories: InputProps[] = [
   { id: "top-checkbox", type: "checkbox", label: "TOP" },
@@ -31,8 +31,12 @@ export default function OutfitGenerator() {
   >([]);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
   const dispatch = useAppDispatch();
-  console.log("Fetching message and alert type from URL...");
+
+  const toastMessage = useAppSelector(
+    (state) => state.toast.message
+  )
 
   const fetchedClosetItems = useAppSelector(
     (state) => state.closetItem.closetItems
@@ -42,11 +46,39 @@ export default function OutfitGenerator() {
     dispatch(fetchClosetItems("top"));
   }, [dispatch]);
 
+  useEffect(() => {
+    if (alertMessage) {
+      dispatch(setToast({ message: alertMessage, type: "warning", visible: true }));
+      const timer = setTimeout(() => {
+        dispatch(clearToast());
+        setAlertMessage("");
+      }, 2000);
+
+      return () => clearTimeout(timer); 
+    }
+  }, [alertMessage, dispatch]);
+
+
   const handleSelectItem = (item: ClosetItem) => {
     setSelectedItem(item);
   };
 
   const handleAIrequest = async () => {
+    if (fetchedClosetItems.length === 0) {
+      setAlertMessage(`Save your item category first!`)
+      return;
+    }
+
+    if (!selectedItem) {
+      setAlertMessage("Select an item to be matched!")
+      return;
+    }
+
+    if (selectedCategoryCheckbox.length === 0) {
+      setAlertMessage("Select at least one category!")
+      return;
+    }
+
     setLoading(true);
 
     const data = {
@@ -84,13 +116,21 @@ export default function OutfitGenerator() {
       console.error("Error occurred while saving data:", error);
       dispatch(setToast({
         message: error as string,
-        type: "error"
+        type: "error",
+        visible: true
       }))
+      setTimeout(()=>{
+        dispatch(clearToast())
+      }, 2000)
     } finally {
       dispatch(setToast({
         message: "Succesfully added to Favourite!",
-        type: "success"
+        type: "success",
+        visible: false
       }))
+      setTimeout(()=>{
+        dispatch(clearToast())
+      }, 2000)
       setLoading(false);
     }
   };

@@ -67,7 +67,7 @@ const AlertMessage = () => {
 
   return (
     <>
-      {isVisible && <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>}
+      {isVisible && <div className="fixed inset-0 bg-black bg-opacity-10 z-40"></div>}
       <ToastContainer
         position="top-center"
         autoClose={2000}

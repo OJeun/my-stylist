@@ -21,7 +21,7 @@ export const categories: InputProps[] = [
 ];
 
 export default function OutfitGenerator() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>("top");
   const [selectedCategoryCheckbox, setCategoryCheckbox] = useState<
     string | string[]
   >([]);

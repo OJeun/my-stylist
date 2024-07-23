@@ -11,7 +11,7 @@ export const clothingCategory = [
   "Bottom",
   "Jacket",
   "Shoes",
-  "Bags",
+  "Bag",
   "Accessories",
 ];
 

@@ -194,6 +194,7 @@ export default function OutfitGenerator() {
             <ItemsGrid
               isInput={true}
               onSelectItem={handleSelectItem}
+              wrapCustomClassName="ml-1 sm:ml-3 flex overflow-x-auto gap-2 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
               inputClassName={
                 "peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2"
               }

@@ -75,10 +75,10 @@ export default function Favorites() {
         "
           >
             <Button
-              className="absolute -top-2 -right-8 z-30 opacity-0 group-hover:opacity-100 text-color-primary"
+              className="absolute -top-3 -right-3 md:-top-2 md:-right-8 z-30 opacity-0 group-hover:opacity-100 text-color-primary"
               onClick={() => openModal(favouriteItem.id)}
             >
-              <XMarkIcon className="w-7 h-7 text-gray hover:text-background" />
+              <XCircleIcon className="w-6 h-6 md:w-7 md:h-7 text-gray hover:text-background" />
             </Button>
 
             <div className="flex flex-shrink-0">

@@ -142,6 +142,11 @@ export default function OutfitGenerator() {
     }
   };
 
+  const gridClassNames =
+    fetchedGeneratedItems.length >= 3
+      ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
+      : `grid-cols-${fetchedGeneratedItems.length}`;
+
   return (
     <>
       <div>
@@ -149,12 +154,9 @@ export default function OutfitGenerator() {
           <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-6">
             Outfit Suggestion
           </h1>
-          <h3 className="text-start mb-3 sm:text-xxs md:text-sm lg:text-lg font-medium text-gray-strong">
-            Select the type of clothes to be matched!
-          </h3>
         </section>
-        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start">
-       {/* Heading Section */}
+        <div className="flex flex-col lg:flex-row lg:justify-center lg:items-start">
+          {/* Heading Section */}
 
           {/* left container */}
           {/* Dropdown for small screens */}
@@ -185,7 +187,10 @@ export default function OutfitGenerator() {
           </ul>
 
           {/* right container */}
-            <div>
+          <div>
+            <h3 className="text-start mb-3 sm:text-xxs md:text-sm lg:text-lg font-medium text-gray-strong">
+              Select the type of clothes to be matched!
+            </h3>
             <ItemsGrid
               isInput={true}
               onSelectItem={handleSelectItem}
@@ -197,7 +202,7 @@ export default function OutfitGenerator() {
               }
               clothingItems={fetchedClosetItems}
             />
-            <h3 className="sm:text-xxs md:text-sm lg:text-lg font-medium text-gray-strong">
+            <h3 className="mb-3 sm:text-xxs md:text-sm lg:text-lg font-medium text-gray-strong">
               Which type of clothing would you like to match?
             </h3>
 
@@ -207,7 +212,7 @@ export default function OutfitGenerator() {
                 inputs={categories}
                 selected={selectedCategoryCheckbox}
                 setSelected={setCategoryCheckbox}
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-3 sm:gap-y-4 lg:gap-y-5"
               ></InputGroup>
             </div>
 
@@ -219,7 +224,6 @@ export default function OutfitGenerator() {
               >
                 Get Styled!
               </Button>
-              </div>
               {loading && (
                 <div role="status">
                   <div role="status">
@@ -251,17 +255,7 @@ export default function OutfitGenerator() {
                 <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
                   <ItemsGrid
                     clothingItems={fetchedGeneratedItems}
-                    wrapCustomClassName={`grid grid-cols-1 ${
-                      fetchedGeneratedItems.length > 3
-                        ? "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
-                        : `sm:grid-cols-${Math.max(
-                            1,
-                            fetchedGeneratedItems.length - 2
-                          )} 
-           md:grid-cols-${Math.max(1, fetchedGeneratedItems.length - 1)} 
-           lg:grid-cols-${Math.max(1, fetchedGeneratedItems.length)} 
-           xl:grid-cols-${Math.max(1, fetchedGeneratedItems.length)}`
-                    } gap-4 items-center justify-center `}
+                    wrapCustomClassName={`grid ${gridClassNames} gap-2 items-center justify-center`}
                     inputClassName="hidden"
                     labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg overflow-hidden relative"
                     isInput={true}
@@ -270,7 +264,7 @@ export default function OutfitGenerator() {
                 <div className="flex flex-col items-center justify-center">
                   <Button
                     color="secondary"
-                    additionalclassname="w-80 m-9"
+                    additionalclassname="w-80 m-9 mb-10"
                     onClick={handleSaveFavourite}
                   >
                     Save to Favourite
@@ -278,7 +272,7 @@ export default function OutfitGenerator() {
                 </div>
               </>
             )}
-
+          </div>
         </div>
       </div>
     </>

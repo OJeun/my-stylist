@@ -22,17 +22,17 @@ export default function Favorites() {
   useEffect(() => {
     dispatch(fetchFavouriteItems());
   }, [dispatch, fetchedFavouriteItems]);
-  
+
   const openModal = (itemId: string) => {
     setItemIdToDelete(itemId);
     setIsModalOpen(true);
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
     setItemIdToDelete(null);
   };
-  
+
   const handleDelete = (itemsId: string) => {
     dispatch(deleteFavouriteItems(itemsId));
   };
@@ -46,8 +46,10 @@ export default function Favorites() {
 
   return (
     <>
-      <h1>My Favorites</h1>
-      <div className="flex flex-col items-start">
+      <h1 className="text-base text-lg sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-6">
+        My Favorites
+      </h1>
+      <div className="flex flex-col items-center mb-6">
         <ConfirmationModal
           isOpen={isModalOpen}
           onClose={closeModal}
@@ -56,8 +58,21 @@ export default function Favorites() {
         />
         {fetchedFavouriteItems.map((favouriteItem) => (
           <div
-          key={favouriteItem.id}
-          className="relative mb-1 pt-6 pl-6 flex items-stretch rounded-lg hover:border-2 hover:border-background hover:bg-gray-200 hover:bg-opacity-50 group"
+            key={favouriteItem.id}
+            className="
+          relative
+          flex items-stretch
+          gap-2 sm:gap-6
+          px-3 sm:px-4 md:px-8
+          pt-3 pl-3 lg:pt-5 lg:pl-5
+          mb-1
+          mx-auto
+          max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl
+          rounded-lg
+          hover:border-2 hover:border-background
+          hover:bg-gray-200 hover:bg-opacity-50
+          group
+        "
           >
             <Button
               className="absolute -top-2 -right-8 z-30 opacity-0 group-hover:opacity-100 text-color-primary"
@@ -66,25 +81,23 @@ export default function Favorites() {
               <XMarkIcon className="w-7 h-7 text-gray hover:text-background" />
             </Button>
 
-            <div className="flex-shrink-0">
+            <div className="flex flex-shrink-0">
               <Input
                 id={String(favouriteItem.id)}
                 type="checkbox"
                 imageSrc={favouriteItem.selectedItem.imageSrc}
                 inputClassName="hidden"
-                labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 mb-4 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
+                labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 mb-4 h-36 h-40 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
               />
             </div>
-            <div className="ml-3 flex-grow">
               <ItemsGrid
                 isInput={true}
+                wrapCustomClassName="ml-1 sm:ml-3 flex overflow-x-auto gap-2 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
                 clothingItems={favouriteItem.generatedItems}
                 inputClassName="hidden"
-                labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
-         
+                labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 h-36 h-40 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-43 xl:w-48 bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
               />
             </div>
-          </div>
         ))}
       </div>
     </>

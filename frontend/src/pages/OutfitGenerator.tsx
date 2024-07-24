@@ -151,7 +151,7 @@ export default function OutfitGenerator() {
     <>
       <div>
         <section>
-          <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-6">
+          <h1 className="text-base text-lg sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-6">
             Outfit Suggestion
           </h1>
         </section>

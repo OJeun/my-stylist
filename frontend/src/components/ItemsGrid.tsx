@@ -88,7 +88,7 @@ export default function ItemsGrid({
   const wrapClassName = wrapCustomClassName ? wrapCustomClassName : defaultWrapClassName
 
   return (
-    <div className="flex items-center justify-center mb-4">
+    <div className="flex items-center justify-center">
       <div className={wrapClassName}>
         {clothingList.map((items, index) => (
           <ItemCard

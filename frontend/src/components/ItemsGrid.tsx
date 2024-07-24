@@ -83,12 +83,11 @@ export default function ItemsGrid({
     : clothings;
 
   const defaultWrapClassName =
-    "flex overflow-x-auto gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-2xl";
+    "flex items-center justify-center overflow-x-auto gap-4 sm:gap-6 px-4 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-2xl xl:max-w-2xl";
 
   const wrapClassName = wrapCustomClassName ? wrapCustomClassName : defaultWrapClassName
 
   return (
-    <div className="flex items-center justify-center">
       <div className={wrapClassName}>
         {clothingList.map((items, index) => (
           <ItemCard
@@ -105,6 +104,5 @@ export default function ItemsGrid({
           />
         ))}
       </div>
-    </div>
   );
 }

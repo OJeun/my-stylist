@@ -24,8 +24,8 @@ export default function InputGroup({
   ...props
 }: InputGroupProps) {
   const inputClassName =
-    "w-5 h-5 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600";
-  const labelClassName = "ms-1 pl-2 text-lg";
+    "sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600";
+  const labelClassName = "ms-1 pl-2 sm:text-xxs md:text-sm lg:text-lg font-medium";
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target;

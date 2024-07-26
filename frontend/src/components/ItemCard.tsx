@@ -15,7 +15,6 @@ export const clothingCategory = [
   "Accessories",
 ];
 
-
 type ItemCardProps = {
   clothing: ClosetItem;
   index: number;
@@ -24,13 +23,12 @@ type ItemCardProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
-  onDelete?: (category: string, deletedItemId: string) => void; 
+  onDelete?: (category: string, deletedItemId: string) => void;
   onSelect: () => void;
-  
 } & ComponentPropsWithoutRef<"input">;
 
-const baseInputClass = "group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
-
+const baseInputClass =
+  "group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative";
 
 export default function ItemCard({
   clothing,
@@ -43,19 +41,15 @@ export default function ItemCard({
   onDelete,
   onSelect,
 }: ItemCardProps) {
-
-  const fetchedCategory = useAppSelector(
-    (state) => state.category.category
-  );
+  const fetchedCategory = useAppSelector((state) => state.category.category);
 
   const handleDelete = () => {
-
     if (onDelete) onDelete(fetchedCategory, clothing.id); // Call onDelete if defined
-    console.log("deleted", clothing)
+    console.log("deleted", clothing);
   };
   return (
     <div key={clothing.id} className="group relative aspect-w-1 aspect-h-1">
-      <div className="mb-2 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
+      <div className="mb-3 h-36 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
         {isInput ? (
           <>
             <Input
@@ -75,14 +69,19 @@ export default function ItemCard({
           </>
         ) : (
           <>
-            <Button className="absolute top-2 right-2 z-10" onClick={handleDelete}>
-              <XMarkIcon className="w-6 h-6" />
-            </Button>
-            <img
-              src={clothing.imageSrc}
-              alt={`index ${clothing.id}`}
-              className="w-full h-full object-cover"
-            />
+            <div className="relative w-full h-full">
+              <button
+                className="absolute top-0 right-0 z-10 rounded-full p-1"
+                onClick={handleDelete}
+              >
+                <XMarkIcon className="w-6 h-6 text-gray" />
+              </button>
+              <img
+                src={clothing.imageSrc}
+                alt={`index ${clothing.id}`}
+                className={imageClassName}
+              />
+            </div>
           </>
         )}
       </div>

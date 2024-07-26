@@ -253,7 +253,7 @@ export default function OutfitGenerator() {
               <>
                 <h2 className="text-primary">Recommendation for You!</h2>
 
-                <div className="mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
+                <div className="flex flex-col items-center justify-center mt-6 sm:px-6 md:px-8 mx-auto max-w-full sm:max-w-lg md:max-w-1xl lg:max-w-2xl xl:max-w-3xl">
                   <ItemsGrid
                     clothingItems={fetchedGeneratedItems}
                     wrapCustomClassName={`grid ${gridClassNames} gap-2 items-center justify-center`}

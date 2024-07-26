@@ -18,7 +18,7 @@ export default function MyCloset() {
   const fetchedClosetItems = useAppSelector(
     (state) => state.closetItem.closetItems
   );
-  
+
   useEffect(() => {
     dispatch(fetchClosetItems("top"));
   }, [dispatch]);
@@ -32,7 +32,7 @@ export default function MyCloset() {
   };
 
   function handleDeleteItem(category: string, deletedItemId: string): void {
-    dispatch(deleteClosetItems({ category: category, imageId: deletedItemId }))
+    dispatch(deleteClosetItems({ category: category, imageId: deletedItemId }));
   }
 
   return (
@@ -52,9 +52,13 @@ export default function MyCloset() {
         isInput={false}
         clothingItems={fetchedClosetItems}
         onDelete={handleDeleteItem}
-        labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
-        imageClassName="object-cover max-h-full max-w-full mx-auto"
+        wrapCustomClassName="flex items-center mr-2 ml-2 sm:ml-3 flex overflow-x-auto gap-2 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
+        labelClassName={
+          "group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
+        }
+        imageClassName="object-cover h-full w-full mx-auto"
       />
+
       {isModalOpen && (
         <ItemUploadForm
           isModalOpen={isModalOpen}

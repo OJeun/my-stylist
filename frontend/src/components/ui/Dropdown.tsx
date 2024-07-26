@@ -15,19 +15,23 @@ type DropdownProps = {
 
 
 export default function Dropdown({title, categories}: DropdownProps) {
+  const [selectedCategory, setSelectedCategory] = useState<string>("Top");
+
   const buttonClassName =
     'w-full block px-4 py-2 text-sm text-gray-strong data-[focus]:bg-gray-lighter data-[focus]:font-semibold';
   const dispatch = useAppDispatch();
   const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category)
     dispatch(fetchClosetItems(category.toLowerCase()))
     dispatch(setCategory(category.toLowerCase()))
+    
   }
   return (
     <div>
       <Menu as="div" className="relative inline-block text-left">
         <div className="">
           <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white py-2 text-mb font-semibold text-gray-strong hover:text-gray">
-            {title}
+            {selectedCategory}
             <ChevronDownIcon
               aria-hidden="true"
               className="-mr-1 h-5 w-5 text-gray-strong"

@@ -48,6 +48,7 @@ export default function MyCloset() {
           Add Your Item
         </Button>
       </div>
+      <div className="flex justify-center">
       <ItemsGrid
         isInput={false}
         clothingItems={fetchedClosetItems}
@@ -58,6 +59,7 @@ export default function MyCloset() {
         }
         imageClassName="object-cover h-full w-full mx-auto"
       />
+      </div>
 
       {isModalOpen && (
         <ItemUploadForm

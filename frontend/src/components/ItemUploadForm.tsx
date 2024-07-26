@@ -116,7 +116,7 @@ export default function ItemUploadForm({
                 </button>
 
                 <div
-                  className="relative bg-white border-dashed rounded-lg p-8 border-2 border-gray-light text-center w-[200px] h-[200px] flex items-center justify-center"
+                  className="relative bg-white border-dashed rounded-lg p-8 border-2 border-gray-light text-center w-[150px] h-[150px] md:w-[200px] md:h-[200px] flex items-center justify-center"
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                 >
@@ -142,7 +142,7 @@ export default function ItemUploadForm({
                   <div>
                     <h2>Category</h2>
                     <InputGroup
-                      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+                      className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-x-1 md:gap-x-2 gap-y-3 md:gap-y-5"
                       inputs={categories}
                       selected={selectedCategory}
                       setSelected={setSelectedCategory}
@@ -152,7 +152,7 @@ export default function ItemUploadForm({
                   <div>
                     <h2 className="mt-[15px]">Season</h2>
                     <InputGroup
-                      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
+                      className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
                       inputs={seasons}
                       selected={selectedSeason}
                       setSelected={setSelectedSeason}
@@ -168,7 +168,7 @@ export default function ItemUploadForm({
                 </Button>
                 <Button
                   color="secondary"
-                  additionalclassname="w-60"
+                  additionalclassname="w-30 sm: w-60"
                   onClick={handleFormSubmit}
                 >
                   Add Item

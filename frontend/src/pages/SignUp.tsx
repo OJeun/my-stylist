@@ -1,34 +1,35 @@
 import axios, { AxiosError } from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function SignUp() {
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const onSubmit = async (values: {
     name: string;
     email: string;
     password: string;
   }) => {
-    console.log("Values: ", values);
     setError("");
-
     try {
       const response = await axios.post(
         "http://localhost:8888/api/signup",
         values
       );
-
-      window.location.href = "/login?type=success&message=" + encodeURIComponent(response.data.message);
+      navigate("/login")
 
     } catch (err) {
-      if (err && err instanceof AxiosError)
+      if (err && err instanceof AxiosError) {
         setError(err.response?.data.message);
+        setTimeout(()=> {
+          setError("")
+        }, 1000) }
       else if (err && err instanceof Error) setError(err.message);
-
-      console.log("Error: ", err);
     }
+
   };
 
   const formik = useFormik({
@@ -43,6 +44,7 @@ export default function SignUp() {
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
@@ -52,6 +54,15 @@ export default function SignUp() {
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign up to your account
           </h2>
+          {error && (
+            <div
+              className="mt-4 bg-red-100 border border-red text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <strong className="font-bold text-red">Error:</strong>
+              <span className="block sm:inline text-red"> {error}</span>
+            </div>
+          )}
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -134,15 +145,17 @@ export default function SignUp() {
             </div>
           </form>
 
-          {error && (
-            <div
-              className="mt-4 bg-red-100 border border-red text-red-700 px-4 py-3 rounded relative"
-              role="alert"
+          <p className="mt-4 text-center text-sm text-gray-500">
+            You already have an account?{' '}
+            <a
+              href="/login"
+              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              <strong className="font-bold text-red">Error:</strong>
-              <span className="block sm:inline text-red"> {error}</span>
-            </div>
-          )}
+              Log in
+            </a>
+          </p>
+
+
         </div>
       </div>
     </>

@@ -37,8 +37,11 @@ export default function Login() {
       navigate('/outfit-generator');
       
     } catch (err) {
-      if (err && err instanceof AxiosError)
-        setError("Check your address and password again");
+      if (err && err instanceof AxiosError) {
+        setError(err.response?.data.message);
+        setTimeout(()=> {
+          setError("")
+        }, 1000) }
       else if (err && err instanceof Error) setError(err.message);
 
       console.log("Error: ", err);

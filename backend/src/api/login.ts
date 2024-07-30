@@ -25,7 +25,8 @@ router.post('/login', async (req, res) => {
       res.status(401).json({ message: 'Password is not correct' });
     }
   } catch (error) {
-    res.status(500).send('Error logging in');
+    console.log(error)
+    res.status(500).json({ message: "error" });
   }
 
   // const user = users.find(u => u.email === email && u.password === password);

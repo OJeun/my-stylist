@@ -21,18 +21,44 @@ export async function createUser(
 }
 
 export async function findUserByEmail(email: string): Promise<any> {
-  const db = await getDbConnection();
-  const user = await db.get("SELECT * FROM users WHERE email = ?", email);
-  return user;
+  try {
+    console.log('Connecting to database...');
+    const db = await getDbConnection();
+    console.log('Connected. Querying user with email:', email);
+    
+    const user = await db.get("SELECT * FROM users WHERE email = ?", [email]);
+    console.log('Query result:', user);
+    
+    return user;
+  } catch (error) {
+    console.error('Error retrieving user:', error);
+    throw error; 
+  }
 }
 
-export async function verifyPassword(
-  email: string,
-  password: string
-): Promise<boolean> {
-  const user = await findUserByEmail(email);
-  if (!user) return false;
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  return isMatch;
+export async function verifyPassword(email: string, password: string): Promise<boolean> {
+  try {
+    const user = await findUserByEmail(email);
+    
+    if (user.length==0) {
+      console.error('User not found');
+      return false;
+    }
+
+    console.log('User object retrieved:', user);
+
+    const hashedPassword = user.password;
+    if (!hashedPassword) {
+      console.error('User found but no password stored', user);
+      return false;
+    }
+
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+    return isMatch;
+  } catch (error) {
+    console.error('Error during password verification:', error);
+    return false;
+  }
 }
+

@@ -10,11 +10,12 @@ router.post('/signup', async (req, res) => {
 
   try {
     const existingUser = await findUserByEmail(email);
-    if (existingUser) {
+    if (existingUser.length > 0) {
       return res.status(409).json({ message: 'Email already exists' });
     }
 
     await createUser(name, email, password);
+    console.log()
     res.status(201).json({ message: 'User registered successfully' });
 
   } catch (error) {

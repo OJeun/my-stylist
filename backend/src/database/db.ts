@@ -9,6 +9,7 @@ export async function getDbConnection(): Promise<Database> {
   if (db) return db;
 
   db = new Database('./src/database/db.sqlite')
+  console.log("inside db.ts", db)
 
   return db;
 }

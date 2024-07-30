@@ -18,9 +18,9 @@ router.post('/login', async (req, res) => {
     }
 
     const isMatch = await verifyPassword(email, password)
-    if (isMatch) {
-      const accessToken = jwt.sign({ name: user.name, uuid: user.userId }, accessSecret, { expiresIn: '1h' });
-      res.json({ accessToken, name: user.name, uuid: user.userId, email: user.email });
+    if (isMatch && user) {
+      const accessToken = jwt.sign({ name: user.name, uuid: user.id }, accessSecret, { expiresIn: '1h' });
+      res.json({ accessToken, name: user.name, uuid: user.id, email: user.email });
     } else {
       res.status(401).json({ message: 'Password is not correct' });
     }

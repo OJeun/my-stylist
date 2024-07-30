@@ -1,16 +1,17 @@
 import path from 'path';
 import fs from 'fs';
 import sqlite3 from 'sqlite3';
-import { Database } from 'sqlite3';
+import { open, Database } from 'sqlite';
 
 let db: Database | null = null;
 
+
 export async function getDbConnection(): Promise<Database> {
-  if (db) return db;
-
-  db = new Database('./src/database/db.sqlite')
-  console.log("inside db.ts", db)
-
+  const db = await open({
+    filename: `${__dirname}/database.sqlite`,
+    driver: sqlite3.Database,
+  });
+  console.log('Database connection established');
   return db;
 }
 

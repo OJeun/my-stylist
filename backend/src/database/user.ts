@@ -2,6 +2,13 @@ import { getDbConnection } from "./db";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from 'uuid';
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
 export async function createUser(
   name: string,
   email: string,
@@ -20,28 +27,40 @@ export async function createUser(
   ]);
 }
 
-export async function findUserByEmail(email: string): Promise<any> {
+export async function findUserByEmail(email: string): Promise<User | null> {
   try {
-    console.log('Connecting to database...');
     const db = await getDbConnection();
     console.log('Connected. Querying user with email:', email);
-    
-    const user = await db.get("SELECT * FROM users WHERE email = ?", [email]);
-    console.log('Query result:', user);
-    
+
+    const query = "SELECT * FROM users WHERE email = ?";
+    console.log('Executing query:', query, 'with email:', email);
+    const user = await db.get<User>(query, [email]);
+    console.log('Raw query result:', user);
+
+    if (!user) {
+      console.log('User not found');
+      return null;
+    }
+
+    console.log('User found:', user);
+    console.log('User password:', user.password);
+
     return user;
+    
   } catch (error) {
     console.error('Error retrieving user:', error);
-    throw error; 
+    throw error;
   }
 }
+
+
 
 
 export async function verifyPassword(email: string, password: string): Promise<boolean> {
   try {
     const user = await findUserByEmail(email);
     
-    if (user.length==0) {
+    if (!user) {
       console.error('User not found');
       return false;
     }

@@ -18,6 +18,13 @@ function classNames(...classes: string[]) {
 export default function Navbar() {
   const [isHeartClicked, setIsHeartClicked] = useState(false);
 
+  const handleLogout = () => {
+    localStorage.removeItem('name');
+    localStorage.removeItem('email');
+    localStorage.removeItem('uid');
+    window.location.href = '/login';
+  };
+
   return (
     <Disclosure as="nav" className="bg-white">
       <div className="mx-auto px-2 sm:px-6 lg:px-8">
@@ -52,7 +59,14 @@ export default function Navbar() {
               {({ open }) => (
                 <>
                   <div>
-                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <MenuButton
+                      onClick={() => {
+                        if (!localStorage.getItem('userId')) {
+                          window.location.href = '/login';
+                        }
+                      }}
+                      className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    >
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
                       {open ? (
@@ -112,6 +126,7 @@ export default function Navbar() {
                       {({ focus }) => (
                         <a
                           href="#"
+                          onClick={handleLogout}
                           className={classNames(
                             focus ? 'bg-gray-100' : '',
                             'block px-4 py-2 text-sm text-gray-700'

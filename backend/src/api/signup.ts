@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, findUserByEmail } from '../database/user';
+import { createUser, findUserByEmail } from '../database/users';
 
 
 const router = express.Router();

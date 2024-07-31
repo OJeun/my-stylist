@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Users (
 );
 
 CREATE TABLE IF NOT EXISTS Clothes (
-    clothId INTEGER NOT NULL AUTOINCREMENT,
+    clothId INTEGER AUTOINCREMENT,
     description TEXT NOT NULL,
     imgSrc TEXT NOT NULL,
     season INTEGER NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS UserCloset (
 );
 
 CREATE TABLE IF NOT EXISTS UserFavoriteCombination (
-    favoriteCombinationId INTEGER NOT NULL AUTOINCREMENT,
+    favoriteCombinationId INTEGER AUTOINCREMENT,
     userId VARCHAR(200) NOT NULL,
     PRIMARY KEY (favoriteCombinationId, userId),
     FOREIGN KEY (userId) REFERENCES Users(userId)
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS FavoriteCombinationClothes (
 );
 
 CREATE TABLE IF NOT EXISTS RecentlyViewedCombination (
-    recentCombinationId INTEGER NOT NULL AUTOINCREMENT,
+    recentCombinationId INTEGER AUTOINCREMENT,
     clothId VARCHAR(200) NOT NULL,
     PRIMARY KEY (recentCombinationId, clothId),
     FOREIGN KEY (clothId) REFERENCES Clothes(clothId)

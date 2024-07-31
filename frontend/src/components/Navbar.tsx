@@ -61,7 +61,7 @@ export default function Navbar() {
                   <div>
                     <MenuButton
                       onClick={() => {
-                        if (!localStorage.getItem('userId')) {
+                        if (!localStorage.getItem('uid')) {
                           window.location.href = '/login';
                         }
                       }}

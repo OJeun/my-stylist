@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from 'uuid';
 
 interface User {
-  id: number;
+  userId: number;
   name: string;
   email: string;
   password: string;
@@ -19,7 +19,7 @@ export async function createUser(
   const hashedPassword = await bcrypt.hash(password, 10);
   const id = uuidv4();
 
-  await db.run("INSERT INTO users (name, email, password, id) VALUES (?, ?, ?, ?)", [
+  await db.run("INSERT INTO users (name, email, password, userId) VALUES (?, ?, ?, ?)", [
     name,
     email,
     hashedPassword,

@@ -30,20 +30,13 @@ export async function createUser(
 export async function findUserByEmail(email: string): Promise<User | null> {
   try {
     const db = await getDbConnection();
-    console.log('Connected. Querying user with email:', email);
-
     const query = "SELECT * FROM users WHERE email = ?";
-    console.log('Executing query:', query, 'with email:', email);
     const user = await db.get<User>(query, [email]);
-    console.log('Raw query result:', user);
 
     if (!user) {
       console.log('User not found');
       return null;
     }
-
-    console.log('User found:', user);
-    console.log('User password:', user.password);
 
     return user;
 
@@ -69,6 +62,7 @@ export async function verifyPassword(email: string, password: string): Promise<b
     }
 
     const isMatch = await bcrypt.compare(password, hashedPassword);
+    
     return isMatch;
   } catch (error) {
     console.error('Error during password verification:', error);

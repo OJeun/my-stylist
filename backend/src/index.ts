@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import loginRouter from './api/login';
 import signupRouter from './api/signup';
-import generatorRouter from './api/aiGenerator';
+// import generatorRouter from './api/aiGenerator';
 import saveFavouriteRouter from './api/saveFavourite';
 import cors from 'cors';
 import { initializeDatabase } from './database/db';
@@ -17,7 +17,7 @@ initializeDatabase()
     
     app.use('/api', loginRouter);
     app.use('/api', signupRouter);
-    app.use('/api', generatorRouter);
+    // app.use('/api', generatorRouter);
     app.use('/api', saveFavouriteRouter);
 
     app.listen(8888, () => {

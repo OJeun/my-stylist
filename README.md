@@ -9,6 +9,7 @@ To start frontend server
 npm start
 
 To run temporal json database backend (in the folder where a json file locates)
+cd backend/src/database
 json-server --watch favouriteItems.json --port 3001
 json-server --watch closetItems.json --port 3002
 

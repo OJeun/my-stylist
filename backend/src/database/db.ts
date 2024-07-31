@@ -8,7 +8,7 @@ let db: Database | null = null;
 
 export async function getDbConnection(): Promise<Database> {
   const db = await open({
-    filename: `${__dirname}/database.sqlite`,
+    filename: `${__dirname}/db.sqlite`,
     driver: sqlite3.Database,
   });
   console.log('Database connection established');

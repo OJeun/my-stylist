@@ -46,15 +46,12 @@ export async function findUserByEmail(email: string): Promise<User | null> {
     console.log('User password:', user.password);
 
     return user;
-    
+
   } catch (error) {
     console.error('Error retrieving user:', error);
     throw error;
   }
 }
-
-
-
 
 export async function verifyPassword(email: string, password: string): Promise<boolean> {
   try {
@@ -64,8 +61,6 @@ export async function verifyPassword(email: string, password: string): Promise<b
       console.error('User not found');
       return false;
     }
-
-    console.log('User object retrieved:', user);
 
     const hashedPassword = user.password;
     if (!hashedPassword) {

@@ -1,12 +1,6 @@
-import { json } from "body-parser";
 import express from "express";
 import readClosetItems, { ClosetItem } from "../utils/parseJSON";
-
-
-const fs = require("fs");
-const path = require("path");
-const jsonData = require('../database/closetItems.json');
-
+import path from "path";
 
 const app = express();
 

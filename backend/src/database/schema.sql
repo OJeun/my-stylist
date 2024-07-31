@@ -28,11 +28,11 @@ CREATE TABLE IF NOT EXISTS Season (
     PRIMARY KEY (seasonId)
 );
 
-CREATE TABLE IF NOT EXISTS UsersClothes (
+CREATE TABLE IF NOT EXISTS UserCloset (
     userId VARCHAR(200) NOT NULL,
     clothId INTEGER NOT NULL,
     PRIMARY KEY (userId, clothId),
-    FOREIGN KEY (userId) REFERENCES Users(id) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE,
     FOREIGN KEY (clothId) REFERENCES Clothes(clothId) ON DELETE CASCADE
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS UserFavoriteCombination (
     favoriteCombinationId INTEGER NOT NULL AUTOINCREMENT,
     userId VARCHAR(200) NOT NULL,
     PRIMARY KEY (favoriteCombinationId, userId),
-    FOREIGN KEY (userId) REFERENCES Users(id)
+    FOREIGN KEY (userId) REFERENCES Users(userId)
 );
 
 CREATE TABLE IF NOT EXISTS FavoriteCombinationClothes (
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS FavoriteCombinationClothes (
     clothId INTEGER NOT NULL,
     PRIMARY KEY (favoriteCombinationId, clothId),
     FOREIGN KEY (favoriteCombinationId) REFERENCES UserFavoriteCombination(favoriteCombinationId),
-    FOREIGN KEY (clothId) REFERENCES Clothes(clothId),
+    FOREIGN KEY (clothId) REFERENCES Clothes(clothId)
 );
 
 CREATE TABLE IF NOT EXISTS RecentlyViewedCombination (
@@ -64,5 +64,5 @@ CREATE TABLE IF NOT EXISTS UserRecentlyViewedCombination (
     viewedAt TIMESTAMP NOT NULL,
     PRIMARY KEY (recentCombinationId, userId),
     FOREIGN KEY (recentCombinationId) REFERENCES RecentlyViewedCombination(recentCombinationId),
-    FOREIGN KEY (userId) REFERENCES Users(id)
+    FOREIGN KEY (userId) REFERENCES Users(userId)
 );

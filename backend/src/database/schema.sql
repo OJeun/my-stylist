@@ -38,8 +38,9 @@ CREATE TABLE IF NOT EXISTS UserFavoriteCombination (
 CREATE TABLE IF NOT EXISTS FavoriteCombinationClothes (
     favoriteCombinationId INTEGER NOT NULL,
     clothId INTEGER NOT NULL,
+    isGenerated BOOLEAN NOT NULL,
     PRIMARY KEY (favoriteCombinationId, clothId),
-    FOREIGN KEY (favoriteCombinationId) REFERENCES UserFavoriteCombination(favoriteCombinationId),
+    FOREIGN KEY (favoriteCombinationId) REFERENCES UserFavoriteCombination(favoriteCombinationId) ON DELETE CASCADE,
     FOREIGN KEY (clothId) REFERENCES Clothes(clothId)
 );
 

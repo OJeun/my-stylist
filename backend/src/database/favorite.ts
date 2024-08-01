@@ -1,6 +1,6 @@
 import { getDbConnection } from "./db";
 
-interface ClosetItem {
+export interface ClosetItem {
   clothId: string;
   category: string;
   season: string;

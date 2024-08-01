@@ -1,48 +1,22 @@
-import { SetStateAction, useState } from 'react';
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import InputGroup from './ui/InputGroup';
-import Button from './ui/Button';
-import { InputProps } from './ui/Input';
-import { BsArrowRepeat } from 'react-icons/bs';
-import { categories } from '../pages/OutfitGenerator';
-import { ClosetItem } from '../stores/features/closetItems';
-import { useAppDispatch } from '../stores/store';
-import { setCategory } from '../stores/features/category';
-import Input from './ui/Input';
+import { SetStateAction, useState } from "react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import InputGroup from "./ui/InputGroup";
+import Button from "./ui/Button";
+import { InputProps } from "./ui/Input";
+import { BsArrowRepeat } from "react-icons/bs";
+import { categories } from "../pages/OutfitGenerator";
+import { ClosetItem, saveClosetItems } from "../stores/features/closetItems";
+import { useAppDispatch } from "../stores/store";
+import { setCategory } from "../stores/features/category";
+import Input from "./ui/Input";
+import { getSeasonId, getTypeId } from "../utils/api/getId";
 
 const seasons: InputProps[] = [
-  { id: 'spring-fall-checkbox', type: 'checkbox', label: 'Spring/Fall' },
-  { id: 'summer-checkbox', type: 'checkbox', label: 'Summer' },
-  { id: 'winter-checkbox', type: 'checkbox', label: 'Winter' },
+  { id: "spring-fall", type: "checkbox", label: "Spring/Fall" },
+  { id: "summer", type: "checkbox", label: "Summer" },
+  { id: "winter", type: "checkbox", label: "Winter" },
 ];
 
-const getSeasonId = (season: string) => {
-  switch (season) {
-    case 'spring-fall-checkbox':
-      return 1;
-    case 'summer-checkbox':
-      return 2;
-    case 'winter-checkbox':
-      return 3;
-  }
-};
-
-const getTypeId = (category: string) => {
-  switch (category) {
-    case 'top-checkbox':
-      return 1;
-    case 'bottom-checkbox':
-      return 2;
-    case 'outer-checkbox':
-      return 3;
-    case 'shoes-checkbox':
-      return 4;
-    case 'bag-checkbox':
-      return 5;
-    case 'accessories-checkbox':
-      return 6;
-  }
-};
 
 export default function ItemUploadForm({
   isModalOpen,
@@ -51,11 +25,10 @@ export default function ItemUploadForm({
   isModalOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
 }) {
-
   const handleSetSelectedCategory = (
     value: SetStateAction<string | string[]>
   ) => {
-    if (typeof value === 'function') {
+    if (typeof value === "function") {
       setSelectedCategory((prev) => value(prev) as string);
     } else if (Array.isArray(value)) {
       setSelectedCategory(value[0]);
@@ -67,7 +40,7 @@ export default function ItemUploadForm({
   const handleSetSelectedSeason = (
     value: SetStateAction<string | string[]>
   ) => {
-    if (typeof value === 'function') {
+    if (typeof value === "function") {
       setSelectedSeason((prev) => value(prev) as string);
     } else if (Array.isArray(value)) {
       setSelectedSeason(value[0]);
@@ -77,9 +50,9 @@ export default function ItemUploadForm({
   };
 
   const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSeason, setSelectedSeason] = useState<string>('');
-  const [description, setDescription] = useState<string>('placeholder');
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedSeason, setSelectedSeason] = useState<string>("");
+  const [description, setDescription] = useState<string>("placeholder");
 
   const dispatch = useAppDispatch();
 
@@ -105,41 +78,21 @@ export default function ItemUploadForm({
 
   const handleFormSubmit = async () => {
     if (!selectedCategory || !selectedSeason) {
-      alert('Please select both a category and a season.');
+      alert("Please select both a category and a season.");
       return;
     }
 
+
     const data: ClosetItem = {
-      userId: localStorage.getItem('uid') as string,
+      userId: localStorage.getItem("uid") as string,
       imgSrc: imageBase64 as string,
       season: getSeasonId(selectedSeason) as number,
       typeId: getTypeId(selectedCategory) as number,
       description: description as string,
     };
-
-    try {
-      const response = await fetch('/api/save-cloth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(data);
-
-      if (!response.ok) {
-        throw new Error('Failed to save item.');
-      }
-
-      const responseData = await response.json();
-      console.log(responseData);
-
-      // dispatch(saveClosetItems(data));
-      // dispatch(setCategory(selectedCategory as string));
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    dispatch(saveClosetItems(data));
+    dispatch(setCategory(getSeasonId(selectedSeason) as number));
+    setIsModalOpen(false);
   };
 
   const handleCloseModal = () => {

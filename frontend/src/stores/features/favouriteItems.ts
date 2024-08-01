@@ -49,7 +49,7 @@ export const saveFavouriteItems = createAsyncThunk(
 
 export const deleteFavouriteItems = createAsyncThunk(
   "favouriteItems/delete",
-  async (id: string, thunkAPI) => {
+  async (id: number, thunkAPI) => {
     try {
       const response = await fetch(`http://localhost:3001/favourites/${id}`, {
         method: "DELETE",
@@ -74,24 +74,6 @@ export const FavourtieItemSlice= createSlice({
   name: "favouriteItem",
   initialState,
   reducers: {
-    addFavouriteItems: (
-      state: FavouriteItemState,
-      action: PayloadAction<FavouriteItem>
-    ) => {
-      state.favouriteItems.push({
-        favouriteCombinationId: action.payload.favouriteCombinationId,
-        selectedItem: action.payload.selectedItem,
-        generatedItems: action.payload.generatedItems,
-      });
-    },
-    deleteFavouriteItem: (
-      state: FavouriteItemState,
-      action: PayloadAction<string>
-    ) => {
-      state.favouriteItems = state.favouriteItems.filter(
-        item => item.favouriteCombinationId !== action.payload
-      );
-    },
   },
   extraReducers: (builder: any) => {
     builder.addCase(
@@ -121,4 +103,4 @@ export const FavourtieItemSlice= createSlice({
 });
 
 export default FavourtieItemSlice.reducer;
-export const { addFavouriteItems, deleteFavouriteItem } = FavourtieItemSlice.actions;
+

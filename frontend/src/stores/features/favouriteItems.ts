@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ClosetItem } from "../features/closetItems"
 
 export interface FavouriteItem {
-  id: string;
+  favouriteCombinationId?: number;
+  userId: string;
   selectedItem: ClosetItem;
   generatedItems: ClosetItem[];
 }
@@ -29,14 +30,14 @@ export const fetchFavouriteItems = createAsyncThunk(
 
 export const saveFavouriteItems = createAsyncThunk(
   "favouriteItems/save",
-  async ({ selectedItem, generatedItems, id } : FavouriteItem, thunkAPI) => {
+  async ({ selectedItem, generatedItems, userId } : FavouriteItem, thunkAPI) => {
     const response = await fetch("http://localhost:3001/favourites", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id,
+        userId,
         selectedItem,
         generatedItems
       }),
@@ -78,7 +79,7 @@ export const FavourtieItemSlice= createSlice({
       action: PayloadAction<FavouriteItem>
     ) => {
       state.favouriteItems.push({
-        id: action.payload.id,
+        favouriteCombinationId: action.payload.favouriteCombinationId,
         selectedItem: action.payload.selectedItem,
         generatedItems: action.payload.generatedItems,
       });
@@ -88,7 +89,7 @@ export const FavourtieItemSlice= createSlice({
       action: PayloadAction<string>
     ) => {
       state.favouriteItems = state.favouriteItems.filter(
-        item => item.id !== action.payload
+        item => item.favouriteCombinationId !== action.payload
       );
     },
   },
@@ -112,7 +113,7 @@ export const FavourtieItemSlice= createSlice({
       deleteFavouriteItems.fulfilled,
       (state: FavouriteItemState, action: PayloadAction<FavouriteItem>) => {
         state.favouriteItems = state.favouriteItems.filter(
-          item => item.id !== action.payload.id
+          item => item.favouriteCombinationId !== action.payload.favouriteCombinationId
         );
       }
     );

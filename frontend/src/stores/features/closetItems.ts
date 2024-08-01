@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ClosetItem {
-  id: string;
+  clothId: string;
   category: string;
   season: string;
   imageSrc: string;

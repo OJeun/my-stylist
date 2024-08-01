@@ -5,8 +5,8 @@ export interface ClosetItem {
   userId: string;
   description: string;
   imgSrc: string;
-  season: number;
-  typeId: number;
+  season: string;
+  typeId: string;
 }
 
 interface ClosetItemState {
@@ -33,6 +33,29 @@ export const fetchClosetItems = createAsyncThunk(
 export const saveClosetItems = createAsyncThunk(
   'closetItems/save',
   async ({ clothId, userId, description, imgSrc, season, typeId }: ClosetItem, thunkAPI) => {
+    try {
+      const response = await fetch('/api/save-cloth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clothId,
+          userId,
+          description,
+          imgSrc,
+          season,
+          typeId,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save item.');
+      }
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 );
 

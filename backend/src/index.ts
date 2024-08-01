@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import loginRouter from './api/login';
 import signupRouter from './api/signup';
-// import generatorRouter from './api/aiGenerator';
+import generatorRouter from './api/aiGenerator';
 import saveFavouriteRouter from './api/saveFavourite';
 import saveClothRouter from './api/clothesAPI';
 import updateUserNameRouter from './api/userProfile';
@@ -19,7 +19,7 @@ initializeDatabase()
     
     app.use('/api', loginRouter);
     app.use('/api', signupRouter);
-    // app.use('/api', generatorRouter);
+    app.use('/api', generatorRouter);
     app.use('/api', saveFavouriteRouter);
     app.use('/api', saveClothRouter);
     app.use('/api', updateUserNameRouter);

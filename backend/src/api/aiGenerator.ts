@@ -1,40 +1,32 @@
-// import express from "express";
-// import readClosetItems, { ClosetItem } from "../utils/parseJSON";
-// import path from "path";
+import express from "express";
+import path from "path";
+import { ClosetItem } from "../database/favorite";
+import { getClothesByUserIdAndTypeId, getFirstClotheByUserIdAndTypeId } from "../database/clothes";
 
-// const app = express();
+const app = express();
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post("/ai-generator", (req, res) => {
-//   const { selectedCategory, selectedCategoryCheckbox, selectedItem } = req.body;
-//   console.log(
-//     "Received generation request:",
-//     selectedCategory,
-//     selectedCategoryCheckbox,
-//     selectedItem
-//   );
+router.post("/ai-generator", async (req, res) => {
+  const { userId, selectedCategory, selectedCategoryCheckbox, selectedItem } = req.body;
+  console.log(
+    "Received generation request:",
+    userId,
+    selectedCategory,
+    selectedCategoryCheckbox,
+    selectedItem
+  );
   
-  
-//   const formattedCategory = selectedCategoryCheckbox.map((category: string) =>
-//     category.split('-')[0].toLowerCase()
-//   );
-//   console.log(__dirname)
-//   const filePath = path.resolve(__dirname, '../database/closetItems.json');
+    // AI Generation Logic Here
+    // This code is just a template and should be replaced with actual AI generation logic
+    // Return => res.json({selectedItem: selectedItem, generatedItems: generatedItems });
+    console.log("Selected Category:", selectedCategoryCheckbox);
+    const generatedItems: ClosetItem[] = await Promise.all(selectedCategoryCheckbox.map(async (category: number) => {
+        return await getFirstClotheByUserIdAndTypeId(userId, category);
+    }));
 
-//   let eachItem: ClosetItem[];
-//   const response: ClosetItem[] = [];
+    return res.json({selectedItem: selectedItem, generatedItems: generatedItems });
 
-//   formattedCategory.forEach((category: string) => {
-//     eachItem = readClosetItems(filePath, category)
-//     response.push(eachItem[0])
-//   }
-//   )
+});
 
-//   setTimeout(()=> {
-//     res.json(response);
-//   }, 1000)
-
-// });
-
-// export default router;
+export default router;

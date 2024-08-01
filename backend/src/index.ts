@@ -4,7 +4,7 @@ import loginRouter from './api/login';
 import signupRouter from './api/signup';
 // import generatorRouter from './api/aiGenerator';
 import saveFavouriteRouter from './api/saveFavourite';
-import saveClothRouter from './api/saveCloth';
+import saveClothRouter from './api/clothesAPI';
 import cors from 'cors';
 import { initializeDatabase } from './database/db';
 

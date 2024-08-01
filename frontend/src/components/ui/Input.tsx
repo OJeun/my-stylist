@@ -1,7 +1,7 @@
 import { ChangeEvent, ComponentPropsWithoutRef } from 'react';
 
 export type InputProps = {
-  id: string;
+  id: string | number;
   type: 'text' | 'checkbox' | 'radio';
   label?: string;
   name?: string;
@@ -74,6 +74,7 @@ export default function Input({
             type={type}
             className={`border border-gray-light focus:ring-gray-light focus:border-gray-light text-gray-strong rounded-lg ${inputClassName}`}
             name={name}
+            onChange={onChange}
             {...props}
           />
         </>

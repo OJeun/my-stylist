@@ -44,11 +44,11 @@ export default function ItemCard({
   const fetchedCategory = useAppSelector((state) => state.category.category);
 
   const handleDelete = () => {
-    if (onDelete) onDelete(fetchedCategory, clothing.id); // Call onDelete if defined
+    if (onDelete) onDelete(fetchedCategory, String(clothing.clothId)); // Call onDelete if defined
     console.log("deleted", clothing);
   };
   return (
-    <div key={clothing.id} className="group relative aspect-w-1 aspect-h-1">
+    <div key={clothing.clothId} className="group relative aspect-w-1 aspect-h-1">
       <div className="h-38 sm:h-338 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
         {isInput ? (
           <>
@@ -57,13 +57,13 @@ export default function ItemCard({
               type="radio"
               inputClassName={inputClassName}
               name="clothing"
-              value={clothing.imageSrc}
+              value={clothing.imgSrc}
               required
               checked={isSelected}
               onChange={onSelect}
               labelClassName={labelClassName}
-              imageSrc={clothing.imageSrc}
-              imageAlt={`index ${clothing.id}`}
+              imageSrc={clothing.imgSrc}
+              imageAlt={`index ${clothing.clothId}`}
               imageClassName={imageClassName}
             ></Input>
           </>
@@ -77,8 +77,8 @@ export default function ItemCard({
                 <XMarkIcon className="w-6 h-6 text-gray" />
               </button>
               <img
-                src={clothing.imageSrc}
-                alt={`index ${clothing.id}`}
+                src={clothing.imgSrc}
+                alt={`index ${clothing.clothId}`}
                 className={imageClassName}
               />
             </div>

@@ -64,9 +64,9 @@ export default function InputGroup({
         generatedItems.map((item) => (
           <Input
               type="radio"
-              id={item.id}
-              imageSrc={item.imageSrc}
-              imageAlt={`image ${item.id}`}
+              id={String(item.clothId)}
+              imageSrc={item.imgSrc}
+              imageAlt={`image ${item.clothId}`}
               inputClassName={`hidden ${inputClassName}`}
               labelClassName={labelClassName}
             />

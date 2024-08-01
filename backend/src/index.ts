@@ -4,6 +4,7 @@ import loginRouter from './api/login';
 import signupRouter from './api/signup';
 // import generatorRouter from './api/aiGenerator';
 import saveFavouriteRouter from './api/saveFavourite';
+import saveClothRouter from './api/saveCloth';
 import cors from 'cors';
 import { initializeDatabase } from './database/db';
 
@@ -19,6 +20,7 @@ initializeDatabase()
     app.use('/api', signupRouter);
     // app.use('/api', generatorRouter);
     app.use('/api', saveFavouriteRouter);
+    app.use('/api', saveClothRouter);
 
     app.listen(8888, () => {
       console.log(`Server running on port ${8888}`);

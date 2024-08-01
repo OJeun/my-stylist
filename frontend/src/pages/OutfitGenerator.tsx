@@ -42,7 +42,7 @@ export default function OutfitGenerator() {
   );
 
   useEffect(() => {
-    dispatch(fetchClosetItems("top"));
+    // dispatch(fetchClosetItems());
   }, [dispatch]);
 
   useEffect(() => {
@@ -175,7 +175,7 @@ export default function OutfitGenerator() {
                 onClick={() => {
                   if (selectedCategory !== category) {
                     setSelectedCategory(category.toLowerCase());
-                    dispatch(fetchClosetItems(category.toLowerCase()));
+                    // dispatch(fetchClosetItems());
                   }
                 }}
               >

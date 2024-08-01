@@ -23,50 +23,7 @@ export default function ItemsGrid({
   labelClassName,
   imageClassName,
 }: ClothingListProps) {
-  const [clothings, setClothings] = useState<ClosetItem[]>([
-    {
-      id: "1",
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      season: "summer",
-      category: "top",
-    },
-    {
-      id: "2",
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      season: "summer",
-      category: "top",
-    },
-    {
-      id: "3",
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      season: "summer",
-      category: "top",
-    },
-    {
-      id: "4",
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      season: "summer",
-      category: "top",
-    },
-    {
-      id: "5",
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      season: "summer",
-      category: "top",
-    },
-    {
-      id: "6",
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-      season: "summer",
-      category: "top",
-    },
-  ]);
+  const [clothings, setClothings] = useState<ClosetItem[]>([]);
 
   const [selectedClothing, setSelectedClothing] = useState<number | null>(null);
 
@@ -78,7 +35,7 @@ export default function ItemsGrid({
   const clothingList = clothingItems
     ? clothingItems.map((item, index) => ({
         ...item,
-        imageAlt: `index ${item.id}`,
+        imageAlt: `index ${item.clothId}`,
       }))
     : clothings;
 
@@ -88,21 +45,21 @@ export default function ItemsGrid({
   const wrapClassName = wrapCustomClassName ? wrapCustomClassName : defaultWrapClassName
 
   return (
-      <div className={wrapClassName}>
-        {clothingList.map((items, index) => (
-          <ItemCard
-            key={index}
-            inputClassName={inputClassName}
-            labelClassName={labelClassName}
-            clothing={items}
-            index={index}
-            isSelected={selectedClothing === index}
-            onSelect={() => handleSelectClothing(index, items)}
-            onDelete={onDelete}
-            isInput={isInput}
-            imageClassName={imageClassName}
-          />
-        ))}
-      </div>
+    <div className={wrapClassName}>
+      {clothingList.map((items, index) => (
+        <ItemCard
+          key={index}
+          inputClassName={inputClassName}
+          labelClassName={labelClassName}
+          clothing={items}
+          index={index}
+          isSelected={selectedClothing === index}
+          onSelect={() => handleSelectClothing(index, items)}
+          onDelete={onDelete}
+          isInput={isInput}
+          imageClassName={imageClassName}
+        />
+      ))}
+    </div>
   );
 }

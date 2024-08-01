@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ClosetItem {
-  clothId: string;
-  category: string;
-  season: string;
-  imageSrc: string;
+  clothId?: number;
+  userId: string;
+  description: string;
+  imgSrc: string;
+  season: number;
+  typeId: number;
 }
 
 interface ClosetItemState {
@@ -15,59 +17,31 @@ const initialState: ClosetItemState = {
   closetItems: [],
 };
 
-
 export const fetchClosetItems = createAsyncThunk(
-  "closetItems/fetch",
+  'closetItems/fetch',
   async (category: string, thunkAPI) => {
-    category.toLowerCase()
-    const response = await fetch(`http://localhost:3002/${category}`, {
-      method: "GET",
-    });
-    const data = response.json();
-    return data;
+    const response = await fetch(`/api/clothes?category=${category}`);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(await response.json());
+    }
   }
 );
 
 export const saveClosetItems = createAsyncThunk(
-  "closetItems/save",
-  async ({ category, season, imageSrc, id } : ClosetItem, thunkAPI) => {
-    const formatedCategory = category.slice(0, category.indexOf("-")).toLowerCase();
-    const response = await fetch(`http://localhost:3002/${formatedCategory}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        imageSrc,
-        id,
-        season
-      }),
-    });
-    const data = response.json();
-    return data;
+  'closetItems/save',
+  async ({ clothId, userId, description, imgSrc, season, typeId }: ClosetItem, thunkAPI) => {
   }
 );
 
 export const deleteClosetItems = createAsyncThunk(
-  "closetItems/delete",
-  async ({ category, imageId }:  {category: string; imageId: string}  , thunkAPI)  => {
-    try {
-      const response = await fetch(`http://localhost:3002/${category}/${imageId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to delete item");
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
+  'closetItems/delete',
+  async (
+    { category, imageId }: { category: string; imageId: string },
+    thunkAPI
+  ) => {
   }
 );
 
@@ -79,12 +53,6 @@ export const ClosetItemSlice= createSlice({
       state: ClosetItemState,
       action: PayloadAction<ClosetItem>
     ) => {
-      state.closetItems.push({
-        category: action.payload.category,
-        season: action.payload.season,
-        imageSrc: action.payload.imageSrc,
-        id: action.payload.id,
-      });
     },
   },
   extraReducers: (builder: any) => {
@@ -106,7 +74,7 @@ export const ClosetItemSlice= createSlice({
     builder.addCase(
       deleteClosetItems.fulfilled,
       (state: ClosetItemState, action: PayloadAction<ClosetItem>) => {
-        state.closetItems = state.closetItems.filter(item => item.id !== action.payload.id);
+
       }
     )
   },

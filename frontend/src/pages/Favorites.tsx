@@ -85,7 +85,7 @@ export default function Favorites() {
               <Input
                 id={String(favouriteItem.id)}
                 type="checkbox"
-                imageSrc={favouriteItem.selectedItem.imageSrc}
+                imageSrc={favouriteItem.selectedItem.imgSrc}
                 inputClassName="hidden"
                 labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 mb-4 h-36 h-40 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 bg-white rounded-md cursor-pointer overflow-hidden relative"
               />

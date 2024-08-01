@@ -13,12 +13,12 @@ import { clearToast, setToast } from "../stores/features/toast";
 import Dropdown from "../components/ui/Dropdown";
 
 export const categories: InputProps[] = [
-  { id: "top-checkbox", type: "checkbox", label: "TOP" },
-  { id: "bottom-checkbox", type: "checkbox", label: "BOTTOM" },
-  { id: "outer-checkbox", type: "checkbox", label: "OUTER" },
-  { id: "shoes-checkbox", type: "checkbox", label: "SHOES" },
-  { id: "bag-checkbox", type: "checkbox", label: "BAG" },
-  { id: "accessories-checkbox", type: "checkbox", label: "ACCESSORIES" },
+  { id: "top", type: "checkbox", label: "TOP" },
+  { id: "bottom", type: "checkbox", label: "BOTTOM" },
+  { id: "outer", type: "checkbox", label: "OUTER" },
+  { id: "shoes", type: "checkbox", label: "SHOES" },
+  { id: "bag", type: "checkbox", label: "BAG" },
+  { id: "accessories", type: "checkbox", label: "ACCESSORIES" },
 ];
 
 export default function OutfitGenerator() {

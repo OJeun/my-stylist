@@ -9,10 +9,11 @@ import {
   deleteClosetItems,
   fetchClosetItems,
 } from '../stores/features/closetItems';
+import { setCategory } from '../stores/features/category';
 
 export default function MyCloset() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('Top');
+
   const categories = ['Top', 'Bottom', 'Outer', 'Shoes', 'Bag', 'Accessory'];
   const dispatch = useAppDispatch();
 
@@ -20,8 +21,11 @@ export default function MyCloset() {
     (state) => state.closetItem.closetItems
   );
 
+  const selectedCategory = useAppSelector((state) => state.category.category);
+
   useEffect(() => {
     if (selectedCategory) {
+      console.log(selectedCategory);
       dispatch(fetchClosetItems(selectedCategory));
     }
   }, [dispatch, selectedCategory]);
@@ -38,9 +42,12 @@ export default function MyCloset() {
     dispatch(deleteClosetItems({ category: category, imageId: deletedItemId }));
   }
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category);
-  };
+  // const handleCategorySelect = (category: string) => {
+  //   setSelectedCategory(category)
+  //   dispatch(fetchClosetItems(category.toLowerCase()))
+  //   dispatch(setCategory(category.toLowerCase()))
+    
+  // }
 
   return (
     <div>
@@ -49,7 +56,6 @@ export default function MyCloset() {
         <Dropdown
           title="Category"
           categories={categories}
-          // onCategorySelect={handleCategorySelect}
         />
         <Button
           color="secondary"

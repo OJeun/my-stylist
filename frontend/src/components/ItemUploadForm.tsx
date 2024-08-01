@@ -86,12 +86,13 @@ export default function ItemUploadForm({
     const data: ClosetItem = {
       userId: localStorage.getItem("uid") as string,
       imgSrc: imageBase64 as string,
-      season: getSeasonId(selectedSeason) as string,
-      typeId: getTypeId(selectedCategory) as string,
+      season: selectedSeason as string,
+      typeId: selectedCategory as string,
       description: description as string,
     };
     dispatch(saveClosetItems(data));
-    dispatch(setCategory(getSeasonId(selectedSeason) as string));
+    dispatch(setCategory(selectedCategory));
+
     setIsModalOpen(false);
   };
 

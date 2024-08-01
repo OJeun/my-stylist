@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from "../stores/store";
 import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
 import { clearToast, setToast } from "../stores/features/toast";
 import Dropdown from "../components/ui/Dropdown";
-import { getTypeId, getTypeIdArray } from "../utils/api/getId";
 
 export const categories: InputProps[] = [
   { id: "top", type: "checkbox", label: "TOP" },

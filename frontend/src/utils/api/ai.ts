@@ -1,19 +1,31 @@
 import { ClosetItem } from "../../stores/features/closetItems";
+import { convertStrToIntInClosetItem, getTypeId, getTypeIdArray } from "./getId";
 
 type data = {
-    selectedCategory: string | null;
+    userId: string;
+    selectedCategory: string;
     selectedCategoryCheckbox: string | string[];
     selectedItem: ClosetItem | null;
 }
 
 export const fetchAIRecommendation = async (data: data) => {
+  const selectedCategoryId = getTypeId(data.selectedCategory)
+  const selectedCategoryIds = getTypeIdArray(data.selectedCategoryCheckbox)
+
+  const convertedData = {
+    userId: data.userId,
+    selectedCategory: selectedCategoryId,
+    selectedCategoryCheckbox: selectedCategoryIds,
+    selectedItem: data.selectedItem
+  }
+  
     try {
       const response = await fetch("/api/ai-generator", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(convertedData),
       });
   
       if (response.ok) {

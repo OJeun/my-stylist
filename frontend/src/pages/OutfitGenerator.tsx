@@ -37,8 +37,6 @@ export default function OutfitGenerator() {
   const [alertMessage, setAlertMessage] = useState<string>("");
   const dispatch = useAppDispatch();
 
-  const toastMessage = useAppSelector((state) => state.toast.message);
-
   const fetchedClosetItems = useAppSelector(
     (state) => state.closetItem.closetItems
   );
@@ -105,10 +103,10 @@ export default function OutfitGenerator() {
 
     setLoading(true);
 
-    const aiGeneratedItemsGroupdId = uuidv4();
+    const userId = localStorage.getItem("uid") || "1";
 
     const data = {
-      id: aiGeneratedItemsGroupdId,
+      userId: userId,
       selectedItem: selectedItem,
       generatedItems: fetchedGeneratedItems,
     };

@@ -1,6 +1,7 @@
 import { getDbConnection } from "./db";
 
 interface Cloth {
+    userId?: string,
     clothId: string,
     description: string,
     imgSrc: string,
@@ -29,3 +30,24 @@ export async function addCloth(
         await db.close();
     }
 }  
+
+export async function getClothesByUserIdAndTypeId(
+    userId: string,
+    typeId: number
+): Promise<Cloth[]> {
+    const db = await getDbConnection();
+    try {
+        const query = `
+            SELECT * FROM Clothes
+            WHERE userId = ? AND typeId = ?
+        `;
+        const clothes = await db.all(query, [userId, typeId]);
+        console.log("Clothes:", clothes);
+        return clothes;
+    } catch (error) {
+        console.error("Error getting clothes by userId and typeId:", error);
+        throw error;
+    } finally {
+        await db.close();
+    }
+}

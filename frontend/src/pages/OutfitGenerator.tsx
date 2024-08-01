@@ -8,7 +8,6 @@ import { fetchAIRecommendation } from "../utils/api/ai";
 import { saveFavouriteItems } from "../stores/features/favouriteItems";
 import { useAppDispatch, useAppSelector } from "../stores/store";
 import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
-import { v4 as uuidv4 } from "uuid";
 import { clearToast, setToast } from "../stores/features/toast";
 import Dropdown from "../components/ui/Dropdown";
 
@@ -41,8 +40,10 @@ export default function OutfitGenerator() {
     (state) => state.closetItem.closetItems
   );
 
+  const category = useAppSelector((state) => state.category.category);
+
   useEffect(() => {
-    // dispatch(fetchClosetItems());
+    dispatch(fetchClosetItems(category));
   }, [dispatch]);
 
   useEffect(() => {
@@ -175,7 +176,7 @@ export default function OutfitGenerator() {
                 onClick={() => {
                   if (selectedCategory !== category) {
                     setSelectedCategory(category.toLowerCase());
-                    // dispatch(fetchClosetItems());
+                    dispatch(fetchClosetItems(category.toLowerCase()));
                   }
                 }}
               >

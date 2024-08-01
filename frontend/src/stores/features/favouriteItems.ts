@@ -20,7 +20,7 @@ const initialState: FavouriteItemState = {
 export const fetchFavouriteItems = createAsyncThunk(
   "favouriteItems/fetch",
   async (thunkAPI) => {
-    const response = await fetch("http://localhost:3001/favourites", {
+    const response = await fetch("/api/save-favorite", {
       method: "GET",
     });
     const data = response.json();
@@ -31,7 +31,7 @@ export const fetchFavouriteItems = createAsyncThunk(
 export const saveFavouriteItems = createAsyncThunk(
   "favouriteItems/save",
   async ({ selectedItem, generatedItems, userId } : FavouriteItem, thunkAPI) => {
-    const response = await fetch("http://localhost:3001/favourites", {
+    const response = await fetch("/api/save-favorite", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const deleteFavouriteItems = createAsyncThunk(
   "favouriteItems/delete",
   async (id: number, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:3001/favourites/${id}`, {
+      const response = await fetch(`/api/favourites/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

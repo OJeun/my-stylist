@@ -193,6 +193,7 @@ export default function ItemUploadForm({
                       id="description"
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
+                      inputClassName="w-full"
                     />
                   </div>
                 </div>

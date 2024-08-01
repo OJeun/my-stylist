@@ -22,7 +22,7 @@ export default function Dropdown({title, categories}: DropdownProps) {
   const dispatch = useAppDispatch();
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category)
-    // dispatch(fetchClosetItems())
+    dispatch(fetchClosetItems(category.toLowerCase()))
     dispatch(setCategory(category.toLowerCase()))
     
   }

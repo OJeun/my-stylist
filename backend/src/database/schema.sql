@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS Clothes (
     clothId INTEGER PRIMARY KEY AUTOINCREMENT,
     userId VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
-    imgSrc TEXT NOT NULL,
     season INTEGER NOT NULL,
     typeId INTEGER NOT NULL,
+    imgSrc TEXT NOT NULL,
     FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE,
     FOREIGN KEY (season) REFERENCES Season(seasonId),
     FOREIGN KEY (typeId) REFERENCES ClothingType(typeId)

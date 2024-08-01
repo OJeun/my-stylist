@@ -17,13 +17,13 @@ export default function Favorites() {
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemIdToDelete, setItemIdToDelete] = useState<string | null>(null);
+  const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     dispatch(fetchFavouriteItems());
   }, [dispatch, fetchedFavouriteItems]);
 
-  const openModal = (itemId: string) => {
+  const openModal = (itemId: number) => {
     setItemIdToDelete(itemId);
     setIsModalOpen(true);
   };
@@ -33,7 +33,7 @@ export default function Favorites() {
     setItemIdToDelete(null);
   };
 
-  const handleDelete = (itemsId: string) => {
+  const handleDelete = (itemsId: number) => {
     dispatch(deleteFavouriteItems(itemsId));
   };
 
@@ -58,7 +58,7 @@ export default function Favorites() {
         />
         {fetchedFavouriteItems.map((favouriteItem) => (
           <div
-            key={favouriteItem.id}
+            key={favouriteItem.favouriteCombinationId}
             className="
           relative
           flex items-stretch
@@ -76,14 +76,14 @@ export default function Favorites() {
           >
             <Button
               className="absolute -top-3 -right-3 md:-top-2 md:-right-8 z-30 opacity-0 group-hover:opacity-100 text-color-primary"
-              onClick={() => openModal(favouriteItem.id)}
+              onClick={() => favouriteItem.favouriteCombinationId && openModal(favouriteItem.favouriteCombinationId)}
             >
               <XCircleIcon className="w-6 h-6 md:w-7 md:h-7 text-gray hover:text-background" />
             </Button>
 
             <div className="flex flex-shrink-0">
               <Input
-                id={String(favouriteItem.id)}
+                id={String(favouriteItem.favouriteCombinationId)}
                 type="checkbox"
                 imageSrc={favouriteItem.selectedItem.imgSrc}
                 inputClassName="hidden"

@@ -1,5 +1,5 @@
 export const getSeasonId = (season: string) => {
-    switch (season) {
+    switch (season.toLocaleLowerCase()) {
       case "spring-fall":
         return 1;
       case "summer":
@@ -10,7 +10,7 @@ export const getSeasonId = (season: string) => {
   };
   
   export const getTypeId = (category: string) => {
-    switch (category) {
+    switch (category.toLocaleLowerCase()) {
       case "top":
         return 1;
       case "bottom":

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getTypeId } from "../../utils/api/getId";
 
 export interface ClosetItem {
   clothId?: number;
@@ -20,19 +21,28 @@ const initialState: ClosetItemState = {
 export const fetchClosetItems = createAsyncThunk(
   'closetItems/fetch',
   async (category: string, thunkAPI) => {
-    const response = await fetch(`/api/clothes?category=${category}`);
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      return thunkAPI.rejectWithValue(await response.json());
+    try {
+      const categoryId = getTypeId(category);
+      const userId = localStorage.getItem('uid') as string;
+      const response = await fetch(`/api/closet-items/${categoryId}?userId=${userId}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Data:', data);
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.json());
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ message: 'Network error' });
     }
   }
 );
 
 export const saveClosetItems = createAsyncThunk(
   'closetItems/save',
-  async ({ clothId, userId, description, imgSrc, season, typeId }: ClosetItem, thunkAPI) => {
+  async ({ userId, description, imgSrc, season, typeId }: ClosetItem, thunkAPI) => {
+    const convertedTypeId = getTypeId(typeId);
     try {
       const response = await fetch('/api/save-cloth', {
         method: 'POST',
@@ -40,12 +50,11 @@ export const saveClosetItems = createAsyncThunk(
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          clothId,
           userId,
           description,
           imgSrc,
           season,
-          typeId,
+          convertedTypeId,
         }),
       });
       if (!response.ok) {

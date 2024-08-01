@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../stores/store";
 import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
 import { clearToast, setToast } from "../stores/features/toast";
 import Dropdown from "../components/ui/Dropdown";
+import { getTypeId, getTypeIdArray } from "../utils/api/getId";
 
 export const categories: InputProps[] = [
   { id: "top", type: "checkbox", label: "TOP" },
@@ -21,7 +22,7 @@ export const categories: InputProps[] = [
 ];
 
 export default function OutfitGenerator() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+  const [selectedCategory, setSelectedCategory] = useState<string>(
     "top"
   );
   const [selectedCategoryCheckbox, setCategoryCheckbox] = useState<
@@ -82,8 +83,10 @@ export default function OutfitGenerator() {
     }
 
     setLoading(true);
+    const userId = localStorage.getItem("uid") || "1";
 
     const data = {
+      userId,
       selectedCategory,
       selectedCategoryCheckbox,
       selectedItem,
@@ -91,13 +94,14 @@ export default function OutfitGenerator() {
 
     try {
       const result = await fetchAIRecommendation(data);
-      setFetchedGeneratedItems(result);
+      setFetchedGeneratedItems(result["generatedItems"]);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
+
 
   const handleSaveFavourite = async () => {
     if (!selectedItem || fetchedGeneratedItems.length === 0) return;

@@ -16,7 +16,7 @@ export async function addFavoriteCombination(
   try {
     await db.exec("BEGIN TRANSACTION");
     const result = await db.run(
-      "INSERT INTO userFavouriteCombination (userId) VALUES (?)",
+      "INSERT INTO UserFavoriteCombination (userId) VALUES (?)",
       userId
     );
 
@@ -24,7 +24,7 @@ export async function addFavoriteCombination(
 
     const insertPromises = generatedItems.map((item) =>
       db.run(
-        "INSERT INTO FavouriteCombinationClothes (favouriteCombinationId, clothesId, isGenerated) VALUES (?, ?)",
+        "INSERT INTO FavoriteCombinationClothes (favoriteCombinationId, clothId, isGenerated) VALUES (?, ?, ?)",
         favouriteCombinationId,
         item.clothId,
         true
@@ -33,7 +33,7 @@ export async function addFavoriteCombination(
     await Promise.all(insertPromises);
 
     await db.run(
-        "INSERT INTO FavouriteCombinationClothes (favouriteCombinationId, clothesId, isGenerated) VALUES (?, ?)",
+        "INSERT INTO FavoriteCombinationClothes (favoriteCombinationId, clothId, isGenerated) VALUES (?, ?, ?)",
         favouriteCombinationId,
         selectedItem.clothId,
         false

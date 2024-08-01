@@ -9,6 +9,7 @@ interface Cloth {
 }
 
 export async function addCloth(
+    userId: string,
     description: string,
     imgSrc: string,
     season: number,
@@ -17,10 +18,10 @@ export async function addCloth(
     const db = await getDbConnection();
     try {
         const query = `
-            INSERT INTO Clothes (description, imgSrc, season, typeId)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO Clothes (userId, description, imgSrc, season, typeId)
+            VALUES (?, ?, ?, ?, ?)
         `;
-        await db.run(query, [description, imgSrc, season, typeId]);
+        await db.run(query, [userId, description, imgSrc, season, typeId]);
     } catch (error) {
         console.error("Error adding cloth:", error);
         throw error;

@@ -9,6 +9,7 @@ router.post('/save-cloth', async (req, res) => {
 
   try {
     await addCloth(
+      selectedItem.userId,
       selectedItem.description,
       selectedItem.imgSrc,
       selectedItem.season,

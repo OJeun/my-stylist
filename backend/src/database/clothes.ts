@@ -31,6 +31,28 @@ export async function addCloth(
     }
 }  
 
+export async function getFirstClotheByUserIdAndTypeId(
+    userId: string,
+    typeId: number
+): Promise<Cloth> {
+    const db = await getDbConnection();
+    try {
+        const query = `
+            SELECT * FROM Clothes
+            WHERE userId = ? AND typeId = ?
+            LIMIT 1
+        `;
+        const cloth = await db.get(query, [userId, typeId]);
+        console.log("Cloth:", cloth);
+        return cloth;
+    } catch (error) {
+        console.error("Error getting first cloth by userId and typeId:", error);
+        throw error;
+    } finally {
+        await db.close();
+    }
+}
+
 export async function getClothesByUserIdAndTypeId(
     userId: string,
     typeId: number

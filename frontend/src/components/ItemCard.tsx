@@ -23,7 +23,7 @@ type ItemCardProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
-  onDelete?: (category: string, deletedItemId: string) => void;
+  onDelete?: (item: ClosetItem) => void;
   onSelect: () => void;
 } & ComponentPropsWithoutRef<"input">;
 
@@ -44,8 +44,8 @@ export default function ItemCard({
   const fetchedCategory = useAppSelector((state) => state.category.category);
 
   const handleDelete = () => {
-    if (onDelete) onDelete(fetchedCategory, String(clothing.clothId)); // Call onDelete if defined
-    console.log("deleted", clothing);
+    if (onDelete) onDelete(clothing); // Call onDelete if defined
+    console.log("Deleting a cloth:", clothing);
   };
   return (
     <div key={clothing.clothId} className="group relative aspect-w-1 aspect-h-1">

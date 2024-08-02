@@ -10,7 +10,7 @@ type ClothingListProps = {
   imageClassName?: string;
   wrapCustomClassName?: string;
   onSelectItem?: (item: ClosetItem) => void;
-  onDelete?: (category: string, deletedItemId: string) => void;
+  onDelete?: (item: ClosetItem) => void;
 } & ComponentPropsWithoutRef<"input">;
 
 export default function ItemsGrid({
@@ -24,7 +24,6 @@ export default function ItemsGrid({
   imageClassName,
 }: ClothingListProps) {
   const [clothings, setClothings] = useState<ClosetItem[]>([]);
-
   const [selectedClothing, setSelectedClothing] = useState<number | null>(null);
 
   const handleSelectClothing = (index: number, item: ClosetItem) => {

@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import loginRouter from './api/login';
 import signupRouter from './api/signup';
 import generatorRouter from './api/aiGenerator';
-import saveFavouriteRouter from './api/saveFavourite';
+import favouriteRouter from './api/favouriteAPI';
 import saveClothRouter from './api/clothesAPI';
 import updateUserNameRouter from './api/userProfile';
 import cors from 'cors';
@@ -20,7 +20,7 @@ initializeDatabase()
     app.use('/api', loginRouter);
     app.use('/api', signupRouter);
     app.use('/api', generatorRouter);
-    app.use('/api', saveFavouriteRouter);
+    app.use('/api', favouriteRouter);
     app.use('/api', saveClothRouter);
     app.use('/api', updateUserNameRouter);
 

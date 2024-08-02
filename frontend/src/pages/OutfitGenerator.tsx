@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../stores/store";
 import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
 import { clearToast, setToast } from "../stores/features/toast";
 import Dropdown from "../components/ui/Dropdown";
+import { addRecentlyViewedCombinations } from "../stores/features/recentlyViewedCombination";
 
 export const categories: InputProps[] = [
   { id: "top", type: "checkbox", label: "TOP" },
@@ -94,6 +95,7 @@ export default function OutfitGenerator() {
     try {
       const result = await fetchAIRecommendation(data);
       setFetchedGeneratedItems(result["generatedItems"]);
+      addToRecentlyViewed();
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
     } finally {
@@ -101,6 +103,21 @@ export default function OutfitGenerator() {
     }
   };
 
+  const addToRecentlyViewed = async () => {
+    if (!selectedItem || fetchedGeneratedItems.length === 0) return;
+    console.log("Adding to recently viewed");
+    const data = {
+      userId: localStorage.getItem("uid") || "1",
+      selectedItem: selectedItem,
+      generatedItems: fetchedGeneratedItems,
+    };
+
+    try {
+      dispatch(addRecentlyViewedCombinations(data));
+    } catch(err) {
+      console.error("Error occurred while adding to recently viewed:", err);
+    }
+  }
 
   const handleSaveFavourite = async () => {
     if (!selectedItem || fetchedGeneratedItems.length === 0) return;

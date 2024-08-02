@@ -1,10 +1,57 @@
 import { getDbConnection } from "./db";
 
 export interface ClosetItem {
-  clothId: string;
-  category: string;
-  season: string;
-  imageSrc: string;
+  clothId: number;
+  category: number;
+  season: number;
+  imgSrc: string;
+}
+
+export interface FavoriteCombination {
+  favouriteCombinationId: number;
+  userId: string;
+  selectedItem: ClosetItem;
+  generatedItems: ClosetItem[];
+}
+
+export async function fetchFavoriteItems(userId: string): Promise<FavoriteCombination[]> {
+  const db = await getDbConnection();
+  try {
+    const result = await db.all(
+      "SELECT * FROM UserFavoriteCombination WHERE userId = ?",
+      userId, 
+    );
+
+    const favoriteItems = await Promise.all(
+      result.map(async (row) => {
+        const favouriteCombinationId = row.favoriteCombinationId;
+        
+        const selectedItem = await db.get(
+          "SELECT Clothes.clothId, Clothes.typeId, Clothes.season, Clothes.imgSrc FROM Clothes JOIN FavoriteCombinationClothes ON FavoriteCombinationClothes.clothId = Clothes.clothId WHERE favoriteCombinationId = ? AND isGenerated = 0",
+          favouriteCombinationId
+        );
+        
+        const generatedItems = await db.all(
+          "SELECT Clothes.clothId, Clothes.typeId, Clothes.season, Clothes.imgSrc FROM Clothes JOIN FavoriteCombinationClothes ON FavoriteCombinationClothes.clothId = Clothes.clothId WHERE favoriteCombinationId = ? AND isGenerated = 1",
+          favouriteCombinationId
+        );
+        return {
+          favouriteCombinationId,
+          userId,
+          selectedItem,
+          generatedItems,
+        };
+      })
+    );
+
+    return favoriteItems;
+  } catch (error) {
+    console.error("An error occurred while fetching favourite items:", error);
+    return [];
+  }
+  finally {
+    await db.close();
+  }
 }
 
 export async function addFavoriteCombination(

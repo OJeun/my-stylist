@@ -6,6 +6,7 @@ import generatorRouter from './api/aiGenerator';
 import favouriteRouter from './api/favouriteAPI';
 import saveClothRouter from './api/clothesAPI';
 import updateUserNameRouter from './api/userProfile';
+import recentlyViewedRouter from './api/recentlyViewedAPI';
 import cors from 'cors';
 import { initializeDatabase } from './database/db';
 
@@ -22,6 +23,7 @@ initializeDatabase()
     app.use('/api', generatorRouter);
     app.use('/api', favouriteRouter);
     app.use('/api', saveClothRouter);
+    app.use('/api', recentlyViewedRouter);
     app.use('/api', updateUserNameRouter);
 
     app.listen(8888, () => {

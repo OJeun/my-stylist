@@ -1,4 +1,4 @@
-import { FavourtieItemSlice } from "./features/favouriteItems";
+import { FavouriteItemSlice } from "./features/favouriteItems";
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import createStore from "react-auth-kit/createStore";
@@ -9,7 +9,7 @@ import { ToastSlice } from "./features/toast"
 
 export const store = configureStore({
   reducer: {
-    favouriteItem: FavourtieItemSlice.reducer,
+    favouriteItem: FavouriteItemSlice.reducer,
     closetItem: ClosetItemSlice.reducer,
     category: CategorySlice.reducer,
     toast: ToastSlice.reducer

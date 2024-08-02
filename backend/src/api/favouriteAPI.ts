@@ -1,5 +1,5 @@
 import express from 'express';
-import { addFavoriteCombination, fetchFavoriteItems } from '../database/favorite';
+import { addFavoriteCombination, deleteFavoriteCombination, fetchFavoriteItems } from '../database/favorite';
 
 const router = express.Router();
 router.post('/save-favorite', (req, res) => {
@@ -17,5 +17,13 @@ router.get('/favorite', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch favorite items' });
   }
 });
+
+router.delete('/favorites/:favoriteCombinationId', (req, res) => {
+  const favoriteCombinationId = req.params.favoriteCombinationId;
+  const convertedFavoriteCombinationId = parseInt(favoriteCombinationId);
+  deleteFavoriteCombination(convertedFavoriteCombinationId);
+  res.json({message: `Successfully deleted item with id ${favoriteCombinationId}`});
+});
+
 export default router;
 

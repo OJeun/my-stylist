@@ -19,8 +19,8 @@ const initialState: FavouriteItemState = {
 
 export const fetchFavouriteItems = createAsyncThunk(
   "favouriteItems/fetch",
-  async (thunkAPI) => {
-    const response = await fetch("/api/save-favorite", {
+  async (userId: string, thunkAPI) => {
+    const response = await fetch(`/api/favorite?userId=${userId}`, {
       method: "GET",
     });
     const data = response.json();
@@ -70,7 +70,7 @@ export const deleteFavouriteItems = createAsyncThunk(
 
 
 
-export const FavourtieItemSlice= createSlice({
+export const FavouriteItemSlice= createSlice({
   name: "favouriteItem",
   initialState,
   reducers: {
@@ -102,5 +102,5 @@ export const FavourtieItemSlice= createSlice({
   },
 });
 
-export default FavourtieItemSlice.reducer;
+export default FavouriteItemSlice.reducer;
 

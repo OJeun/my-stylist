@@ -95,3 +95,18 @@ export async function addFavoriteCombination(
     await db.close();
   }
 }
+
+export async function deleteFavoriteCombination(favoriteCombinationId: number): Promise<void> {
+  const db = await getDbConnection();
+  try {
+    await db.run(
+      "DELETE FROM UserFavoriteCombination WHERE favoriteCombinationId = ?",
+      favoriteCombinationId
+    );
+    console.log(`Favorite combination with id ${favoriteCombinationId} has been deleted`);
+  } catch (error) {
+    console.error(`An error occurred while deleting favorite combination with id ${favoriteCombinationId}:`, error);
+  } finally {
+    await db.close();
+  }
+}

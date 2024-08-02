@@ -70,10 +70,27 @@ export const saveClosetItems = createAsyncThunk(
 
 export const deleteClosetItems = createAsyncThunk(
   'closetItems/delete',
-  async (
-    { category, imageId }: { category: string; imageId: string },
-    thunkAPI
-  ) => {
+  async ({ clothId, userId }: { clothId: number; userId: string }, thunkAPI) => {
+    try {
+      const url = `api/delete-cloth/${clothId}?userId=${userId}`;
+      const options = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error('Failed to delete item');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error: any) {
+      console.log('error:', error);
+      return thunkAPI.rejectWithValue({ message: error.message });
+    }
   }
 );
 
@@ -85,6 +102,14 @@ export const ClosetItemSlice= createSlice({
       state: ClosetItemState,
       action: PayloadAction<ClosetItem>
     ) => {
+      state.closetItems.push({
+        typeId: action.payload.typeId,
+        season: action.payload.season,
+        imgSrc: action.payload.imgSrc,
+        clothId: action.payload.clothId,
+        userId: action.payload.userId,
+        description: action.payload.description,
+      });
     },
   },
   extraReducers: (builder: any) => {
@@ -106,9 +131,11 @@ export const ClosetItemSlice= createSlice({
     builder.addCase(
       deleteClosetItems.fulfilled,
       (state: ClosetItemState, action: PayloadAction<ClosetItem>) => {
-
+        state.closetItems = state.closetItems.filter(
+          (item) => item.clothId !== action.payload.clothId
+        );
       }
-    )
+    );
   },
 });
 

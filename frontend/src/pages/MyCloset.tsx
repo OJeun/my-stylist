@@ -13,8 +13,7 @@ import { setCategory } from '../stores/features/category';
 
 export default function MyCloset() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const categories = ['Top', 'Bottom', 'Outer', 'Shoes', 'Bag', 'Accessory'];
+  const categories = ['Top', 'Bottom', 'Outer', 'Shoes', 'Bag', 'Accessories'];
   const dispatch = useAppDispatch();
 
   const fetchedClosetItems = useAppSelector(
@@ -38,15 +37,20 @@ export default function MyCloset() {
     }
   };
 
-  function handleDeleteItem(category: string, deletedItemId: string): void {
-    dispatch(deleteClosetItems({ category: category, imageId: deletedItemId }));
+  function handleDeleteItem(itemToBeDeleted: ClosetItem): void {
+    dispatch(
+      deleteClosetItems({
+        clothId: itemToBeDeleted.clothId as number,
+        userId: localStorage.getItem('uid') as string,
+      })
+    );
   }
 
   // const handleCategorySelect = (category: string) => {
   //   setSelectedCategory(category)
   //   dispatch(fetchClosetItems(category.toLowerCase()))
   //   dispatch(setCategory(category.toLowerCase()))
-    
+
   // }
 
   return (

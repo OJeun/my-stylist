@@ -53,6 +53,21 @@ export async function getFirstClotheByUserIdAndTypeId(
     }
 }
 
+export async function getClothByUserIdAndClothId(
+  userId: string,
+  clothId: number
+): Promise<Cloth> {
+  const db = await getDbConnection();
+  try {
+    const query = `SELECT * FROM Clothes WHERE userId = ? AND clothId = ?`;
+    const item = await db.get(query, [userId, clothId]);
+    return item;
+  } catch (error) {
+    console.error('Error fetching cloth:', error);
+    throw error;
+  }
+}
+
 export async function getClothesByUserIdAndTypeId(
     userId: string,
     typeId: number

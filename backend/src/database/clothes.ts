@@ -43,7 +43,6 @@ export async function getFirstClotheByUserIdAndTypeId(
             LIMIT 1
         `;
         const cloth = await db.get(query, [userId, typeId]);
-        console.log("Cloth:", cloth);
         return cloth;
     } catch (error) {
         console.error("Error getting first cloth by userId and typeId:", error);
@@ -79,7 +78,6 @@ export async function getClothesByUserIdAndTypeId(
             WHERE userId = ? AND typeId = ?
         `;
         const clothes = await db.all(query, [userId, typeId]);
-        console.log("Clothes:", clothes);
         return clothes;
     } catch (error) {
         console.error("Error getting clothes by userId and typeId:", error);

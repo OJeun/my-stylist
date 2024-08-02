@@ -30,11 +30,9 @@ router.get('/closet-items/:category', async (req, res) => {
   const { userId } = req.query;
 
   const categoryId = parseInt(category, 10);
-  console.log('Fetching clothes for user:', userId, 'and category:', categoryId);
   try {
     const items = await getClothesByUserIdAndTypeId(userId as string, categoryId);
     res.json(items);
-    console.log('Items:', items);
   } catch (error) {
     console.error('Error fetching clothes:', error);
     res.status(500).json({ message: 'Error fetching clothes' });

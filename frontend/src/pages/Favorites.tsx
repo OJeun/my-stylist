@@ -14,15 +14,12 @@ export default function Favorites() {
   const dispatch = useAppDispatch();
   const fetchedFavouriteItems = useAppSelector((state) => state.favouriteItem.favouriteItems);
   const userId = localStorage.getItem("uid") || "1";
+
   useEffect(() => {
     if (userId) {
       dispatch(fetchFavouriteItems(userId));
     }
   }, [dispatch]);
-
-  console.log(fetchedFavouriteItems);
-
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);

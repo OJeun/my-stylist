@@ -1,5 +1,10 @@
 import express from 'express';
-import { addCloth, getClothesByUserIdAndTypeId, deleteCloth } from '../database/clothes';
+import {
+  addCloth,
+  getClothByUserIdAndClothId,
+  getClothesByUserIdAndTypeId,
+  deleteCloth,
+} from '../database/clothes';
 
 const router = express.Router();
 
@@ -41,13 +46,17 @@ router.delete('/delete-cloth/:clothId', async (req, res) => {
   const { clothId } = req.params;
   console.log('Deleting cloth for user:', userId, 'and cloth Id:', clothId);
   try {
+    const deletedItem = await getClothByUserIdAndClothId(
+      userId as string,
+      parseInt(clothId as string, 10)
+    );
     await deleteCloth(userId as string, parseInt(clothId as string, 10));
-    res.json({ message: 'Successfully deleted the cloth!' });
+    res.json(deletedItem);
   } catch (error) {
     console.error('Error deleting cloth:', error);
     res.status(500).json({ message: 'Error deleting cloth' });
   }
-  console.log("successfully deleted!")
+  console.log('successfully deleted!');
 });
 
 export default router;

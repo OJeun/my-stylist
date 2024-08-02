@@ -73,3 +73,14 @@ export async function getClothesByUserIdAndTypeId(
         await db.close();
     }
 }
+
+export async function deleteCloth(userId: string, clothId: number): Promise<void> {
+    const db = await getDbConnection();
+    try {
+      const query = `DELETE FROM Clothes WHERE userId = ? AND clothId = ?`;
+      await db.run(query, [userId, clothId]);
+    } catch (error) {
+      console.error('Error deleting cloth:', error);
+      throw error;
+    }
+}

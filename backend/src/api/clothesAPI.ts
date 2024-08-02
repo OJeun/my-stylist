@@ -1,5 +1,5 @@
 import express from 'express';
-import { addCloth, getClothesByUserIdAndTypeId } from '../database/clothes';
+import { addCloth, getClothesByUserIdAndTypeId, deleteCloth } from '../database/clothes';
 
 const router = express.Router();
 
@@ -34,6 +34,20 @@ router.get('/closet-items/:category', async (req, res) => {
     console.error('Error fetching clothes:', error);
     res.status(500).json({ message: 'Error fetching clothes' });
   }
+});
+
+router.delete('/delete-cloth/:clothId', async (req, res) => {
+  const { userId } = req.query;
+  const { clothId } = req.params;
+  console.log('Deleting cloth for user:', userId, 'and cloth Id:', clothId);
+  try {
+    await deleteCloth(userId as string, parseInt(clothId as string, 10));
+    res.json({ message: 'Successfully deleted the cloth!' });
+  } catch (error) {
+    console.error('Error deleting cloth:', error);
+    res.status(500).json({ message: 'Error deleting cloth' });
+  }
+  console.log("successfully deleted!")
 });
 
 export default router;

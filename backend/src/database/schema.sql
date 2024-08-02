@@ -44,18 +44,18 @@ CREATE TABLE IF NOT EXISTS FavoriteCombinationClothes (
     FOREIGN KEY (clothId) REFERENCES Clothes(clothId)
 );
 
-CREATE TABLE IF NOT EXISTS RecentlyViewedCombination (
-    recentCombinationId INTEGER PRIMARY KEY AUTOINCREMENT,
-    clothId VARCHAR(200) NOT NULL,
-    FOREIGN KEY (clothId) REFERENCES Clothes(clothId)
-);
-
 CREATE TABLE IF NOT EXISTS UserRecentlyViewedCombination (
-    recentCombinationId INTEGER NOT NULL,
+    recentCombinationId INTEGER PRIMARY KEY AUTOINCREMENT,
     userId VARCHAR(200) NOT NULL,
     viewedAt TIMESTAMP NOT NULL,
-    PRIMARY KEY (recentCombinationId, userId),
-    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS RecentlyViewedCombination (
+    recentCombinationId INTEGER NOT NULL,
+    clothId INTEGER NOT NULL,
+    isGenerated BOOLEAN NOT NULL,
+    PRIMARY KEY (recentCombinationId, clothId),
     FOREIGN KEY (recentCombinationId) REFERENCES RecentlyViewedCombination(recentCombinationId),
-    FOREIGN KEY (userId) REFERENCES Users(userId)
+    FOREIGN KEY (clothId) REFERENCES Clothes(clothId)
 );

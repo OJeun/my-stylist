@@ -49,18 +49,18 @@ export const saveFavouriteItems = createAsyncThunk(
 
 export const deleteFavouriteItems = createAsyncThunk(
   "favouriteItems/delete",
-  async (id: number, thunkAPI) => {
+  async (favoriteCombinationId: number, thunkAPI) => {
     try {
-      const response = await fetch(`/api/favourites/${id}`, {
+      const response = await fetch(`/api/favorites/${favoriteCombinationId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
       if (!response.ok) {
-        throw new Error(`Failed to delete the item with id ${id}. Server responded with status ${response.status}`);
+        throw new Error(`Failed to delete the item with id ${favoriteCombinationId}. Server responded with status ${response.status}`);
       }
-      return id;
+      return favoriteCombinationId;
     } catch (error) {
       console.error('Error deleting the item:', error);
       return thunkAPI.rejectWithValue('Failed to delete the item');
@@ -93,9 +93,9 @@ export const FavouriteItemSlice= createSlice({
     );
     builder.addCase(
       deleteFavouriteItems.fulfilled,
-      (state: FavouriteItemState, action: PayloadAction<FavouriteItem>) => {
+      (state: FavouriteItemState, action: PayloadAction<string>) => {
         state.favouriteItems = state.favouriteItems.filter(
-          item => item.favouriteCombinationId !== action.payload.favouriteCombinationId
+          item => item.favouriteCombinationId !== parseInt(action.payload)
         );
       }
     );

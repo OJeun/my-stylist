@@ -12,16 +12,20 @@ import ConfirmationModal from "../components/ui/ConformationModal";
 
 export default function Favorites() {
   const dispatch = useAppDispatch();
-  const fetchedFavouriteItems = useAppSelector(
-    (state) => state.favouriteItem.favouriteItems
-  );
+  const fetchedFavouriteItems = useAppSelector((state) => state.favouriteItem.favouriteItems);
+  const userId = localStorage.getItem("uid") || "1";
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchFavouriteItems(userId));
+    }
+  }, [dispatch]);
+
+  console.log(fetchedFavouriteItems);
+
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
-
-  useEffect(() => {
-    dispatch(fetchFavouriteItems());
-  }, [dispatch, fetchedFavouriteItems]);
 
   const openModal = (itemId: number) => {
     setItemIdToDelete(itemId);

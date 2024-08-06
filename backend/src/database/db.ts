@@ -10,6 +10,8 @@ export async function getDbConnection(): Promise<Database> {
     filename: `${__dirname}/db.sqlite`,
     driver: sqlite3.Database,
   });
+
+  db.run("PRAGMA foreign_keys = ON;");
   return db;
 }
 
@@ -20,6 +22,7 @@ export async function initializeDatabase(): Promise<void> {
   console.log(__dirname);
   const schema = fs.readFileSync(schemaFilePath, "utf8");
   await db.exec(schema);
+
 
   const checkClothingTypeTableQuery = `SELECT COUNT(*) as count FROM ClothingType`;
   const result = await db.get(checkClothingTypeTableQuery);

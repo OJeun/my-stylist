@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Clothes (
     description TEXT NOT NULL,
     season INTEGER NOT NULL,
     typeId INTEGER NOT NULL,
-    imgSrc TEXT NOT NULL,
+    imgSrc TEXT,
     FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE,
     FOREIGN KEY (season) REFERENCES Season(seasonId),
     FOREIGN KEY (typeId) REFERENCES ClothingType(typeId)

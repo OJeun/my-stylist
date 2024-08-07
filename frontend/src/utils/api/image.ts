@@ -22,3 +22,12 @@ export const setDefaultImg = (cloth: ClosetItem) => {
     } else {
       return cloth.imgSrc;
   }};
+
+
+export const isDefaultImg = (cloth: ClosetItem) => {
+  if (!cloth.imgSrc) {
+    return true;
+  } else {
+    return false;
+  }
+}

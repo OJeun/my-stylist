@@ -1,9 +1,10 @@
-import { ChangeEvent, ComponentPropsWithoutRef } from 'react';
-import { XMarkIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { ChangeEvent, ComponentPropsWithoutRef } from "react";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import Button from "./Button";
 
 export type InputProps = {
   id: string | number;
-  type: 'text' | 'checkbox' | 'radio';
+  type: "text" | "checkbox" | "radio";
   label?: string;
   name?: string;
   inputClassName?: string;
@@ -13,7 +14,7 @@ export type InputProps = {
   imageClassName?: string;
   isDefaultImg?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-} & ComponentPropsWithoutRef<'input'>;
+} & ComponentPropsWithoutRef<"input">;
 
 export default function Input({
   id,
@@ -31,13 +32,13 @@ export default function Input({
 }: InputProps) {
   return (
     <>
-      {type !== 'text' ? (
+      {type !== "text" ? (
         <>
           <input
             id={id}
             type={type}
             className={`${
-              imageSrc ? 'absolute top-2 right-2 z-10' : ''
+              imageSrc ? "absolute top-2 right-2 z-10" : ""
             } ${inputClassName}`}
             name={name}
             onChange={onChange}
@@ -45,28 +46,22 @@ export default function Input({
           />
           <label
             htmlFor={id}
-            className={
-              `font-medium text-gray-strong` +
-              labelClassName
-            }
+            className={`font-medium text-gray-strong` + labelClassName}
           >
             {label}
             {imageSrc && (
-              <img
-                src={imageSrc}
-                alt={imageAlt}
-                className={imageClassName}
-                
-              />
+              <img src={imageSrc} alt={imageAlt} className={imageClassName} />
             )}
             {isDefaultImg && (
-              <img
-                src={imageSrc}
-                alt={imageAlt}
-                className={imageClassName}
-              />
-          
-
+              <Button
+                className="absolute m-1 md:m-2 -top-0 -right-0 md:-top-0 md:-right-0 z-30 text-color-primary"
+                // onClick={() =>
+                //   favouriteItem.favouriteCombinationId &&
+                //   openModal(favouriteItem.favouriteCombinationId)
+                // }
+              >
+                <ArrowPathIcon className="w-4 h-4 md:w-5 md:h-5 text-gray" />
+              </Button>
             )}
           </label>
         </>
@@ -74,10 +69,7 @@ export default function Input({
         <>
           <label
             htmlFor={id}
-            className={
-              `font-medium text-gray-strong` +
-              labelClassName
-            }
+            className={`font-medium text-gray-strong` + labelClassName}
           >
             {label}
           </label>

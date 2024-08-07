@@ -4,7 +4,7 @@ import Input from "./ui/Input";
 import { ComponentPropsWithoutRef } from "react";
 import { ClosetItem } from "../stores/features/closetItems";
 import { useAppSelector } from "../stores/store";
-import { setDefaultImg } from "../utils/api/image";
+import { isDefaultImg, setDefaultImg } from "../utils/api/image";
 
 // ItemCard consist of Input componenet or Button Component
 export const clothingCategory = [
@@ -65,6 +65,7 @@ export default function ItemCard({
               checked={isSelected}
               onChange={onSelect}
               labelClassName={labelClassName}
+              isDefaultImg={isDefaultImg(clothing)}
               imageSrc={setDefaultImg(clothing)}
               imageAlt={`index ${clothing.clothId}`}
               imageClassName={imageClassName}

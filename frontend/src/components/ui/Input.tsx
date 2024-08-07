@@ -1,4 +1,5 @@
 import { ChangeEvent, ComponentPropsWithoutRef } from 'react';
+import { XMarkIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 export type InputProps = {
   id: string | number;
@@ -10,6 +11,7 @@ export type InputProps = {
   imageSrc?: string;
   imageAlt?: string;
   imageClassName?: string;
+  isDefaultImg?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 } & ComponentPropsWithoutRef<'input'>;
 
@@ -23,6 +25,7 @@ export default function Input({
   imageClassName,
   imageSrc,
   imageAlt,
+  isDefaultImg,
   onChange,
   ...props
 }: InputProps) {
@@ -55,6 +58,15 @@ export default function Input({
                 className={imageClassName}
                 
               />
+            )}
+            {isDefaultImg && (
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                className={imageClassName}
+              />
+          
+
             )}
           </label>
         </>

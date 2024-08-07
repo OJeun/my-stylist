@@ -10,6 +10,7 @@ import {
   fetchClosetItems,
 } from '../stores/features/closetItems';
 import { setCategory } from '../stores/features/category';
+import { getTypeId } from '../utils/api/getId';
 
 export default function MyCloset() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +25,6 @@ export default function MyCloset() {
 
   useEffect(() => {
     if (selectedCategory) {
-      console.log(selectedCategory);
       dispatch(fetchClosetItems(selectedCategory));
     }
   }, [dispatch, selectedCategory]);
@@ -38,9 +38,11 @@ export default function MyCloset() {
   };
 
   function handleDeleteItem(itemToBeDeleted: ClosetItem): void {
+    const intTypeId = getTypeId(selectedCategory)
     dispatch(
       deleteClosetItems({
         clothId: itemToBeDeleted.clothId as number,
+        typeId: intTypeId as number,
         userId: localStorage.getItem('uid') as string,
       })
     );

@@ -30,6 +30,7 @@ export async function initializeDatabase(): Promise<void> {
   if (result.count === 0) {
     const insertQuery = `
           INSERT INTO ClothingType (typeId, typeName) VALUES
+          (0, 'default'),
           (1, 'top'),
           (2, 'bottom'),
           (3, 'outer'),
@@ -46,6 +47,7 @@ export async function initializeDatabase(): Promise<void> {
   if (seasonResult.count === 0) {
     const insertSeasonQuery = `
           INSERT INTO Season (seasonId, seasonName) VALUES
+          (0, 'default'),
           (1, 'spring/fall'),
           (2, 'summer'),
           (3, 'winter')

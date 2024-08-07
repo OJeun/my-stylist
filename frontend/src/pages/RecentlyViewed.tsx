@@ -6,7 +6,6 @@ import {
 } from '../stores/features/recentlyViewedItems';
 import Input from '../components/ui/Input';
 import ItemsGrid from '../components/ItemsGrid';
-import ConfirmationModal from '../components/ui/ConformationModal';
 import Button from '../components/ui/Button';
 import { XMarkIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
@@ -22,43 +21,13 @@ export default function RecentlyViewed() {
       dispatch(fetchRecentlyViewedItems(userId));
     }
   }, [dispatch, userId]);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
-
-  const openModal = (itemId: number) => {
-    setItemIdToDelete(itemId);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setItemIdToDelete(null);
-  };
-
-  const handleDelete = (itemsId: number) => {
-    dispatch(deleteRecentlyViewedItems(itemsId));
-  };
-
-  const handleConfirm = async () => {
-    if (itemIdToDelete) {
-      await handleDelete(itemIdToDelete);
-      closeModal();
-    }
-  };
-
+  
   return (
     <>
       <h1 className="text-base text-lg sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-6">
         Recently Viewed
       </h1>
       <div className="flex flex-col items-center mb-6">
-        <ConfirmationModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          onConfirm={handleConfirm}
-          message="Are you sure you want to delete this item?"
-        />
         {fetchedOutfit.map((recentlyViewedItem) => (
           <div
             key={recentlyViewedItem.recentlyViewedCombinationId}
@@ -77,16 +46,6 @@ export default function RecentlyViewed() {
           group
         "
           >
-            <Button
-              className="absolute -top-3 -right-3 md:-top-2 md:-right-8 z-30 opacity-0 group-hover:opacity-100 text-color-primary"
-              onClick={() =>
-                recentlyViewedItem.recentlyViewedCombinationId &&
-                openModal(recentlyViewedItem.recentlyViewedCombinationId)
-              }
-            >
-              <XCircleIcon className="w-6 h-6 md:w-7 md:h-7 text-gray hover:text-background" />
-            </Button>
-
             <div className="flex flex-shrink-0">
               <Input
                 id={String(recentlyViewedItem.recentlyViewedCombinationId)}

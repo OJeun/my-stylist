@@ -1,12 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getSeasonId, getTypeId } from "../../utils/api/getId";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  getSeasonId,
+  getTypeId,
+} from '../../utils/api/getId';
 
 export interface ClosetItem {
   clothId?: number;
   userId: string;
   description: string;
   imgSrc: string;
-  season: string;
+  season: string[];
   typeId: string;
 }
 
@@ -35,7 +38,6 @@ export const fetchClosetItems = createAsyncThunk(
 
       if (response.ok) {
         const data = await response.json();
-
         return data;
       } else {
         return thunkAPI.rejectWithValue(await response.json());

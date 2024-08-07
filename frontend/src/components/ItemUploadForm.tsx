@@ -1,15 +1,15 @@
-import { SetStateAction, useState } from "react";
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import InputGroup from "./ui/InputGroup";
-import Button from "./ui/Button";
-import { InputProps } from "./ui/Input";
-import { BsArrowRepeat } from "react-icons/bs";
-import { categories } from "../pages/OutfitGenerator";
-import { ClosetItem, saveClosetItems } from "../stores/features/closetItems";
-import { useAppDispatch } from "../stores/store";
-import { setCategory } from "../stores/features/category";
-import Input from "./ui/Input";
-import { getSeasonId, getTypeId } from "../utils/api/getId";
+import { SetStateAction, useState } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import InputGroup from './ui/InputGroup';
+import Button from './ui/Button';
+import { InputProps } from './ui/Input';
+import { BsArrowRepeat } from 'react-icons/bs';
+import { categories } from '../pages/OutfitGenerator';
+import { ClosetItem, saveClosetItems } from '../stores/features/closetItems';
+import { useAppDispatch } from '../stores/store';
+import { setCategory } from '../stores/features/category';
+import Input from './ui/Input';
+import { getSeasonId, getTypeId } from '../utils/api/getId';
 
 const seasons: InputProps[] = [
   { id: "spring-fall", type: "checkbox", label: "Spring/Fall" },
@@ -40,19 +40,19 @@ export default function ItemUploadForm({
   const handleSetSelectedSeason = (
     value: SetStateAction<string | string[]>
   ) => {
-    if (typeof value === "function") {
-      setSelectedSeason((prev) => value(prev) as string);
-    } else if (Array.isArray(value)) {
-      setSelectedSeason(value[0]);
+    if (typeof value === 'function') {
+      setSelectedSeason((prev) => value(prev) as string[]);
+    } else if (typeof value === 'string') {
+      setSelectedSeason([value]);
     } else {
       setSelectedSeason(value);
     }
   };
 
   const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedSeason, setSelectedSeason] = useState<string>("");
-  const [description, setDescription] = useState<string>("placeholder");
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSeason, setSelectedSeason] = useState<string[]>([]);
+  const [description, setDescription] = useState<string>('');
 
   const dispatch = useAppDispatch();
 
@@ -78,15 +78,14 @@ export default function ItemUploadForm({
 
   const handleFormSubmit = async () => {
     if (!selectedCategory || !selectedSeason) {
-      alert("Please select both a category and a season.");
+      alert('Please select both a category and a season.');
       return;
     }
 
-
     const data: ClosetItem = {
-      userId: localStorage.getItem("uid") as string,
+      userId: localStorage.getItem('uid') as string,
       imgSrc: imageBase64 as string,
-      season: selectedSeason as string,
+      season: selectedSeason as string[],
       typeId: selectedCategory as string,
       description: description as string,
     };
@@ -183,11 +182,12 @@ export default function ItemUploadForm({
                       inputs={seasons}
                       selected={selectedSeason}
                       setSelected={handleSetSelectedSeason}
-                      singleSelection={true}
+                      singleSelection={false}
                     />
                   </div>
                   <div>
                     <h2 className="mt-[15px]">Description</h2>
+                    <p className="mb-2 text-sm text-red">* This will be used for generating AI suggestion. Please describe as detailed as possible.</p>
                     <Input
                       type="text"
                       id="description"

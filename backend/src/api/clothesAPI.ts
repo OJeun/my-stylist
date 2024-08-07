@@ -10,12 +10,13 @@ const router = express.Router();
 
 router.post('/save-cloth', async (req, res) => {
   const selectedItem = req.body;
+  console.log('Saving cloth:', selectedItem.season, selectedItem.convertedTypeId);
   try {
     await addCloth(
       selectedItem.userId,
       selectedItem.description,
       selectedItem.imgSrc,
-      selectedItem.season,
+      selectedItem.convertedSeason,
       selectedItem.convertedTypeId
     );
     res.json({ message: 'Successfully saved to the closet!' });
@@ -39,8 +40,9 @@ router.get('/closet-items/:category', async (req, res) => {
   }
 });
 
-router.delete('/delete-cloth/:clothId', async (req, res) => {
+router.put('/delete-cloth/:clothId', async (req, res) => {
   const { userId } = req.query;
+  const { typeId } = req.query;
   const { clothId } = req.params;
   console.log('Deleting cloth for user:', userId, 'and cloth Id:', clothId);
   try {
@@ -48,7 +50,7 @@ router.delete('/delete-cloth/:clothId', async (req, res) => {
       userId as string,
       parseInt(clothId as string, 10)
     );
-    await deleteCloth(userId as string, parseInt(clothId as string, 10));
+    await deleteCloth(userId as string, parseInt(typeId as string, 10), parseInt(clothId as string, 10));
     res.json(deletedItem);
   } catch (error) {
     console.error('Error deleting cloth:', error);

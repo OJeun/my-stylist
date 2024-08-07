@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getTypeId } from "../../utils/api/getId";
+import { getSeasonId, getTypeId } from "../../utils/api/getId";
 
 export interface ClosetItem {
   clothId?: number;
@@ -43,6 +43,7 @@ export const saveClosetItems = createAsyncThunk(
   'closetItems/save',
   async ({ userId, description, imgSrc, season, typeId }: ClosetItem, thunkAPI) => {
     const convertedTypeId = getTypeId(typeId);
+    const convertedSeason = getSeasonId(season);
     try {
       const response = await fetch('/api/save-cloth', {
         method: 'POST',
@@ -53,7 +54,7 @@ export const saveClosetItems = createAsyncThunk(
           userId,
           description,
           imgSrc,
-          season,
+          convertedSeason,
           convertedTypeId,
         }),
       });
@@ -70,11 +71,11 @@ export const saveClosetItems = createAsyncThunk(
 
 export const deleteClosetItems = createAsyncThunk(
   'closetItems/delete',
-  async ({ clothId, userId }: { clothId: number; userId: string }, thunkAPI) => {
+  async ({ clothId, typeId, userId }: { clothId: number; typeId: number; userId: string }, thunkAPI) => {
     try {
-      const url = `api/delete-cloth/${clothId}?userId=${userId}`;
+      const url = `api/delete-cloth/${clothId}?typeId=${typeId}&userId=${userId}`;
       const options = {
-        method: 'DELETE',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -83,12 +84,13 @@ export const deleteClosetItems = createAsyncThunk(
       const response = await fetch(url, options);
 
       if (!response.ok) {
-        throw new Error('Failed to delete item');
+        throw new Error('Failed to update item');
       }
+
       const data = await response.json();
       return data;
     } catch (error: any) {
-      console.log('error:', error);
+      console.log('Error:', error);
       return thunkAPI.rejectWithValue({ message: error.message });
     }
   }

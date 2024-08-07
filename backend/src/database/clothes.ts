@@ -39,7 +39,7 @@ export async function getFirstClotheByUserIdAndTypeId(
     try {
         const query = `
             SELECT * FROM Clothes
-            WHERE userId = ? AND typeId = ?
+            WHERE userId = ? AND typeId = ? AND imgSrc NOT LIKE 'http%'
             LIMIT 1
         `;
         const cloth = await db.get(query, [userId, typeId]);
@@ -75,7 +75,7 @@ export async function getClothesByUserIdAndTypeId(
     try {
         const query = `
             SELECT * FROM Clothes
-            WHERE userId = ? AND typeId = ?
+            WHERE userId = ? AND typeId = ? AND imgSrc NOT LIKE 'http%'
         `;
         const clothes = await db.all(query, [userId, typeId]);
         return clothes;
@@ -87,11 +87,26 @@ export async function getClothesByUserIdAndTypeId(
     }
 }
 
-export async function deleteCloth(userId: string, clothId: number): Promise<void> {
+
+export async function deleteCloth(userId: string, typeId: number, clothId: number): Promise<void> {
     const db = await getDbConnection();
+    const defaultImagePaths: { [key: number]: string } = {
+        1: 'default_images/top.png',
+        2: 'default_images/bottom.png',
+        3: 'default_images/outer.png',
+        4: 'default_images/shoes.png',
+        5: 'default_images/bag.png',
+        6: 'default_images/accessories.png',
+    };
+
+    const defaultImagePath = `http://localhost:8888/${defaultImagePaths[typeId]}` || '/default_images/default';
     try {
-      const query = `DELETE FROM Clothes WHERE userId = ? AND clothId = ?`;
-      await db.run(query, [userId, clothId]);
+        db.run(
+            `UPDATE Clothes 
+            SET imgSrc = ?
+            WHERE clothId = ? AND typeId = ?`,
+            [defaultImagePath, clothId, typeId],
+        );
     } catch (error) {
       console.error('Error deleting cloth:', error);
       throw error;

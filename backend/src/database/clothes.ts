@@ -13,23 +13,32 @@ export async function addCloth(
     userId: string,
     description: string,
     imgSrc: string,
-    season: number,
+    seasons: number[],
     typeId: number
 ): Promise<void> {
     const db = await getDbConnection();
     try {
         const query = `
-            INSERT INTO Clothes (userId, description, imgSrc, season, typeId)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO Clothes (userId, description, imgSrc, typeId)
+            VALUES (?, ?, ?, ?)
         `;
-        await db.run(query, [userId, description, imgSrc, season, typeId]);
-    } catch (error) {
-        console.error("Error adding cloth:", error);
-        throw error;
-    } finally {
-        await db.close();
+    const result = await db.run(query, [userId, description, imgSrc, typeId]);
+    const clothId = result.lastID;
+
+    for (const season of seasons) {
+      const seasonQuery = `
+                INSERT INTO ClothesSeason (clothId, seasonId)
+                VALUES (?, ?)
+            `;
+      await db.run(seasonQuery, [clothId, season]);
     }
-}  
+  } catch (error) {
+    console.error('Error adding cloth:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
+}
 
 export async function getFirstClotheByUserIdAndTypeId(
     userId: string,

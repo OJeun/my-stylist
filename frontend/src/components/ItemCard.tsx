@@ -4,6 +4,7 @@ import Input from "./ui/Input";
 import { ComponentPropsWithoutRef } from "react";
 import { ClosetItem } from "../stores/features/closetItems";
 import { useAppSelector } from "../stores/store";
+import { setDefaultImg } from "../utils/api/image";
 
 // ItemCard consist of Input componenet or Button Component
 export const clothingCategory = [
@@ -44,9 +45,11 @@ export default function ItemCard({
   const fetchedCategory = useAppSelector((state) => state.category.category);
 
   const handleDelete = () => {
-    if (onDelete) onDelete(clothing); // Call onDelete if defined
+    if (onDelete) onDelete(clothing); 
     console.log("Deleting a cloth:", clothing);
   };
+
+
   return (
     <div key={clothing.clothId} className="group relative aspect-w-1 aspect-h-1">
       <div className="h-38 sm:h-338 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
@@ -62,7 +65,7 @@ export default function ItemCard({
               checked={isSelected}
               onChange={onSelect}
               labelClassName={labelClassName}
-              imageSrc={clothing.imgSrc}
+              imageSrc={setDefaultImg(clothing)}
               imageAlt={`index ${clothing.clothId}`}
               imageClassName={imageClassName}
             ></Input>

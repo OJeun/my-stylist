@@ -1,36 +1,37 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ClosetItem } from './closetItems';
 
-export interface RecentlyViewedCombination {
-  favouriteCombinationId?: number;
+export interface RecentlyViewedItem {
+  recentlyViewedCombinationId?: number;
   userId: string;
   selectedItem: ClosetItem;
   generatedItems: ClosetItem[];
 }
 
 interface RecentlyViewedCombinationState {
-  recentlyViewedCombinations: RecentlyViewedCombination[];
+  recentlyViewedItems: RecentlyViewedItem[];
 }
 
 const initialState: RecentlyViewedCombinationState = {
-  recentlyViewedCombinations: [],
+  recentlyViewedItems: [],
 };
 
-export const fetchRecentlyViewedCombinations = createAsyncThunk(
-  'recentlyViewedCombinations/fetch',
-  async (thunkAPI) => {
-    const response = await fetch('/api/recently-viewed', {
+
+export const fetchRecentlyViewedItems = createAsyncThunk(
+  'recentlyViewedItems/fetch',
+  async (userId: string, thunkAPI) => {
+    const response = await fetch(`/api/recently-viewed?userId=${userId}`, {
       method: 'GET',
     });
-    const data = response.json();
+    const data = await response.json();
     return data;
   }
 );
 
-export const addRecentlyViewedCombinations = createAsyncThunk(
-  'recentlyViewedCombinations/add',
+export const addRecentlyViewedItems = createAsyncThunk(
+  'recentlyViewedItems/add',
   async (
-    { selectedItem, generatedItems, userId }: RecentlyViewedCombination,
+    { selectedItem, generatedItems, userId }: RecentlyViewedItem,
     thunkAPI
   ) => {
     const response = await fetch('/api/recently-viewed', {
@@ -49,8 +50,8 @@ export const addRecentlyViewedCombinations = createAsyncThunk(
   }
 );
 
-export const deleteRecentlyViewedCombinations = createAsyncThunk(
-  'recentlyViewedCombinations/delete',
+export const deleteRecentlyViewedItems = createAsyncThunk(
+  'recentlyViewedItems/delete',
   async (id: number, thunkAPI) => {
     try {
       const response = await fetch(`/api/recently-viewed/${id}`, {
@@ -67,50 +68,52 @@ export const deleteRecentlyViewedCombinations = createAsyncThunk(
       return id;
     } catch (error) {
       console.error('Error deleting the outfit combination:', error);
-      return thunkAPI.rejectWithValue('Failed to delete the outfit combination');
+      return thunkAPI.rejectWithValue(
+        'Failed to delete the outfit combination'
+      );
     }
   }
 );
 
-export const RecentlyViewedCombinationSlice = createSlice({
-  name: 'favouriteItem',
+export const RecentlyViewedItemSlice = createSlice({
+  name: 'recentlyViewedItems',
   initialState,
   reducers: {},
   extraReducers: (builder: any) => {
     builder.addCase(
-      fetchRecentlyViewedCombinations.fulfilled,
+      fetchRecentlyViewedItems.fulfilled,
       (
         state: RecentlyViewedCombinationState,
         action: PayloadAction<RecentlyViewedCombinationState>
       ) => {
-        state.recentlyViewedCombinations =
-          action.payload as unknown as RecentlyViewedCombination[];
+        console.log("ACTION PAYLOAD!!!", action.payload)
+        state.recentlyViewedItems =
+          action.payload as unknown as RecentlyViewedItem[];
       }
     );
     builder.addCase(
-      addRecentlyViewedCombinations.fulfilled,
+      addRecentlyViewedItems.fulfilled,
       (
         state: RecentlyViewedCombinationState,
-        action: PayloadAction<RecentlyViewedCombination>
+        action: PayloadAction<RecentlyViewedItem>
       ) => {
-        state.recentlyViewedCombinations.push(action.payload);
+        state.recentlyViewedItems.push(action.payload);
       }
     );
     builder.addCase(
-      deleteRecentlyViewedCombinations.fulfilled,
+      deleteRecentlyViewedItems.fulfilled,
       (
         state: RecentlyViewedCombinationState,
-        action: PayloadAction<RecentlyViewedCombination>
+        action: PayloadAction<RecentlyViewedItem>
       ) => {
-        state.recentlyViewedCombinations =
-          state.recentlyViewedCombinations.filter(
-            (item) =>
-              item.favouriteCombinationId !==
-              action.payload.favouriteCombinationId
-          );
+        state.recentlyViewedItems = state.recentlyViewedItems.filter(
+          (item) =>
+            item.recentlyViewedCombinationId !==
+            action.payload.recentlyViewedCombinationId
+        );
       }
     );
   },
 });
 
-export default RecentlyViewedCombinationSlice.reducer;
+export default RecentlyViewedItemSlice.reducer;

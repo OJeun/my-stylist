@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "../stores/store";
 import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
 import { clearToast, setToast } from "../stores/features/toast";
 import Dropdown from "../components/ui/Dropdown";
-import { addRecentlyViewedCombinations } from "../stores/features/recentlyViewedCombination";
+import { addRecentlyViewedItems } from "../stores/features/recentlyViewedItems";
 
 export const categories: InputProps[] = [
   { id: "top", type: "checkbox", label: "TOP" },
@@ -105,7 +105,6 @@ export default function OutfitGenerator() {
 
   const addToRecentlyViewed = async () => {
     if (!selectedItem || fetchedGeneratedItems.length === 0) return;
-    console.log("Adding to recently viewed");
     const data = {
       userId: localStorage.getItem("uid") || "1",
       selectedItem: selectedItem,
@@ -113,7 +112,7 @@ export default function OutfitGenerator() {
     };
 
     try {
-      dispatch(addRecentlyViewedCombinations(data));
+      dispatch(addRecentlyViewedItems(data));
     } catch(err) {
       console.error("Error occurred while adding to recently viewed:", err);
     }

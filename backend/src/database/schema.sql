@@ -9,11 +9,9 @@ CREATE TABLE IF NOT EXISTS Clothes (
     clothId INTEGER PRIMARY KEY AUTOINCREMENT,
     userId VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
-    season INTEGER NOT NULL,
     typeId INTEGER NOT NULL,
     imgSrc TEXT,
     FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE,
-    FOREIGN KEY (season) REFERENCES Season(seasonId),
     FOREIGN KEY (typeId) REFERENCES ClothingType(typeId)
 );
 
@@ -27,6 +25,14 @@ CREATE TABLE IF NOT EXISTS Season (
     seasonId INTEGER NOT NULL,
     seasonName VARCHAR(200) NOT NULL,
     PRIMARY KEY (seasonId)
+);
+
+CREATE TABLE IF NOT EXISTS ClothesSeason (
+    clothId INTEGER NOT NULL,
+    seasonId INTEGER NOT NULL,
+    PRIMARY KEY (clothId, seasonId),
+    FOREIGN KEY (clothId) REFERENCES Clothes(clothId) ON DELETE CASCADE,
+    FOREIGN KEY (seasonId) REFERENCES Season(seasonId)
 );
 
 CREATE TABLE IF NOT EXISTS UserFavoriteCombination (

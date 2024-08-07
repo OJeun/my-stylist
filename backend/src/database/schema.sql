@@ -56,6 +56,6 @@ CREATE TABLE IF NOT EXISTS RecentlyViewedCombination (
     clothId INTEGER NOT NULL,
     isGenerated BOOLEAN NOT NULL,
     PRIMARY KEY (recentCombinationId, clothId),
-    FOREIGN KEY (recentCombinationId) REFERENCES RecentlyViewedCombination(recentCombinationId),
+    FOREIGN KEY (recentCombinationId) REFERENCES UserRecentlyViewedCombination(recentCombinationId),
     FOREIGN KEY (clothId) REFERENCES Clothes(clothId)
 );

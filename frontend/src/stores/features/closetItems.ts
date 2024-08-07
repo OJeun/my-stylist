@@ -28,7 +28,7 @@ export const fetchClosetItems = createAsyncThunk(
       
       if (response.ok) {
         const data = await response.json();
-        console.log('Data:', data);
+
         return data;
       } else {
         return thunkAPI.rejectWithValue(await response.json());

@@ -1,30 +1,28 @@
-import ItemsGrid from "../components/ItemsGrid";
-import Button from "../components/ui/Button";
-import { InputProps } from "../components/ui/Input";
-import { useEffect, useState } from "react";
-import { clothingCategory } from "../components/ItemCard";
-import InputGroup from "../components/ui/InputGroup";
-import { fetchAIRecommendation } from "../utils/api/ai";
-import { saveFavouriteItems } from "../stores/features/favouriteItems";
-import { useAppDispatch, useAppSelector } from "../stores/store";
-import { ClosetItem, fetchClosetItems } from "../stores/features/closetItems";
-import { clearToast, setToast } from "../stores/features/toast";
-import Dropdown from "../components/ui/Dropdown";
-import { addRecentlyViewedItems } from "../stores/features/recentlyViewedItems";
+import ItemsGrid from '../components/ItemsGrid';
+import Button from '../components/ui/Button';
+import { InputProps } from '../components/ui/Input';
+import { useEffect, useState } from 'react';
+import { clothingCategory } from '../components/ItemCard';
+import InputGroup from '../components/ui/InputGroup';
+import { fetchAIRecommendation } from '../utils/api/ai';
+import { saveFavouriteItems } from '../stores/features/favouriteItems';
+import { useAppDispatch, useAppSelector } from '../stores/store';
+import { ClosetItem, fetchClosetItems } from '../stores/features/closetItems';
+import { clearToast, setToast } from '../stores/features/toast';
+import Dropdown from '../components/ui/Dropdown';
+import { addRecentlyViewedItems } from '../stores/features/recentlyViewedItems';
 
 export const categories: InputProps[] = [
-  { id: "top", type: "checkbox", label: "TOP" },
-  { id: "bottom", type: "checkbox", label: "BOTTOM" },
-  { id: "outer", type: "checkbox", label: "OUTER" },
-  { id: "shoes", type: "checkbox", label: "SHOES" },
-  { id: "bag", type: "checkbox", label: "BAG" },
-  { id: "accessories", type: "checkbox", label: "ACCESSORIES" },
+  { id: 'top', type: 'checkbox', label: 'TOP' },
+  { id: 'bottom', type: 'checkbox', label: 'BOTTOM' },
+  { id: 'outer', type: 'checkbox', label: 'OUTER' },
+  { id: 'shoes', type: 'checkbox', label: 'SHOES' },
+  { id: 'bag', type: 'checkbox', label: 'BAG' },
+  { id: 'accessories', type: 'checkbox', label: 'ACCESSORIES' },
 ];
 
 export default function OutfitGenerator() {
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    "top"
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string>('top');
   const [selectedCategoryCheckbox, setCategoryCheckbox] = useState<
     string | string[]
   >([]);
@@ -34,7 +32,7 @@ export default function OutfitGenerator() {
   >([]);
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [alertMessage, setAlertMessage] = useState<string>('');
   const dispatch = useAppDispatch();
 
   const fetchedClosetItems = useAppSelector(
@@ -50,11 +48,11 @@ export default function OutfitGenerator() {
   useEffect(() => {
     if (alertMessage) {
       dispatch(
-        setToast({ message: alertMessage, type: "warning", visible: true })
+        setToast({ message: alertMessage, type: 'warning', visible: true })
       );
       const timer = setTimeout(() => {
         dispatch(clearToast());
-        setAlertMessage("");
+        setAlertMessage('');
       }, 2000);
 
       return () => clearTimeout(timer);
@@ -73,17 +71,17 @@ export default function OutfitGenerator() {
     }
 
     if (!selectedItem) {
-      setAlertMessage("Select an item to be matched!");
+      setAlertMessage('Select an item to be matched!');
       return;
     }
 
     if (selectedCategoryCheckbox.length === 0) {
-      setAlertMessage("Select at least one category!");
+      setAlertMessage('Select at least one category!');
       return;
     }
 
     setLoading(true);
-    const userId = localStorage.getItem("uid") || "1";
+    const userId = localStorage.getItem('uid') || '1';
 
     const data = {
       userId,
@@ -94,36 +92,36 @@ export default function OutfitGenerator() {
 
     try {
       const result = await fetchAIRecommendation(data);
-      setFetchedGeneratedItems(result["generatedItems"]);
-      addToRecentlyViewed();
+      setFetchedGeneratedItems(result['generatedItems']);
+      addToRecentlyViewed(result['generatedItems']);
     } catch (error) {
-      console.error("Error occurred while fetching data:", error);
+      console.error('Error occurred while fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const addToRecentlyViewed = async () => {
-    if (!selectedItem || fetchedGeneratedItems.length === 0) return;
+  const addToRecentlyViewed = async (generatedItems: ClosetItem[]) => {
+    if (!selectedItem || generatedItems.length === 0) return;
     const data = {
-      userId: localStorage.getItem("uid") || "1",
+      userId: localStorage.getItem('uid') || '1',
       selectedItem: selectedItem,
-      generatedItems: fetchedGeneratedItems,
+      generatedItems: generatedItems,
     };
 
     try {
       dispatch(addRecentlyViewedItems(data));
-    } catch(err) {
-      console.error("Error occurred while adding to recently viewed:", err);
+    } catch (err) {
+      console.error('Error occurred while adding to recently viewed:', err);
     }
-  }
+  };
 
   const handleSaveFavourite = async () => {
     if (!selectedItem || fetchedGeneratedItems.length === 0) return;
 
     setLoading(true);
 
-    const userId = localStorage.getItem("uid") || "1";
+    const userId = localStorage.getItem('uid') || '1';
 
     const data = {
       userId: userId,
@@ -134,11 +132,11 @@ export default function OutfitGenerator() {
     try {
       dispatch(saveFavouriteItems(data));
     } catch (error) {
-      console.error("Error occurred while saving data:", error);
+      console.error('Error occurred while saving data:', error);
       dispatch(
         setToast({
           message: error as string,
-          type: "error",
+          type: 'error',
           visible: true,
         })
       );
@@ -148,8 +146,8 @@ export default function OutfitGenerator() {
     } finally {
       dispatch(
         setToast({
-          message: "Succesfully added to Favourite!",
-          type: "success",
+          message: 'Succesfully added to Favourite!',
+          type: 'success',
           visible: false,
         })
       );
@@ -162,7 +160,7 @@ export default function OutfitGenerator() {
 
   const gridClassNames =
     fetchedGeneratedItems.length >= 3
-      ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
+      ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3'
       : `grid-cols-${fetchedGeneratedItems.length}`;
 
   return (
@@ -189,8 +187,8 @@ export default function OutfitGenerator() {
                 key={category}
                 className={`${
                   selectedCategory === category.toLowerCase()
-                    ? "text-primary"
-                    : ""
+                    ? 'text-primary'
+                    : ''
                 } hover:cursor-pointer mr-4 mb-4 text-lg`}
                 onClick={() => {
                   if (selectedCategory !== category) {
@@ -214,10 +212,10 @@ export default function OutfitGenerator() {
               onSelectItem={handleSelectItem}
               wrapCustomClassName="ml-1 sm:ml-3 flex overflow-x-auto gap-2 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
               inputClassName={
-                "peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2"
+                'peer text-primary border-gray-light border-2 focus:ring-primary focus:ring-2'
               }
               labelClassName={
-                "group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
+                'group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative'
               }
               clothingItems={fetchedClosetItems}
             />

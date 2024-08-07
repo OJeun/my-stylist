@@ -1,7 +1,6 @@
 import { ClosetItem } from "../../stores/features/closetItems";
 
 export const setDefaultImg = (cloth: ClosetItem) => {
-    console.log("cloth", cloth.typeId.toString());
     if (!cloth.imgSrc) {
       switch (cloth.typeId.toString()) {
         case "1":

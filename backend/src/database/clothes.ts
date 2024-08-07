@@ -105,7 +105,7 @@ export async function deleteCloth(userId: string, typeId: number, clothId: numbe
             `UPDATE Clothes 
             SET imgSrc = ?
             WHERE clothId = ? AND typeId = ?`,
-            [defaultImagePath, clothId, typeId],
+            [null, clothId, typeId],
         );
     } catch (error) {
       console.error('Error deleting cloth:', error);

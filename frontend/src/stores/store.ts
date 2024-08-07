@@ -5,12 +5,14 @@ import createStore from "react-auth-kit/createStore";
 import { ClosetItemSlice } from "./features/closetItems";
 import { CategorySlice } from "./features/category";
 import { ToastSlice } from "./features/toast"
+import { RecentlyViewedItemSlice } from "./features/recentlyViewedItems";
 
 
 export const store = configureStore({
   reducer: {
     favouriteItem: FavouriteItemSlice.reducer,
     closetItem: ClosetItemSlice.reducer,
+    recentlyViewedItem: RecentlyViewedItemSlice.reducer,
     category: CategorySlice.reducer,
     toast: ToastSlice.reducer
   },

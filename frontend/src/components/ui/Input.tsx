@@ -1,6 +1,7 @@
 import { ChangeEvent, ComponentPropsWithoutRef } from "react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import Button from "./Button";
+import { ClosetItem } from "../../stores/features/closetItems";
 
 export type InputProps = {
   id: string | number;
@@ -13,6 +14,8 @@ export type InputProps = {
   imageAlt?: string;
   imageClassName?: string;
   isDefaultImg?: boolean;
+  cloth?: ClosetItem;
+  handleReplaceButton?: (item: ClosetItem) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 } & ComponentPropsWithoutRef<"input">;
 
@@ -27,7 +30,9 @@ export default function Input({
   imageSrc,
   imageAlt,
   isDefaultImg,
+  cloth,
   onChange,
+  handleReplaceButton,
   ...props
 }: InputProps) {
   return (
@@ -55,10 +60,9 @@ export default function Input({
             {isDefaultImg && (
               <Button
                 className="absolute m-1 md:m-2 -top-0 -right-0 md:-top-0 md:-right-0 z-30 text-color-primary"
-                // onClick={() =>
-                //   favouriteItem.favouriteCombinationId &&
-                //   openModal(favouriteItem.favouriteCombinationId)
-                // }
+                onClick={() =>
+                  cloth && handleReplaceButton && handleReplaceButton(cloth)
+                }
               >
                 <ArrowPathIcon className="w-4 h-4 md:w-5 md:h-5 text-gray" />
               </Button>

@@ -11,6 +11,7 @@ type ClothingListProps = {
   labelClassName?: string;
   imageClassName?: string;
   wrapCustomClassName?: string;
+  onItemSelect?: (item: ClosetItem) => void;
   handleReplaceButton?: (item: ClosetItem) => void;
   onSelectItem?: (item: ClosetItem) => void;
   onDelete?: (item: ClosetItem) => void;
@@ -59,7 +60,10 @@ export default function ItemsGrid({
           clothing={items}
           index={index}
           isSelected={selectedClothing === index}
-          onSelect={() => handleSelectClothing(index, items)}
+          onSelect={() => {
+            handleSelectClothing(index, items);
+            if (onSelectItem) onSelectItem(items);
+          }}
           onDelete={onDelete}
           isInput={isInput}
           imageClassName={imageClassName}

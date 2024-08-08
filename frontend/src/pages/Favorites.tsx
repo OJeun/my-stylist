@@ -31,6 +31,7 @@ export default function Favorites() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
 
   const openModal = (itemId: number) => {
     setItemIdToDelete(itemId);
@@ -62,6 +63,14 @@ export default function Favorites() {
     } 
   };
 
+  const handleSaveChange = async (item: ClosetItem) => {
+    try{
+      console.log(item.typeId)
+      closeItemCard();
+    } catch (error) {
+      console.error("Fail to save replacement item", error)
+    }
+  }
 
   return (
     <>
@@ -120,6 +129,7 @@ export default function Favorites() {
               handleReplaceButton={handleReplaceButton}
               wrapCustomClassName="ml-1 sm:ml-3 flex overflow-x-auto gap-2 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
               clothingItems={favouriteItem.generatedItems}
+              onItemSelect={setSelectedItem}
               inputClassName="hidden"
               labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 h-36 h-40 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-43 xl:w-48 bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
             />
@@ -140,7 +150,11 @@ export default function Favorites() {
                 wrapCustomClassName="ml-1 mb-5 sm:ml-3 flex overflow-x-auto pb-2 pr-2 sm:pb-5 gap-1 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
                 clothingItems={fetchedItemsByCategoryAndSeason}
                 labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 h-36 h-40 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-43 xl:w-48 bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
+                onItemSelect={handleSaveChange}
               />
+                <Button color="secondary">
+                  Replace
+                </Button>
             </div>
           
           </>

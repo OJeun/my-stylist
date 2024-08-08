@@ -39,13 +39,35 @@ export async function getFirstClotheByUserIdAndTypeId(
     try {
         const query = `
             SELECT * FROM Clothes
-            WHERE userId = ? AND typeId = ? AND imgSrc NOT LIKE 'http%'
+            WHERE userId = ? AND typeId = ? AND imgSrc NOT NULL
             LIMIT 1
         `;
         const cloth = await db.get(query, [userId, typeId]);
         return cloth;
     } catch (error) {
         console.error("Error getting first cloth by userId and typeId:", error);
+        throw error;
+    } finally {
+        await db.close();
+    }
+}
+
+export async function getAllClothesByTypeAndSeason(
+    userId: string,
+    typeId: number,
+    seasonId: number
+): Promise<Cloth[]> {
+    const db = await getDbConnection();
+    try {
+        const query = `
+            SELECT * FROM Clothes
+            WHERE userId = ? AND typeId = ? AND season = ? AND imgSrc IS NOT NULL
+        `;
+
+        const clothes = await db.all(query, [userId, typeId, seasonId])
+        return clothes
+    } catch (error) {
+        console.error("Error getting all clothes by type and season:", error);
         throw error;
     } finally {
         await db.close();
@@ -75,7 +97,7 @@ export async function getClothesByUserIdAndTypeId(
     try {
         const query = `
             SELECT * FROM Clothes
-            WHERE userId = ? AND typeId = ? AND imgSrc NOT LIKE 'http%'
+            WHERE userId = ? AND typeId = ? AND imgSrc NOT NULL
         `;
         const clothes = await db.all(query, [userId, typeId]);
         return clothes;

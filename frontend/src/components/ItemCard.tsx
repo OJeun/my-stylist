@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import { ComponentPropsWithoutRef } from "react";
@@ -26,6 +26,7 @@ type ItemCardProps = {
   imageClassName?: string;
   onDelete?: (item: ClosetItem) => void;
   onSelect: () => void;
+  onEdit?: (item: ClosetItem) => void;
   handleReplaceButton?: (item: ClosetItem) => void;
 } & ComponentPropsWithoutRef<"input">;
 
@@ -43,6 +44,7 @@ export default function ItemCard({
   handleReplaceButton,
   onDelete,
   onSelect,
+  onEdit,
 }: ItemCardProps) {
   const fetchedCategory = useAppSelector((state) => state.category.category);
 
@@ -51,10 +53,16 @@ export default function ItemCard({
     console.log("Deleting a cloth:", clothing);
   };
 
+  const handleEdit = () => {
+    if (onEdit) onEdit(clothing);
+    console.log('Editing a cloth:', clothing);
+  };
+
   return (
     <div
       key={clothing.clothId}
       className="group relative aspect-w-1 aspect-h-1"
+      onClick={!isInput ? handleEdit : undefined}
     >
       <div className="h-38 sm:h-338 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-44 xl:w-48 overflow-hidden rounded-md">
         {isInput ? (
@@ -79,12 +87,12 @@ export default function ItemCard({
           </>
         ) : (
           <>
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full cursor-pointer group-hover:opacity-75">
               <button
                 className="absolute top-0 right-0 z-10 rounded-full p-1"
                 onClick={handleDelete}
               >
-                <XMarkIcon className="w-6 h-6 text-gray" />
+                <InformationCircleIcon className="w-6 h-6 text-gray" />
               </button>
               <img
                 src={clothing.imgSrc}

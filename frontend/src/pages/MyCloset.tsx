@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ItemsGrid from '../components/ItemsGrid';
 import Button from '../components/ui/Button';
 import ItemUploadForm from '../components/ItemUploadForm';
+import ItemEditForm from '../components/ItemEditForm';
 import Dropdown from '../components/ui/Dropdown';
 import { useAppDispatch, useAppSelector } from '../stores/store';
 import {
@@ -14,6 +15,8 @@ import { getTypeId } from '../utils/api/getId';
 
 export default function MyCloset() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedClothing, setSelectedClothing] = useState<ClosetItem | null>(null);
   const categories = ['Top', 'Bottom', 'Outer', 'Shoes', 'Bag', 'Accessories'];
   const dispatch = useAppDispatch();
 
@@ -37,8 +40,13 @@ export default function MyCloset() {
     }
   };
 
+  const handleEditItem = (item: ClosetItem) => {
+    setSelectedClothing(item);
+    setIsEditModalOpen(true);
+  };
+
   function handleDeleteItem(itemToBeDeleted: ClosetItem): void {
-    const intTypeId = getTypeId(selectedCategory)
+    const intTypeId = getTypeId(selectedCategory);
     dispatch(
       deleteClosetItems({
         clothId: itemToBeDeleted.clothId as number,
@@ -59,10 +67,7 @@ export default function MyCloset() {
     <div>
       <h1>My Closet</h1>
       <div className="flex justify-between">
-        <Dropdown
-          title="Category"
-          categories={categories}
-        />
+        <Dropdown title="Category" categories={categories} />
         <Button
           color="secondary"
           onClick={handleItemAdd}
@@ -76,6 +81,7 @@ export default function MyCloset() {
           isInput={false}
           clothingItems={fetchedClosetItems}
           onDelete={handleDeleteItem}
+          onEdit={handleEditItem}
           wrapCustomClassName="flex items-center mr-2 ml-2 sm:ml-3 flex overflow-x-auto gap-2 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
           labelClassName={
             'group-hover:opacity-75 inline-flex items-center border-gray-light border-2 w-full h-full bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative'
@@ -88,6 +94,14 @@ export default function MyCloset() {
         <ItemUploadForm
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+        />
+      )}
+
+      {isEditModalOpen && selectedClothing && (
+        <ItemEditForm
+          isModalOpen={isEditModalOpen}
+          setIsModalOpen={setIsEditModalOpen}
+          selectedClothing={selectedClothing}
         />
       )}
     </div>

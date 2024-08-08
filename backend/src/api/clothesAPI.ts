@@ -4,6 +4,7 @@ import {
   getClothByUserIdAndClothId,
   getClothesByUserIdAndTypeId,
   deleteCloth,
+  getAllClothesByTypeAndSeason,
 } from '../database/clothes';
 
 const router = express.Router();
@@ -39,6 +40,22 @@ router.get('/closet-items/:category', async (req, res) => {
     res.status(500).json({ message: 'Error fetching clothes' });
   }
 });
+
+router.get('/closet-items/:category/season/:seasonId', async (req, res) => {
+  const { category, seasonId } = req.params;
+  const { userId } = req.query;
+
+  const categoryIntId = parseInt(category, 10);
+  const seasonIntId = parseInt(seasonId, 10)
+
+  try {
+    const items = await getAllClothesByTypeAndSeason(userId as string, categoryIntId, seasonIntId)
+    res.json(items);
+  } catch (error) {
+    console.error('Error fetching clothes:', error);
+    res.status(500).json({ message: 'Error fetching clothes' });
+  }
+})
 
 router.put('/delete-cloth/:clothId', async (req, res) => {
   const { userId } = req.query;

@@ -18,14 +18,21 @@ const initialState: ClosetItemState = {
   closetItems: [],
 };
 
+interface FetchClosetItemsPayload {
+  category: string;
+  season: string;
+}
+
 export const fetchClosetItems = createAsyncThunk(
-  'closetItems/fetch',
+  "closetItems/fetch",
   async (category: string, thunkAPI) => {
     try {
       const categoryId = getTypeId(category);
-      const userId = localStorage.getItem('uid') as string;
-      const response = await fetch(`/api/closet-items/${categoryId}?userId=${userId}`);
-      
+      const userId = localStorage.getItem("uid") as string;
+      const response = await fetch(
+        `/api/closet-items/${categoryId}?userId=${userId}`
+      );
+
       if (response.ok) {
         const data = await response.json();
 
@@ -34,21 +41,48 @@ export const fetchClosetItems = createAsyncThunk(
         return thunkAPI.rejectWithValue(await response.json());
       }
     } catch (error) {
-      return thunkAPI.rejectWithValue({ message: 'Network error' });
+      return thunkAPI.rejectWithValue({ message: "Network error" });
     }
   }
 );
 
+export const fetchClosetItemsBySeasonAndType = createAsyncThunk(
+  "closetItemsBySeasonAndType/fetch",
+  async ({ category, season }: FetchClosetItemsPayload, thunkAPI) => {
+    try {
+      // const categoryId = await getTypeId(category);
+      // const seasonId = await getSeasonId(season);
+      const userId = localStorage.getItem("uid") as string;
+      const response = await fetch(
+        `/api/closet-items/${category}/season/${season}?userId=${userId}`
+      );
+
+
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } 
+    } catch (error) {
+      console.error("Network error:", error);
+      return thunkAPI.rejectWithValue({ message: "Network error" });
+    }
+  }
+);
+
+
 export const saveClosetItems = createAsyncThunk(
-  'closetItems/save',
-  async ({ userId, description, imgSrc, season, typeId }: ClosetItem, thunkAPI) => {
+  "closetItems/save",
+  async (
+    { userId, description, imgSrc, season, typeId }: ClosetItem,
+    thunkAPI
+  ) => {
     const convertedTypeId = getTypeId(typeId);
     const convertedSeason = getSeasonId(season);
     try {
-      const response = await fetch('/api/save-cloth', {
-        method: 'POST',
+      const response = await fetch("/api/save-cloth", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           userId,
@@ -59,44 +93,51 @@ export const saveClosetItems = createAsyncThunk(
         }),
       });
       if (!response.ok) {
-        throw new Error('Failed to save item.');
+        throw new Error("Failed to save item.");
       }
       const responseData = await response.json();
       return responseData;
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 );
 
 export const deleteClosetItems = createAsyncThunk(
-  'closetItems/delete',
-  async ({ clothId, typeId, userId }: { clothId: number; typeId: number; userId: string }, thunkAPI) => {
+  "closetItems/delete",
+  async (
+    {
+      clothId,
+      typeId,
+      userId,
+    }: { clothId: number; typeId: number; userId: string },
+    thunkAPI
+  ) => {
     try {
       const url = `api/delete-cloth/${clothId}?typeId=${typeId}&userId=${userId}`;
       const options = {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
 
       const response = await fetch(url, options);
 
       if (!response.ok) {
-        throw new Error('Failed to update item');
+        throw new Error("Failed to update item");
       }
 
       const data = await response.json();
       return data;
     } catch (error: any) {
-      console.log('Error:', error);
+      console.log("Error:", error);
       return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
 );
 
-export const ClosetItemSlice= createSlice({
+export const ClosetItemSlice = createSlice({
   name: "closetItem",
   initialState,
   reducers: {
@@ -116,16 +157,19 @@ export const ClosetItemSlice= createSlice({
   },
   extraReducers: (builder: any) => {
     builder.addCase(
-        fetchClosetItems.fulfilled,
-      (
-        state: ClosetItemState,
-        action: PayloadAction<ClosetItemState>
-      ) => {
+      fetchClosetItems.fulfilled,
+      (state: ClosetItemState, action: PayloadAction<ClosetItemState>) => {
         state.closetItems = action.payload as unknown as ClosetItem[];
       }
     );
     builder.addCase(
-        saveClosetItems.fulfilled,
+      fetchClosetItemsBySeasonAndType.fulfilled,
+      (state: ClosetItemState, action: PayloadAction<ClosetItem[]>) => {
+        state.closetItems = action.payload;
+      }
+    );
+    builder.addCase(
+      saveClosetItems.fulfilled,
       (state: ClosetItemState, action: PayloadAction<ClosetItem>) => {
         state.closetItems.push(action.payload);
       }

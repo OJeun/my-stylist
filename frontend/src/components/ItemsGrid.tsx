@@ -1,6 +1,8 @@
 import { ComponentPropsWithoutRef, useState } from "react";
 import { ClosetItem } from "../stores/features/closetItems";
 import ItemCard from "./ItemCard";
+import { useAppDispatch } from "../stores/store";
+import { setCategory } from "../stores/features/category";
 
 type ClothingListProps = {
   isInput: boolean;
@@ -9,6 +11,7 @@ type ClothingListProps = {
   labelClassName?: string;
   imageClassName?: string;
   wrapCustomClassName?: string;
+  handleReplaceButton?: (item: ClosetItem) => void;
   onSelectItem?: (item: ClosetItem) => void;
   onDelete?: (item: ClosetItem) => void;
 } & ComponentPropsWithoutRef<"input">;
@@ -22,12 +25,15 @@ export default function ItemsGrid({
   inputClassName,
   labelClassName,
   imageClassName,
+  handleReplaceButton,
 }: ClothingListProps) {
   const [clothings, setClothings] = useState<ClosetItem[]>([]);
   const [selectedClothing, setSelectedClothing] = useState<number | null>(null);
+  const dispatch = useAppDispatch();
 
   const handleSelectClothing = (index: number, item: ClosetItem) => {
     setSelectedClothing(index);
+    dispatch(setCategory(item.typeId))
     if (onSelectItem) onSelectItem(item);
   };
 
@@ -57,6 +63,7 @@ export default function ItemsGrid({
           onDelete={onDelete}
           isInput={isInput}
           imageClassName={imageClassName}
+          handleReplaceButton={handleReplaceButton}
         />
       ))}
     </div>

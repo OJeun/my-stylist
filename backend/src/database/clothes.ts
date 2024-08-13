@@ -1,24 +1,24 @@
-import { getDbConnection } from "./db";
+import { getDbConnection } from './db';
 
 interface Cloth {
-    userId?: string,
-    clothId: string,
-    description: string,
-    imgSrc: string,
-    season: number,
-    typeId: number
+  userId?: string;
+  clothId: string;
+  description: string;
+  imgSrc: string;
+  season: number;
+  typeId: number;
 }
 
 export async function addCloth(
-    userId: string,
-    description: string,
-    imgSrc: string,
-    seasons: number[],
-    typeId: number
+  userId: string,
+  description: string,
+  imgSrc: string,
+  seasons: number[],
+  typeId: number
 ): Promise<void> {
-    const db = await getDbConnection();
-    try {
-        const query = `
+  const db = await getDbConnection();
+  try {
+    const query = `
             INSERT INTO Clothes (userId, description, imgSrc, typeId)
             VALUES (?, ?, ?, ?)
         `;
@@ -80,46 +80,46 @@ export async function updateCloth(
 }
 
 export async function getFirstClotheByUserIdAndTypeId(
-    userId: string,
-    typeId: number
+  userId: string,
+  typeId: number
 ): Promise<Cloth> {
-    const db = await getDbConnection();
-    try {
-        const query = `
+  const db = await getDbConnection();
+  try {
+    const query = `
             SELECT * FROM Clothes
             WHERE userId = ? AND typeId = ? AND imgSrc NOT NULL
             LIMIT 1
         `;
-        const cloth = await db.get(query, [userId, typeId]);
-        return cloth;
-    } catch (error) {
-        console.error("Error getting first cloth by userId and typeId:", error);
-        throw error;
-    } finally {
-        await db.close();
-    }
+    const cloth = await db.get(query, [userId, typeId]);
+    return cloth;
+  } catch (error) {
+    console.error('Error getting first cloth by userId and typeId:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
 }
 
 export async function getAllClothesByTypeAndSeason(
-    userId: string,
-    typeId: number,
-    seasonId: number
+  userId: string,
+  typeId: number,
+  seasonId: number
 ): Promise<Cloth[]> {
-    const db = await getDbConnection();
-    try {
-        const query = `
+  const db = await getDbConnection();
+  try {
+    const query = `
             SELECT * FROM Clothes
             WHERE userId = ? AND typeId = ? AND season = ? AND imgSrc IS NOT NULL
         `;
 
-        const clothes = await db.all(query, [userId, typeId, seasonId])
-        return clothes
-    } catch (error) {
-        console.error("Error getting all clothes by type and season:", error);
-        throw error;
-    } finally {
-        await db.close();
-    }
+    const clothes = await db.all(query, [userId, typeId, seasonId]);
+    return clothes;
+  } catch (error) {
+    console.error('Error getting all clothes by type and season:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
 }
 
 export async function getAllClothesByTypeAndSeasons(
@@ -131,7 +131,7 @@ export async function getAllClothesByTypeAndSeasons(
   try {
     const questionMarksForSeasons = seasonIds.map(() => '?').join(', ');
     const query = `
-      SELECT Clothes.*
+      SELECT DISTINCT Clothes.*
       FROM Clothes
       INNER JOIN ClothesSeason ON Clothes.clothId = ClothesSeason.clothId
       WHERE Clothes.userId = ? 
@@ -165,48 +165,54 @@ export async function getClothByUserIdAndClothId(
 }
 
 export async function getClothesByUserIdAndTypeId(
-    userId: string,
-    typeId: number
+  userId: string,
+  typeId: number
 ): Promise<Cloth[]> {
-    const db = await getDbConnection();
-    try {
-        const query = `
+  const db = await getDbConnection();
+  try {
+    const query = `
             SELECT * FROM Clothes
             WHERE userId = ? AND typeId = ? AND imgSrc NOT NULL
         `;
-        const clothes = await db.all(query, [userId, typeId]);
-        return clothes;
-    } catch (error) {
-        console.error("Error getting clothes by userId and typeId:", error);
-        throw error;
-    } finally {
-        await db.close();
-    }
+    const clothes = await db.all(query, [userId, typeId]);
+    return clothes;
+  } catch (error) {
+    console.error('Error getting clothes by userId and typeId:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
 }
 
-export async function deleteCloth(userId: string, typeId: number, clothId: number): Promise<void> {
-    const db = await getDbConnection();
-    const defaultImagePaths: { [key: number]: string } = {
-        1: 'default_images/top.png',
-        2: 'default_images/bottom.png',
-        3: 'default_images/outer.png',
-        4: 'default_images/shoes.png',
-        5: 'default_images/bag.png',
-        6: 'default_images/accessories.png',
-    };
+export async function deleteCloth(
+  userId: string,
+  typeId: number,
+  clothId: number
+): Promise<void> {
+  const db = await getDbConnection();
+  const defaultImagePaths: { [key: number]: string } = {
+    1: 'default_images/top.png',
+    2: 'default_images/bottom.png',
+    3: 'default_images/outer.png',
+    4: 'default_images/shoes.png',
+    5: 'default_images/bag.png',
+    6: 'default_images/accessories.png',
+  };
 
-    const defaultImagePath = `http://localhost:8888/${defaultImagePaths[typeId]}` || '/default_images/default';
-    try {
-        db.run(
-            `UPDATE Clothes 
+  const defaultImagePath =
+    `http://localhost:8888/${defaultImagePaths[typeId]}` ||
+    '/default_images/default';
+  try {
+    db.run(
+      `UPDATE Clothes 
             SET imgSrc = ?
             WHERE clothId = ? AND typeId = ?`,
-            [null, clothId, typeId],
-        );
-    } catch (error) {
-      console.error('Error deleting cloth:', error);
-      throw error;
-    }
+      [null, clothId, typeId]
+    );
+  } catch (error) {
+    console.error('Error deleting cloth:', error);
+    throw error;
+  }
 }
 
 export async function getClothSeasons(clothId: number): Promise<number[]> {

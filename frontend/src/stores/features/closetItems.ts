@@ -105,6 +105,35 @@ export const saveClosetItems = createAsyncThunk(
   }
 );
 
+export const updateClosetItems = createAsyncThunk(
+  'closetItems/update',
+  async ({ clothId, userId, description, season }: ClosetItem, thunkAPI) => {
+    try {
+      const response = await fetch(`/api/update-cloth/${clothId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          description,
+          seasons: season,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update item.');
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error('Error:', error);
+      return thunkAPI.rejectWithValue({ message: 'error' });
+    }
+  }
+);
+
 export const deleteClosetItems = createAsyncThunk(
   "closetItems/delete",
   async (

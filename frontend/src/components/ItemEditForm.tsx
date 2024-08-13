@@ -1,15 +1,21 @@
-import { SetStateAction, useState, useEffect } from 'react';
+import React, { useState, useEffect, SetStateAction } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import InputGroup from './ui/InputGroup';
 import Button from './ui/Button';
 import { InputProps } from './ui/Input';
-import { BsArrowRepeat } from 'react-icons/bs';
-import { categories } from '../pages/OutfitGenerator';
-import { ClosetItem, saveClosetItems } from '../stores/features/closetItems';
+import {
+  ClosetItem,
+  deleteClosetItems,
+  updateClosetItems,
+} from '../stores/features/closetItems';
 import { useAppDispatch } from '../stores/store';
-import { setCategory } from '../stores/features/category';
 import Input from './ui/Input';
-import { convertTypeIdToCategory } from '../utils/api/getId';
+import {
+  convertTypeIdToCategory,
+  getSeasonId,
+  getTypeId,
+} from '../utils/api/getId';
+import ConfirmationModal from './ui/ConformationModal';
 
 const seasons: InputProps[] = [
   { id: 'spring-fall', type: 'checkbox', label: 'Spring/Fall' },
@@ -28,18 +34,7 @@ export default function ItemEditForm({
   setIsModalOpen,
   selectedClothing,
 }: ItemEditFormProps) {
-  const handleSetSelectedSeason = (
-    value: SetStateAction<string | string[]>
-  ) => {
-    if (typeof value === 'function') {
-      setSelectedSeason((prev) => value(prev) as string[]);
-    } else if (typeof value === 'string') {
-      setSelectedSeason([value]);
-    } else {
-      setSelectedSeason(value);
-    }
-  };
-
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSeason, setSelectedSeason] = useState<string[]>([]);
@@ -47,56 +42,79 @@ export default function ItemEditForm({
 
   const dispatch = useAppDispatch();
 
-  const convertedTypeId = convertTypeIdToCategory(
-    Number(selectedClothing.typeId)
-  );
-
   useEffect(() => {
-    if (selectedClothing) {
+    if (selectedClothing && selectedClothing.clothId !== undefined) {
       setImageBase64(selectedClothing.imgSrc);
-      setSelectedCategory(convertedTypeId?.toUpperCase() || '');
-      // setSelectedSeason(selectedClothing.season);
+      setSelectedCategory(
+        convertTypeIdToCategory(
+          Number(selectedClothing.typeId)
+        )?.toUpperCase() || ''
+      );
       setDescription(selectedClothing.description);
     }
-  }, [selectedClothing]);
+  }, [selectedClothing, dispatch]);
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const base64 = reader.result;
-      setImageBase64(base64 as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleDeleteImage = () => {
-    setImageBase64(null);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
+  const handleSeasonChange = (newSeason: SetStateAction<string | string[]>) => {
+    if (typeof newSeason === 'function') {
+      setSelectedSeason((prev) => {
+        const result = (
+          newSeason as (prev: string | string[]) => string | string[]
+        )(prev);
+        return Array.isArray(result) ? result : [result];
+      });
+    } else if (Array.isArray(newSeason)) {
+      setSelectedSeason(newSeason);
+    } else {
+      setSelectedSeason([newSeason]);
+    }
   };
 
   const handleFormSubmit = async () => {
-    if (!selectedCategory || !selectedSeason) {
+    if (!selectedSeason) {
       alert('Please select both a category and a season.');
       return;
     }
+    console.log('Selected Season before submit:', selectedSeason);
 
-    const data: ClosetItem = {
+    const data: any = {
+      clothId: selectedClothing.clothId as number,
       userId: localStorage.getItem('uid') as string,
       imgSrc: imageBase64 as string,
-      season: selectedSeason as string[],
+      season: getSeasonId(selectedSeason),
       typeId: selectedCategory as string,
       description: description as string,
     };
-    dispatch(saveClosetItems(data));
-    dispatch(setCategory(selectedCategory));
-
+    console.log('Season IDs:', data.season);
+    console.log('data', data);
+    dispatch(updateClosetItems(data));
     setIsModalOpen(false);
+  };
+
+  function handleDeleteItem(): void {
+    const intTypeId = getTypeId(selectedCategory);
+    dispatch(
+      deleteClosetItems({
+        typeId: intTypeId as number,
+        userId: localStorage.getItem('uid') as string,
+        clothId: selectedClothing.clothId as number,
+      })
+    );
+    setIsModalOpen(false);
+  }
+
+  const handleConfirm = async () => {
+    if (selectedClothing) {
+      await handleDeleteItem();
+      closeConfirmationModal();
+    }
+  };
+
+  const openConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
   };
 
   const handleCloseModal = () => {
@@ -145,41 +163,22 @@ export default function ItemEditForm({
                   </svg>
                 </button>
 
-                <div
-                  className="relative bg-white border-dashed rounded-lg p-8 border-2 border-gray-light text-center w-[150px] h-[150px] md:w-[200px] md:h-[200px] flex items-center justify-center"
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
-                >
-                  <div
-                    className="btn delete-button text-gray hover:text-black absolute top-2 right-2 hover:cursor-pointer"
-                    onClick={handleDeleteImage}
-                  >
-                    <BsArrowRepeat />
-                  </div>
-                  {!imageBase64 ? (
-                    <p className="text-gray">
-                      <strong>Drag & Drop</strong> Your Clothing Photo!
-                    </p>
-                  ) : (
-                    <img
-                      className="object-cover max-h-full max-w-full"
-                      src={imageBase64}
-                      alt="Uploaded"
-                    />
-                  )}
+                <div className="relative bg-white text-center w-[150px] h-[150px] md:w-[200px] md:h-[200px] flex items-center justify-center">
+                  <img
+                    className="object-cover max-h-full max-w-full"
+                    src={imageBase64 || ''}
+                    alt="Uploaded"
+                  />
                 </div>
                 <div>
                   <div>
-                    <h2>Category</h2>
-                    <p>{selectedCategory}</p>
-                  </div>
-                  <div>
                     <h2 className="mt-[15px]">Season</h2>
+
                     <InputGroup
                       className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-5"
                       inputs={seasons}
                       selected={selectedSeason}
-                      setSelected={handleSetSelectedSeason}
+                      setSelected={handleSeasonChange}
                       singleSelection={false}
                     />
                   </div>
@@ -201,18 +200,25 @@ export default function ItemEditForm({
               </div>
 
               <div className="mt-6 flex justify-center space-x-4">
-                <Button color="textOnly" onClick={handleCloseModal}>
-                  Cancel
-                </Button>
                 <Button
                   color="secondary"
-                  additionalclassname="w-30 sm: w-60"
+                  additionalclassname="w-30 sm:w-60"
                   onClick={handleFormSubmit}
                 >
-                  Add Item
+                  SAVE CHANGE
+                </Button>
+                <Button color="primary" onClick={openConfirmationModal}>
+                  DELETE ITEM
                 </Button>
               </div>
             </div>
+
+            <ConfirmationModal
+              isOpen={isConfirmationModalOpen}
+              onClose={closeConfirmationModal}
+              onConfirm={handleConfirm}
+              message="Are you sure you want to delete this item?"
+            />
           </DialogPanel>
         </div>
       </div>

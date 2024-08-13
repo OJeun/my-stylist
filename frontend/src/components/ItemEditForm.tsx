@@ -74,8 +74,7 @@ export default function ItemEditForm({
       alert('Please select both a category and a season.');
       return;
     }
-    console.log('Selected Season before submit:', selectedSeason);
-
+    
     const data: any = {
       clothId: selectedClothing.clothId as number,
       userId: localStorage.getItem('uid') as string,
@@ -84,8 +83,7 @@ export default function ItemEditForm({
       typeId: selectedCategory as string,
       description: description as string,
     };
-    console.log('Season IDs:', data.season);
-    console.log('data', data);
+
     dispatch(updateClosetItems(data));
     setIsModalOpen(false);
   };

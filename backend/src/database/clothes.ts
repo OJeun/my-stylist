@@ -122,6 +122,33 @@ export async function getAllClothesByTypeAndSeason(
     }
 }
 
+export async function getAllClothesByTypeAndSeasons(
+  userId: string,
+  typeId: number,
+  seasonIds: number[]
+): Promise<Cloth[]> {
+  const db = await getDbConnection();
+  try {
+    const questionMarksForSeasons = seasonIds.map(() => '?').join(', ');
+    const query = `
+      SELECT Clothes.*
+      FROM Clothes
+      INNER JOIN ClothesSeason ON Clothes.clothId = ClothesSeason.clothId
+      WHERE Clothes.userId = ? 
+      AND Clothes.typeId = ?
+      AND ClothesSeason.seasonId IN (${questionMarksForSeasons})
+      AND Clothes.imgSrc IS NOT NULL
+    `;
+    const clothes = await db.all(query, [userId, typeId, ...seasonIds]);
+    return clothes;
+  } catch (error) {
+    console.error('Error getting all clothes by type and seasons:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
+}
+
 export async function getClothByUserIdAndClothId(
   userId: string,
   clothId: number
@@ -157,7 +184,6 @@ export async function getClothesByUserIdAndTypeId(
     }
 }
 
-
 export async function deleteCloth(userId: string, typeId: number, clothId: number): Promise<void> {
     const db = await getDbConnection();
     const defaultImagePaths: { [key: number]: string } = {
@@ -183,7 +209,7 @@ export async function deleteCloth(userId: string, typeId: number, clothId: numbe
     }
 }
 
-export async function getClothSeasons(clothId: number): Promise<string[]> {
+export async function getClothSeasons(clothId: number): Promise<number[]> {
   const db = await getDbConnection();
   try {
     const query = `SELECT seasonId FROM ClothesSeason WHERE clothId = ?`;

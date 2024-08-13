@@ -4,7 +4,7 @@ import {
   getClothByUserIdAndClothId,
   getClothesByUserIdAndTypeId,
   deleteCloth,
-  getAllClothesByTypeAndSeason,
+  getAllClothesByTypeAndSeasons,
   updateCloth,
   getClothSeasons,
 } from '../database/clothes';
@@ -43,21 +43,43 @@ router.get('/closet-items/:category', async (req, res) => {
   }
 });
 
-router.get('/closet-items/:category/season/:seasonId', async (req, res) => {
-  const { category, seasonId } = req.params;
-  const { userId } = req.query;
+// router.get('/closet-items/:category/season/:seasonId', async (req, res) => {
+//   const { category, seasonId } = req.params;
+//   const { userId } = req.query;
 
+//   const categoryIntId = parseInt(category, 10);
+//   const seasonIntId = parseInt(seasonId, 10)
+
+//   try {
+//     const items = await getAllClothesByTypeAndSeason(userId as string, categoryIntId, seasonIntId)
+//     res.json(items);
+//   } catch (error) {
+//     console.error('Error fetching clothes:', error);
+//     res.status(500).json({ message: 'Error fetching clothes' });
+//   }
+// })
+
+router.get('/closet-items/:category/season', async (req, res) => {
+  const { category } = req.params;
+  const { userId, seasons } = req.query;
   const categoryIntId = parseInt(category, 10);
-  const seasonIntId = parseInt(seasonId, 10)
 
   try {
-    const items = await getAllClothesByTypeAndSeason(userId as string, categoryIntId, seasonIntId)
+    const seasonIntIds = (seasons as string)
+      .split(',')
+      .map((id) => parseInt(id, 10));
+
+    const items = await getAllClothesByTypeAndSeasons(
+      userId as string,
+      categoryIntId,
+      seasonIntIds
+    );
     res.json(items);
   } catch (error) {
     console.error('Error fetching clothes:', error);
     res.status(500).json({ message: 'Error fetching clothes' });
   }
-})
+});
 
 router.get('/closet-items/seasons/:clothId', async (req, res) => {
   const { clothId } = req.params;

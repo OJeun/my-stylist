@@ -1,5 +1,4 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import Button from "./ui/Button";
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import Input from "./ui/Input";
 import { ComponentPropsWithoutRef } from "react";
 import { ClosetItem } from "../stores/features/closetItems";
@@ -24,7 +23,6 @@ type ItemCardProps = {
   inputClassName?: string;
   labelClassName?: string;
   imageClassName?: string;
-  onDelete?: (item: ClosetItem) => void;
   onSelect: () => void;
   onEdit?: (item: ClosetItem) => void;
   handleReplaceButton?: (item: ClosetItem) => void;
@@ -42,16 +40,10 @@ export default function ItemCard({
   labelClassName,
   imageClassName,
   handleReplaceButton,
-  onDelete,
   onSelect,
   onEdit,
 }: ItemCardProps) {
   const fetchedCategory = useAppSelector((state) => state.category.category);
-
-  const handleDelete = () => {
-    if (onDelete) onDelete(clothing);
-    console.log("Deleting a cloth:", clothing);
-  };
 
   const handleEdit = () => {
     if (onEdit) onEdit(clothing);
@@ -90,9 +82,8 @@ export default function ItemCard({
             <div className="relative w-full h-full cursor-pointer group-hover:opacity-75">
               <button
                 className="absolute top-0 right-0 z-10 rounded-full p-1"
-                onClick={handleDelete}
               >
-                <InformationCircleIcon className="w-6 h-6 text-gray" />
+                <PencilSquareIcon className="w-6 h-6 text-gray" />
               </button>
               <img
                 src={clothing.imgSrc}

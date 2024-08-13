@@ -14,14 +14,12 @@ type ClothingListProps = {
   onItemSelect?: (item: ClosetItem) => void;
   handleReplaceButton?: (item: ClosetItem) => void;
   onSelectItem?: (item: ClosetItem) => void;
-  onDelete?: (item: ClosetItem) => void;
   onEdit?: (item: ClosetItem) => void;
 } & ComponentPropsWithoutRef<'input'>;
 
 export default function ItemsGrid({
   isInput,
   onSelectItem,
-  onDelete,
   onEdit,
   clothingItems,
   wrapCustomClassName,
@@ -66,7 +64,6 @@ export default function ItemsGrid({
             handleSelectClothing(index, items);
             if (onSelectItem) onSelectItem(items);
           }}
-          onDelete={onDelete}
           onEdit={onEdit}
           isInput={isInput}
           imageClassName={imageClassName}

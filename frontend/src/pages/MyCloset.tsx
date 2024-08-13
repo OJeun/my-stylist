@@ -45,22 +45,10 @@ export default function MyCloset() {
     setIsEditModalOpen(true);
   };
 
-  function handleDeleteItem(itemToBeDeleted: ClosetItem): void {
-    const intTypeId = getTypeId(selectedCategory);
-    dispatch(
-      deleteClosetItems({
-        clothId: itemToBeDeleted.clothId as number,
-        typeId: intTypeId as number,
-        userId: localStorage.getItem('uid') as string,
-      })
-    );
-  }
-
   // const handleCategorySelect = (category: string) => {
   //   setSelectedCategory(category)
   //   dispatch(fetchClosetItems(category.toLowerCase()))
   //   dispatch(setCategory(category.toLowerCase()))
-
   // }
 
   return (
@@ -80,7 +68,6 @@ export default function MyCloset() {
         <ItemsGrid
           isInput={false}
           clothingItems={fetchedClosetItems}
-          onDelete={handleDeleteItem}
           onEdit={handleEditItem}
           wrapCustomClassName="flex items-center mr-2 ml-2 sm:ml-3 flex overflow-x-auto gap-2 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
           labelClassName={

@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   deleteFavouriteItems,
   fetchFavouriteItems,
-} from "../stores/features/favouriteItems";
-import { useAppDispatch, useAppSelector } from "../stores/store";
-import Input from "../components/ui/Input";
-import ItemsGrid from "../components/ItemsGrid";
-import Button from "../components/ui/Button";
-import { XMarkIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import ConfirmationModal from "../components/ui/ConformationModal";
-import { ClosetItem, fetchClosetItemsBySeasonAndType } from "../stores/features/closetItems";
-import { isDefaultImg, setDefaultImg } from "../utils/api/image";
-import { useItemCard } from "../hooks/useItemCard";
+} from '../stores/features/favouriteItems';
+import { useAppDispatch, useAppSelector } from '../stores/store';
+import Input from '../components/ui/Input';
+import ItemsGrid from '../components/ItemsGrid';
+import Button from '../components/ui/Button';
+import { XMarkIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import ConfirmationModal from '../components/ui/ConformationModal';
+import {
+  ClosetItem,
+  fetchClosetItemsBySeasonAndType,
+} from '../stores/features/closetItems';
+import { isDefaultImg, setDefaultImg } from '../utils/api/image';
+import { useItemCard } from '../hooks/useItemCard';
+import { convertSeasonIdToSeason } from '../utils/api/getId';
 
 export default function Favorites() {
   const dispatch = useAppDispatch();
   const fetchedFavouriteItems = useAppSelector(
     (state) => state.favouriteItem.favouriteItems
   );
-  const userId = localStorage.getItem("uid") || "1";
+  const userId = localStorage.getItem('uid') || '1';
   const { showItemCard, openItemCard, closeItemCard } = useItemCard();
 
   useEffect(() => {
@@ -27,7 +31,9 @@ export default function Favorites() {
     }
   }, [dispatch]);
 
-  const fetchedItemsByCategoryAndSeason = useAppSelector((state) => state.closetItem.closetItems);
+  const fetchedItemsByCategoryAndSeason = useAppSelector(
+    (state) => state.closetItem.closetItems
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
@@ -54,23 +60,52 @@ export default function Favorites() {
     }
   };
 
+  // const handleReplaceButton = async (item: ClosetItem) => {
+  //   try{
+  //     await dispatch(fetchClosetItemsBySeasonAndType({ category: item.typeId, season: item.season }));
+  //     openItemCard();
+  //   } catch (error) {
+  //     console.error("Failed to fetch items by season and type", error);
+  //   }
+  // };
+
   const handleReplaceButton = async (item: ClosetItem) => {
-    try{
-      await dispatch(fetchClosetItemsBySeasonAndType({ category: item.typeId, season: item.season }));
+    try {
+      // Fetch seasons from backend
+      const response = await fetch(`/api/closet-items/seasons/${item.clothId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch seasons from the backend');
+      }
+      const seasonIntIds: number[] = await response.json();
+
+      // Convert season IDs to season names and filter out any undefined values
+      const seasons = seasonIntIds
+        .map(convertSeasonIdToSeason)
+        .filter(
+          (season): season is 'spring-fall' | 'summer' | 'winter' =>
+            season !== undefined
+        );
+
+      await dispatch(
+        fetchClosetItemsBySeasonAndType({
+          category: item.typeId,
+          seasons: seasons,
+        })
+      );
       openItemCard();
     } catch (error) {
-      console.error("Failed to fetch items by season and type", error);
-    } 
+      console.error('Failed to fetch items by season and type', error);
+    }
   };
 
   const handleSaveChange = async (item: ClosetItem) => {
-    try{
-      console.log(item.typeId)
+    try {
+      console.log(item.typeId);
       closeItemCard();
     } catch (error) {
-      console.error("Fail to save replacement item", error)
+      console.error('Fail to save replacement item', error);
     }
-  }
+  };
 
   return (
     <>
@@ -137,13 +172,14 @@ export default function Favorites() {
         ))}
         {showItemCard && (
           <>
-
             <div
               className="fixed inset-0 bg-black opacity-30 z-40"
               onClick={closeItemCard}
-              ></div>
-              <div className="bg-white inset-0 items-center justify-center z-50 sm: max-w-3xl sm:max-h-80">
-              <h2 className="text-center sm:text-3">Select the item to be replaced</h2>
+            ></div>
+            <div className="bg-white inset-0 items-center justify-center z-50 sm: max-w-3xl sm:max-h-80">
+              <h2 className="text-center sm:text-3">
+                Select the item to be replaced
+              </h2>
 
               <ItemsGrid
                 isInput={true}
@@ -152,11 +188,8 @@ export default function Favorites() {
                 labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 h-36 h-40 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-43 xl:w-48 bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
                 onItemSelect={handleSaveChange}
               />
-                <Button color="secondary">
-                  Replace
-                </Button>
+              <Button color="secondary">Replace</Button>
             </div>
-          
           </>
         )}
       </div>

@@ -73,12 +73,12 @@ export async function getRecentlyViewedOutfitSuggestion(
         const recentlyViewedOutfitCombinationId = row.recentCombinationId;
 
         const selectedItem = await db.get(
-          'SELECT Clothes.clothId, Clothes.typeId, Clothes.season, Clothes.imgSrc FROM Clothes JOIN RecentlyViewedCombination ON RecentlyViewedCombination.clothId = Clothes.clothId WHERE recentCombinationId = ? AND isGenerated = 0',
+          'SELECT Clothes.clothId, Clothes.typeId, Clothes.imgSrc FROM Clothes JOIN RecentlyViewedCombination ON RecentlyViewedCombination.clothId = Clothes.clothId WHERE recentCombinationId = ? AND isGenerated = 0',
           recentlyViewedOutfitCombinationId
         );
 
         const generatedItems = await db.all(
-          'SELECT Clothes.clothId, Clothes.typeId, Clothes.season, Clothes.imgSrc FROM Clothes JOIN RecentlyViewedCombination ON RecentlyViewedCombination.clothId = Clothes.clothId WHERE recentCombinationId = ? AND isGenerated = 1',
+          'SELECT Clothes.clothId, Clothes.typeId, Clothes.imgSrc FROM Clothes JOIN RecentlyViewedCombination ON RecentlyViewedCombination.clothId = Clothes.clothId WHERE recentCombinationId = ? AND isGenerated = 1',
           recentlyViewedOutfitCombinationId
         );
         return {

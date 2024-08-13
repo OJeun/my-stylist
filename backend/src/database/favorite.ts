@@ -27,12 +27,12 @@ export async function fetchFavoriteItems(userId: string): Promise<FavoriteCombin
         const favouriteCombinationId = row.favoriteCombinationId;
         
         const selectedItem = await db.get(
-          "SELECT Clothes.clothId, Clothes.typeId, Clothes.season, Clothes.imgSrc FROM Clothes JOIN FavoriteCombinationClothes ON FavoriteCombinationClothes.clothId = Clothes.clothId WHERE favoriteCombinationId = ? AND isGenerated = 0",
+          "SELECT Clothes.clothId, Clothes.typeId, Clothes.imgSrc FROM Clothes JOIN FavoriteCombinationClothes ON FavoriteCombinationClothes.clothId = Clothes.clothId WHERE favoriteCombinationId = ? AND isGenerated = 0",
           favouriteCombinationId
         );
         
         const generatedItems = await db.all(
-          "SELECT Clothes.clothId, Clothes.typeId, Clothes.season, Clothes.imgSrc FROM Clothes JOIN FavoriteCombinationClothes ON FavoriteCombinationClothes.clothId = Clothes.clothId WHERE favoriteCombinationId = ? AND isGenerated = 1",
+          "SELECT Clothes.clothId, Clothes.typeId, Clothes.imgSrc FROM Clothes JOIN FavoriteCombinationClothes ON FavoriteCombinationClothes.clothId = Clothes.clothId WHERE favoriteCombinationId = ? AND isGenerated = 1",
           favouriteCombinationId
         );
         return {

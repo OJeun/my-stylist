@@ -40,6 +40,45 @@ export async function addCloth(
   }
 }
 
+export async function updateCloth(
+  userId: string,
+  clothId: number,
+  description: string,
+  seasons: number[]
+): Promise<void> {
+  const db = await getDbConnection();
+  try {
+    const updateClothQuery = `UPDATE Clothes SET description = ? WHERE userId = ? AND clothId = ?`;
+    await db.run(updateClothQuery, [description, userId, clothId]);
+
+    await db.run('BEGIN TRANSACTION');
+
+    try {
+      const deleteSeasonsQuery = `DELETE FROM ClothesSeason WHERE clothId = ?`;
+      await db.run(deleteSeasonsQuery, [clothId]);
+
+      for (const seasonId of seasons) {
+        const insertSeasonQuery = `INSERT INTO ClothesSeason (clothId, seasonId) VALUES (?, ?)`;
+        console.log('Running inserting season query:', insertSeasonQuery, [
+          clothId,
+          seasonId,
+        ]);
+        await db.run(insertSeasonQuery, [clothId, seasonId]);
+      }
+      await db.run('COMMIT');
+    } catch (error) {
+      await db.run('ROLLBACK');
+      console.error('Transaction failed:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error updating cloth:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
+}
+
 export async function getFirstClotheByUserIdAndTypeId(
     userId: string,
     typeId: number
@@ -142,4 +181,18 @@ export async function deleteCloth(userId: string, typeId: number, clothId: numbe
       console.error('Error deleting cloth:', error);
       throw error;
     }
+}
+
+export async function getClothSeasons(clothId: number): Promise<string[]> {
+  const db = await getDbConnection();
+  try {
+    const query = `SELECT seasonId FROM ClothesSeason WHERE clothId = ?`;
+    const rows = await db.all(query, [clothId]);
+    return rows.map((row) => row.seasonId);
+  } catch (error) {
+    console.error('Error getting cloth seasons:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
 }

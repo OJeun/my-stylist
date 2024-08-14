@@ -24,6 +24,7 @@ export const fetchFavouriteItems = createAsyncThunk(
       method: "GET",
     });
     const data = response.json();
+    console.log("Favorite!", data);
     return data;
   }
 );
@@ -68,7 +69,33 @@ export const deleteFavouriteItems = createAsyncThunk(
   }
 );
 
+export async function replaceFavouriteItem(
+  favouriteCombinationId: number,
+  originalClothId: number,
+  newClothId: number
+): Promise<void> {
+  try {
+    const response = await fetch('/api/favorites/replace', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        favoriteCombinationId: favouriteCombinationId,
+        originalClothId: originalClothId,
+        newClothId: newClothId,
+      }),
+    });
 
+    if (!response.ok) {
+      throw new Error('Failed to replace cloth in the backend');
+    }
+
+    console.log('Cloth replaced successfully');
+  } catch (error) {
+    console.error('Error in replaceFavouriteItem:', error);
+  }
+}
 
 export const FavouriteItemSlice= createSlice({
   name: "favouriteItem",

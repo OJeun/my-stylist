@@ -110,3 +110,27 @@ export async function deleteFavoriteCombination(favoriteCombinationId: number): 
     await db.close();
   }
 }
+
+export async function replaceClothInFavorite(
+  favoriteCombinationId: number,
+  originalClothId: number,
+  newClothId: number
+): Promise<number> {
+  const db = await getDbConnection();
+  try {
+    const query = `
+      UPDATE FavoriteCombinationClothes
+      SET clothId = ?
+      WHERE favoriteCombinationId = ? AND clothId = ?
+    `;
+
+    const result = await db.run(query, [newClothId, favoriteCombinationId, originalClothId]);
+
+    return result.changes as number;
+  } catch (error) {
+    console.error('Error replacing cloth in favorite combination:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
+}

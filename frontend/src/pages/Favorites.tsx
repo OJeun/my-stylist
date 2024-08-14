@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   deleteFavouriteItems,
   fetchFavouriteItems,
+  replaceFavouriteItem,
 } from '../stores/features/favouriteItems';
 import { useAppDispatch, useAppSelector } from '../stores/store';
 import Input from '../components/ui/Input';
@@ -38,6 +39,11 @@ export default function Favorites() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
   const [selectedItem, setSelectedItem] = useState<ClosetItem | null>(null);
+  const [favouriteCombinationId, setFavouriteCombinationId] = useState<
+    number | null
+  >(null);
+  const [originalClothId, setOriginalClothId] = useState<number | null>(null);
+  const [newClothId, setNewClothId] = useState<number | null>(null);
 
   const openModal = (itemId: number) => {
     setItemIdToDelete(itemId);
@@ -71,39 +77,63 @@ export default function Favorites() {
 
   const handleReplaceButton = async (item: ClosetItem) => {
     try {
-      // Fetch seasons from backend
+      setOriginalClothId(item.clothId!);
+      setFavouriteCombinationId(
+        fetchedFavouriteItems.find(
+          (favItem) => favItem.selectedItem.clothId === item.clothId
+        )?.favouriteCombinationId || null
+      );
+
       const response = await fetch(`/api/closet-items/seasons/${item.clothId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch seasons from the backend');
       }
       const seasonIntIds: number[] = await response.json();
-
-      // Convert season IDs to season names and filter out any undefined values
       const seasons = seasonIntIds
         .map(convertSeasonIdToSeason)
         .filter(
           (season): season is 'spring-fall' | 'summer' | 'winter' =>
             season !== undefined
         );
-
-      await dispatch(
+      const result = await dispatch(
         fetchClosetItemsBySeasonAndType({
           category: item.typeId,
           seasons: seasons,
         })
       );
+      console.log('Result', result);
       openItemCard();
     } catch (error) {
       console.error('Failed to fetch items by season and type', error);
     }
   };
 
-  const handleSaveChange = async (item: ClosetItem) => {
+  const handleReplaceSubmit = async () => {
+    console.log('Favourite Combination ID:', favouriteCombinationId);
+    console.log('Original Cloth ID:', originalClothId);
+    console.log('New Cloth ID:', newClothId);
+    if (favouriteCombinationId && originalClothId && newClothId) {
+      try {
+        await replaceFavouriteItem(
+          favouriteCombinationId,
+          originalClothId,
+          newClothId
+        );
+        console.log('Cloth replaced successfully!');
+        closeItemCard();
+      } catch (error) {
+        console.error('Error in handleReplaceSubmit:', error);
+      }
+    } else {
+      console.error('Missing IDs for replacement');
+    }
+  };
+
+  const handleSaveChange = (item: ClosetItem) => {
     try {
-      console.log(item.typeId);
-      closeItemCard();
+      setNewClothId(item.clothId!);
     } catch (error) {
-      console.error('Fail to save replacement item', error);
+      console.error('Failed to save replacement item', error);
     }
   };
 
@@ -177,18 +207,22 @@ export default function Favorites() {
               onClick={closeItemCard}
             ></div>
             <div className="bg-white inset-0 items-center justify-center z-50 sm: max-w-3xl sm:max-h-80">
-              <h2 className="text-center sm:text-3">
+              <h2 className="text-center sm:text-3 mt-2">
                 Select the item to be replaced
               </h2>
 
               <ItemsGrid
                 isInput={true}
-                wrapCustomClassName="ml-1 mb-5 sm:ml-3 flex overflow-x-auto pb-2 pr-2 sm:pb-5 gap-1 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
+                wrapCustomClassName="ml-1 sm:ml-3 flex overflow-x-auto pb-2 pr-2 sm:pb-5 gap-1 sm:gap-6 px-1 md:px-2 mx-auto max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-3xl"
                 clothingItems={fetchedItemsByCategoryAndSeason}
                 labelClassName="group-hover:opacity-75 inline-flex items-center border-gray-light border-2 h-36 h-40 sm:h-36 md:h-40 lg:h-44 xl:h-48 w-32 sm:w-36 md:w-40 lg:w-43 xl:w-48 bg-white rounded-lg cursor-pointer overflow-hidden rounded-md relative"
-                onItemSelect={handleSaveChange}
+                onSelectItem={handleSaveChange}
               />
-              <Button color="secondary">Replace</Button>
+              <div className="flex justify-center items-center mb-4">
+                <Button onClick={handleReplaceSubmit} color="secondary">
+                  Replace
+                </Button>
+              </div>
             </div>
           </>
         )}

@@ -118,6 +118,7 @@ export default function Favorites() {
           originalClothId,
           newClothId
         );
+        dispatch(fetchFavouriteItems(userId));
         closeItemCard();
       } catch (error) {
         console.error('Error in handleReplaceSubmit:', error);

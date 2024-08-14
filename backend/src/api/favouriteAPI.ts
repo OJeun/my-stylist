@@ -1,5 +1,5 @@
 import express from 'express';
-import { addFavoriteCombination, deleteFavoriteCombination, fetchFavoriteItems } from '../database/favorite';
+import { addFavoriteCombination, deleteFavoriteCombination, fetchFavoriteItems, replaceClothInFavorite } from '../database/favorite';
 
 const router = express.Router();
 router.post('/save-favorite', (req, res) => {
@@ -23,6 +23,30 @@ router.delete('/favorites/:favoriteCombinationId', (req, res) => {
   const convertedFavoriteCombinationId = parseInt(favoriteCombinationId);
   deleteFavoriteCombination(convertedFavoriteCombinationId);
   res.json({message: `Successfully deleted item with id ${favoriteCombinationId}`});
+})
+
+router.put('/favorites/replace', async (req, res) => {
+  const { favoriteCombinationId, originalClothId, newClothId } = req.body;
+
+  try {
+    const changes = await replaceClothInFavorite(
+      favoriteCombinationId,
+      originalClothId,
+      newClothId
+    );
+
+    if (changes === 0) {
+      res
+        .status(404)
+        .json({ message: 'No matching combination found to update' });
+    } else {
+      res.status(200).json({ message: 'Cloth replaced successfully' });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Error replacing cloth in favorite combination' });
+  }
 });
 
 export default router;

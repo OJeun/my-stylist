@@ -101,7 +101,6 @@ export default function Favorites() {
           seasons: seasons,
         })
       );
-      console.log('Result', result);
       openItemCard();
     } catch (error) {
       console.error('Failed to fetch items by season and type', error);
@@ -119,7 +118,6 @@ export default function Favorites() {
           originalClothId,
           newClothId
         );
-        console.log('Cloth replaced successfully!');
         closeItemCard();
       } catch (error) {
         console.error('Error in handleReplaceSubmit:', error);

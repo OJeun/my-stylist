@@ -16,7 +16,6 @@ const initialState: FavouriteItemState = {
   favouriteItems: [],
 };
 
-
 export const fetchFavouriteItems = createAsyncThunk(
   "favouriteItems/fetch",
   async (userId: string, thunkAPI) => {
@@ -24,7 +23,6 @@ export const fetchFavouriteItems = createAsyncThunk(
       method: "GET",
     });
     const data = response.json();
-    console.log("Favorite!", data);
     return data;
   }
 );

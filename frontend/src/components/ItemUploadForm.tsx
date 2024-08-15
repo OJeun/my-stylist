@@ -9,7 +9,7 @@ import { ClosetItem, saveClosetItems } from '../stores/features/closetItems';
 import { useAppDispatch } from '../stores/store';
 import { setCategory } from '../stores/features/category';
 import Input from './ui/Input';
-import { getSeasonId, getTypeId } from '../utils/api/getId';
+import imageCompression from 'browser-image-compression';
 
 const seasons: InputProps[] = [
   { id: "spring-fall", type: "checkbox", label: "Spring/Fall" },
@@ -56,16 +56,18 @@ export default function ItemUploadForm({
 
   const dispatch = useAppDispatch();
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     const reader = new FileReader();
-
+    const options = {maxSizeMB: 1, maxWidthOrHeight: 300, useWebWorker: true};
+    const compressedImageFile = await imageCompression(file, options);
+  
     reader.onload = () => {
       const base64 = reader.result;
       setImageBase64(base64 as string);
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(compressedImageFile);
   };
 
   const handleDeleteImage = () => {
@@ -85,7 +87,7 @@ export default function ItemUploadForm({
     const data: ClosetItem = {
       userId: localStorage.getItem('uid') as string,
       imgSrc: imageBase64 as string,
-      season: selectedSeason as string[],
+      seasonIds: selectedSeason as string[],
       typeId: selectedCategory as string,
       description: description as string,
     };

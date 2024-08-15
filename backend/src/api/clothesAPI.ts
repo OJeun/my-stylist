@@ -13,7 +13,6 @@ const router = express.Router();
 
 router.post('/save-cloth', async (req, res) => {
   const selectedItem = req.body;
-  console.log('Saving cloth:', selectedItem.season, selectedItem.convertedTypeId);
   try {
     await addCloth(
       selectedItem.userId,

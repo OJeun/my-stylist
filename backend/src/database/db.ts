@@ -3,8 +3,6 @@ import fs from "fs";
 import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 
-let db: Database | null = null;
-
 export async function getDbConnection(): Promise<Database> {
   const db = await open({
     filename: `${__dirname}/db.sqlite`,

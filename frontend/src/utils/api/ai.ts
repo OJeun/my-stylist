@@ -14,8 +14,8 @@ export const fetchAIRecommendation = async (data: data) => {
 
   const convertedData = {
     userId: data.userId,
-    selectedCategory: selectedCategoryId,
-    selectedCategoryCheckbox: selectedCategoryIds,
+    selectedCategory: data.selectedCategory,
+    selectedCategoryCheckbox:selectedCategoryIds,
     selectedItem: data.selectedItem
   }
   

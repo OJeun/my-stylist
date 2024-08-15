@@ -6,7 +6,7 @@ export interface ClosetItem {
   userId: string;
   description: string;
   imgSrc: string;
-  season: string[];
+  seasonIds: string[];
   typeId: string;
 }
 
@@ -92,11 +92,11 @@ export const fetchClosetItemsBySeasonAndType = createAsyncThunk(
 export const saveClosetItems = createAsyncThunk(
   "closetItems/save",
   async (
-    { userId, description, imgSrc, season, typeId }: ClosetItem,
+    { userId, description, imgSrc, seasonIds, typeId }: ClosetItem,
     thunkAPI
   ) => {
     const convertedTypeId = getTypeId(typeId);
-    const convertedSeason = getSeasonId(season);
+    const convertedSeason = getSeasonId(seasonIds);
     try {
       const response = await fetch("/api/save-cloth", {
         method: "POST",
@@ -124,7 +124,7 @@ export const saveClosetItems = createAsyncThunk(
 
 export const updateClosetItems = createAsyncThunk(
   'closetItems/update',
-  async ({ clothId, userId, description, season }: ClosetItem, thunkAPI) => {
+  async ({ clothId, userId, description, seasonIds }: ClosetItem, thunkAPI) => {
     try {
       const response = await fetch(`/api/update-cloth/${clothId}`, {
         method: 'PUT',
@@ -134,7 +134,7 @@ export const updateClosetItems = createAsyncThunk(
         body: JSON.stringify({
           userId,
           description,
-          seasons: season,
+          seasons: seasonIds,
         }),
       });
 
@@ -195,7 +195,7 @@ export const ClosetItemSlice = createSlice({
     ) => {
       state.closetItems.push({
         typeId: action.payload.typeId,
-        season: action.payload.season,
+        seasonIds: action.payload.seasonIds,
         imgSrc: action.payload.imgSrc,
         clothId: action.payload.clothId,
         userId: action.payload.userId,

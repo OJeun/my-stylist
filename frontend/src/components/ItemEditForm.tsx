@@ -79,7 +79,7 @@ export default function ItemEditForm({
       clothId: selectedClothing.clothId as number,
       userId: localStorage.getItem('uid') as string,
       imgSrc: imageBase64 as string,
-      season: getSeasonId(selectedSeason),
+      seasonIds: getSeasonId(selectedSeason),
       typeId: selectedCategory as string,
       description: description as string,
     };

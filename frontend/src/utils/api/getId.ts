@@ -37,7 +37,7 @@ export const getTypeId = (category: string) => {
 export const convertStrToIntInClosetItem = (closetItem: ClosetItem) => {
   return {
     ...closetItem,
-    seasonId: getSeasonId(closetItem.season),
+    seasonId: getSeasonId(closetItem.seasonIds),
     typeId: getTypeId(closetItem.typeId),
   };
 }

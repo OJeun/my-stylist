@@ -3,7 +3,8 @@ import { getDbConnection } from "./db";
 export interface ClosetItem {
   clothId: number;
   category: number;
-  season: number;
+  seasonIds: number[];
+  description: string;
   imgSrc: string;
 }
 

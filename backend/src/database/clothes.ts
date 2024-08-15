@@ -1,11 +1,11 @@
 import { getDbConnection } from './db';
 
-interface Cloth {
+export interface Cloth {
   userId?: string;
   clothId: string;
   description: string;
   imgSrc: string;
-  season: number;
+  season: number[];
   typeId: number;
 }
 
@@ -17,6 +17,7 @@ export async function addCloth(
   typeId: number
 ): Promise<void> {
   const db = await getDbConnection();
+  console.log(seasons)
   try {
     const query = `
             INSERT INTO Clothes (userId, description, imgSrc, typeId)
@@ -100,22 +101,29 @@ export async function getFirstClotheByUserIdAndTypeId(
   }
 }
 
-export async function getAllClothesByTypeAndSeason(
+
+export async function getAllClothesByTypesAndSeasons(
   userId: string,
-  typeId: number,
-  seasonId: number
+  typeIds: number[],
+  seasonIds: number[]
 ): Promise<Cloth[]> {
   const db = await getDbConnection();
   try {
+    const questionMarksForSeasons = seasonIds.map(() => '?').join(', ');
+    const questionMarksForTypes = typeIds.map(()=> '?').join(', ')
     const query = `
-            SELECT * FROM Clothes
-            WHERE userId = ? AND typeId = ? AND season = ? AND imgSrc IS NOT NULL
-        `;
-
-    const clothes = await db.all(query, [userId, typeId, seasonId]);
+      SELECT DISTINCT Clothes.*
+      FROM Clothes
+      INNER JOIN ClothesSeason ON Clothes.clothId = ClothesSeason.clothId
+      WHERE Clothes.userId = ? 
+      AND Clothes.typeId IN (${questionMarksForTypes})
+      AND ClothesSeason.seasonId IN (${questionMarksForSeasons})
+      AND Clothes.imgSrc IS NOT NULL
+    `;
+    const clothes = await db.all(query, [userId, typeIds, ...seasonIds]);
     return clothes;
   } catch (error) {
-    console.error('Error getting all clothes by type and season:', error);
+    console.error('Error getting all clothes by type and seasons:', error);
     throw error;
   } finally {
     await db.close();
@@ -135,7 +143,6 @@ export async function getAllClothesByTypeAndSeasons(
       FROM Clothes
       INNER JOIN ClothesSeason ON Clothes.clothId = ClothesSeason.clothId
       WHERE Clothes.userId = ? 
-      AND Clothes.typeId = ?
       AND ClothesSeason.seasonId IN (${questionMarksForSeasons})
       AND Clothes.imgSrc IS NOT NULL
     `;

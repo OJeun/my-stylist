@@ -62,7 +62,6 @@ export default function ItemUploadForm({
     const reader = new FileReader();
     const options = {maxSizeMB: 1, maxWidthOrHeight: 300, useWebWorker: true};
     const compressedImageFile = await imageCompression(file, options);
-  
     reader.onload = () => {
       const base64 = reader.result;
       setImageBase64(base64 as string);

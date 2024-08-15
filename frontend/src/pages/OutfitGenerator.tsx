@@ -80,6 +80,17 @@ export default function OutfitGenerator() {
       return;
     }
 
+    if (
+      Array.isArray(selectedCategoryCheckbox)
+        ? selectedCategoryCheckbox.some((item) =>
+            selectedCategory.includes(item.toString())
+          )
+        : selectedCategory.includes(selectedCategoryCheckbox.toString())
+    ) {
+      setAlertMessage('Select different category from the item!');
+      return;
+    }
+
     setLoading(true);
     const userId = localStorage.getItem('uid') || '1';
 
@@ -94,6 +105,7 @@ export default function OutfitGenerator() {
       const result = await fetchAIRecommendation(data);
       setFetchedGeneratedItems(result['generatedItems']);
       addToRecentlyViewed(result['generatedItems']);
+      setCategoryCheckbox([]);
     } catch (error) {
       console.error('Error occurred while fetching data:', error);
     } finally {

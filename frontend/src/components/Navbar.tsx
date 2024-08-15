@@ -55,7 +55,10 @@ export default function Navbar() {
             </a>
 
             {/* Profile dropdown */}
-            <Menu as="div" className="relative ml-3">
+            <Menu
+              as="div"
+              className="relative ml-3 data-[focus]:bg-gray-lighter"
+            >
               {({ open }) => (
                 <>
                   <div>
@@ -89,7 +92,7 @@ export default function Navbar() {
                           href="/profile"
                           className={classNames(
                             focus ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-lighter'
                           )}
                         >
                           My Profile
@@ -99,10 +102,23 @@ export default function Navbar() {
                     <MenuItem>
                       {({ focus }) => (
                         <a
+                          href="/outfit-generator"
+                          className={classNames(
+                            focus ? 'bg-gray-100' : '',
+                            'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-lighter'
+                          )}
+                        >
+                          AI Cordinator
+                        </a>
+                      )}
+                    </MenuItem>
+                    <MenuItem>
+                      {({ focus }) => (
+                        <a
                           href="/my-closet"
                           className={classNames(
                             focus ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-lighter'
                           )}
                         >
                           My Closet
@@ -115,7 +131,7 @@ export default function Navbar() {
                           href="/recently-viewed"
                           className={classNames(
                             focus ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-lighter'
                           )}
                         >
                           Recently Viewed
@@ -129,7 +145,7 @@ export default function Navbar() {
                           onClick={handleLogout}
                           className={classNames(
                             focus ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
+                            'block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-lighter'
                           )}
                         >
                           Sign out

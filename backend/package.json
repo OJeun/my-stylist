@@ -20,6 +20,8 @@
     "express": "^4.19.2",
     "json-server": "^1.0.0-beta.1",
     "jsonwebtoken": "^9.0.2",
+    "openai": "^4.55.7",
+    "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "ts-node": "^10.9.2",
     "uuid": "^10.0.0"

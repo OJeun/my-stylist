@@ -60,7 +60,7 @@ export default function ItemUploadForm({
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     const reader = new FileReader();
-    const options = {maxSizeMB: 1, maxWidthOrHeight: 300, useWebWorker: true};
+    const options = {maxSizeMB: 1, maxWidthOrHeight: 150, useWebWorker: true};
     const compressedImageFile = await imageCompression(file, options);
     reader.onload = () => {
       const base64 = reader.result;

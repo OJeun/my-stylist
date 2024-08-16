@@ -1,5 +1,3 @@
-import { ClosetItem } from "../../stores/features/closetItems";
-
 export const getSeasonId = (seasons: string[]): number[] => {
   return seasons.map((season) => {
     switch (season.toLocaleLowerCase()) {
@@ -34,20 +32,6 @@ export const getTypeId = (category: string) => {
   }
 };
 
-export const convertStrToIntInClosetItem = (closetItem: ClosetItem) => {
-  return {
-    ...closetItem,
-    seasonId: getSeasonId(closetItem.seasonIds),
-    typeId: getTypeId(closetItem.typeId),
-  };
-}
-
-
-
-// export const getSeasonIdArray = (seasons: string[]): number[] => {
-//   return seasons.map((season) => getSeasonId(season));
-// };
-
 export const getTypeIdArray = (categories: string[] | string): number[] => {
   if (typeof categories === "string") {
     return [getTypeId(categories)];
@@ -66,6 +50,14 @@ export const convertSeasonIdToSeason = (seasonId: number) => {
       return "winter";
   }
 };
+
+export const convertSeasonIdsToSeasons = (seasonIds: number[]) => {
+  return seasonIds.map((seasonId) => convertSeasonIdToSeason(seasonId));
+}
+
+export const convertTypeIdsToCategories = (typeIds: number[]) => {
+  return typeIds.map((typeId) => convertTypeIdToCategory(typeId));
+}
 
 export const convertTypeIdToCategory = (typeId: number) => {
   switch (typeId) {

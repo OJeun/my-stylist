@@ -1,5 +1,5 @@
 import { ClosetItem } from "../../stores/features/closetItems";
-import { convertStrToIntInClosetItem, getTypeId, getTypeIdArray } from "./getId";
+import { getTypeId, getTypeIdArray } from "./getId";
 
 type data = {
     userId: string;
@@ -18,6 +18,9 @@ export const fetchAIRecommendation = async (data: data) => {
     selectedCategoryCheckbox:selectedCategoryIds,
     selectedItem: data.selectedItem
   }
+
+  console.log("selected Data:", data.selectedItem);
+
   
     try {
       const response = await fetch("/api/ai-generator", {

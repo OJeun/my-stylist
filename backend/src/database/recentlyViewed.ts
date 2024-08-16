@@ -1,17 +1,17 @@
+import { Cloth } from './clothes';
 import { getDbConnection } from './db';
-import { ClosetItem } from './favorite';
 
 export interface RecentlyViewedCombination {
   recentlyViewedOutfitCombinationId: number;
   userId: string;
-  selectedItem: ClosetItem;
-  generatedItems: ClosetItem[];
+  selectedItem: Cloth;
+  generatedItems: Cloth[];
 }
 
 export async function addRecentlyViewedOutfitSuggestion(
   userId: string,
-  selectedItem: ClosetItem,
-  generatedItems: ClosetItem[]
+  selectedItem: Cloth,
+  generatedItems: Cloth[]
 ): Promise<void> {
   const db = await getDbConnection();
   try {

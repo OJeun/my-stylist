@@ -1,18 +1,12 @@
+import { Cloth } from "./clothes";
 import { getDbConnection } from "./db";
 
-export interface ClosetItem {
-  clothId: number;
-  category: number;
-  seasonIds: number[];
-  description: string;
-  imgSrc: string;
-}
 
 export interface FavoriteCombination {
   favouriteCombinationId: number;
   userId: string;
-  selectedItem: ClosetItem;
-  generatedItems: ClosetItem[];
+  selectedItem: Cloth;
+  generatedItems: Cloth[];
 }
 
 export async function fetchFavoriteItems(userId: string): Promise<FavoriteCombination[]> {
@@ -57,8 +51,8 @@ export async function fetchFavoriteItems(userId: string): Promise<FavoriteCombin
 
 export async function addFavoriteCombination(
   userId: string,
-  selectedItem: ClosetItem,
-  generatedItems: ClosetItem[]
+  selectedItem: Cloth,
+  generatedItems: Cloth[]
 ): Promise<void> {
   const db = await getDbConnection();
   try {

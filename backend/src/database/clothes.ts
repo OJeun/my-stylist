@@ -80,6 +80,21 @@ export async function updateCloth(
   }
 }
 
+export async function getAllClothesByUserIdAndClothIds(userId: string, clothIds: number[]): Promise<Cloth[]> {
+  const db = await getDbConnection();
+  try {
+    const questionMarks = clothIds.map(() => '?').join(', ');
+    const query = `SELECT * FROM Clothes WHERE userId = ? AND clothId IN (${questionMarks})`;
+    const clothes = await db.all(query, [userId, ...clothIds]);
+    return clothes;
+  } catch (error) {
+    console.error('Error getting all clothes by userId and clothIds:', error);
+    throw error;
+  } finally {
+    await db.close();
+  }
+}
+
 export async function getFirstClotheByUserIdAndTypeId(
   userId: string,
   typeId: number

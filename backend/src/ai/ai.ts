@@ -1,46 +1,73 @@
-import Configuration from 'openai';
-import OpenAI from 'openai';
-import { Cloth, getAllClothesByTypesAndSeasons } from '../database/clothes'
-import { ClosetItem } from '../database/favorite';
+import Configuration from "openai";
+import OpenAI from "openai";
+import { Cloth, getAllClothesByTypesAndSeasons } from "../database/clothes";
 
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+import {
+  convertSeasonIdsToSeasons,
+  convertTypeIdsToCategories,
+  convertTypeIdToCategory,
+} from "../utils/convertId";
+import 'dotenv/config';
 
 export const openai = new OpenAI({
-    apiKey: configuration.apiKey
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const aiRecommendation = async (userId: string, selectedItem: ClosetItem, selectedCategoryCheckbox: number[]) => {
 
-    const clothesByTypeAndSeasons = getAllClothesByTypesAndSeasons(userId, selectedCategoryCheckbox, selectedItem.seasonIds)
-    try {
-        const prompt = `
-            This is a cloth description, cloth type, and seasons that a user want to get matched: ${selectedItem.description}, ${selectedItem.category}, and ${selectedItem.seasonIds}
-            Based on the information, recommend some items that match the selected cloth type: ${selectedItem.category}.
 
-            Cloth Descriptions:
-            ${(await clothesByTypeAndSeasons).map((item) => `${item.clothId}. ${item.description}`).join('\n')}
+export const aiRecommendation = async (
+  userId: string,
+  selectedItem: Cloth,
+  selectedCategoryCheckbox: number[]
+): Promise<number[] | undefined> => {
+  const seasonsStr = convertSeasonIdsToSeasons(selectedItem.season);
+  const toBeMatchedtypesStr = convertTypeIdsToCategories(
+    selectedCategoryCheckbox
+  );
+  const selectedCategoryStr = convertTypeIdToCategory(selectedItem.typeId);
+  const clothesByTypeAndSeasons = getAllClothesByTypesAndSeasons(
+    userId,
+    selectedCategoryCheckbox,
+    selectedItem.season
+  );
+  try {
+    const prompt = `
+    You are given the following details:
+    1. Selected cloth description: ${selectedItem.description}
+    2. Selected cloth type: ${selectedCategoryStr}
+    3. Preferred seasons: ${seasonsStr}
+    
+    Additionally, the user has chosen to match this cloth with the following categories: ${toBeMatchedtypesStr}.
+    
+    From the list below, select the cloth that best matches the above criteria. Each item is represented by its ID and description:
+    
+    ${(await clothesByTypeAndSeasons)
+      .map((item) => `${item.clothId}. ${item.description}`)
+      .join("\n")}
+    
+    Return only the clothId(s) as an array of integers. For example, if the best-matched clothes have IDs 5 and 10, return [5, 10]. 
+    Ensure that the response is formatted as a plain JSON array with no additional text.
+    `;
 
-            Return the item clothIds 
-        `;
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+    });
 
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4o',
-            messages: [{ role: 'user', content: prompt }],
-        });
+    const recommendationText = response.choices[0].message?.content;
 
-        const recommendation = response.choices[0].message?.content;
-        
-        return recommendation
+    console.log("Recommendation:", recommendationText);
+    const clothIds: number[] = JSON.parse(recommendationText || "[]");
 
-    } catch (error) {
-        console.error('Error with OpenAI API:', error);
-    }
-}
+    return clothIds;
+    
+  } catch (error) {
+    console.error("Error with OpenAI API:", error);
+  }
+};
 
 // {
-//     "id": "chatcmpl-123", 
+//     "id": "chatcmpl-123",
 //     "object": "chat.completion",
 //     "created": 1677652288,
 //     "model": "gpt-4o-mini",
@@ -60,4 +87,3 @@ export const aiRecommendation = async (userId: string, selectedItem: ClosetItem,
 //       "total_tokens": 21
 //     }
 //   }
-  

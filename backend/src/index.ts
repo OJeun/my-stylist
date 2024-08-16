@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import loginRouter from "./api/login";
 import signupRouter from "./api/signup";
-import generatorRouter from "./api/aiGenerator";
+import generatorRouter from "./api/aiGeneratorAPI";
 import favouriteRouter from "./api/favouriteAPI";
 import saveClothRouter from "./api/clothesAPI";
 import updateUserNameRouter from "./api/userProfile";

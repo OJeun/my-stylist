@@ -1,7 +1,6 @@
 import express from "express";
-import path from "path";
-import { ClosetItem } from "../database/favorite";
-import { getClothesByUserIdAndTypeId, getFirstClotheByUserIdAndTypeId } from "../database/clothes";
+import { getAllClothesByUserIdAndClothIds } from "../database/clothes";
+import { aiRecommendation } from "../ai/ai";
 
 const app = express();
 
@@ -13,10 +12,17 @@ router.post("/ai-generator", async (req, res) => {
     // AI Generation Logic Here
     // This code is just a template and should be replaced with actual AI generation logic
     // Return => res.json({selectedItem: selectedItem, generatedItems: generatedItems });
-    const generatedItems: ClosetItem[] = await Promise.all(selectedCategoryCheckbox.map(async (category: number) => {
-        return await getFirstClotheByUserIdAndTypeId(userId, category);
-    }));
 
+    console.log('selectedItem:', selectedItem);
+    const clothIds = await aiRecommendation(userId, selectedItem, selectedCategoryCheckbox)
+    
+    if (!clothIds) {
+      return res.status(400).json({ error: 'No cloth IDs generated' });
+    }
+
+    const generatedItems = await getAllClothesByUserIdAndClothIds(userId, clothIds);
+
+    
     return res.json({selectedItem: selectedItem, generatedItems: generatedItems });
 
 });

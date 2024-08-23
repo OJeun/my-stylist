@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import {
   addCloth,
   getClothByUserIdAndClothId,
@@ -8,10 +9,48 @@ import {
   updateCloth,
   getClothSeasons,
 } from '../database/clothes';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { s3, bucketName, bucketRegion } from '../database/s3Bucket';
+import bcrypt from 'bcrypt';
+import sharp from 'sharp';
 
 const router = express.Router();
 
-router.post('/save-cloth', async (req, res) => {
+const imageStorage = multer.memoryStorage();
+const uploadImage = multer({ storage: imageStorage });
+
+router.post('/upload-image', uploadImage.single('image'), async (req, res) => {
+  try {
+    console.log('req.file : ', req.file);
+
+    // resize image
+    const buffer = await sharp(req.file?.buffer)
+      .resize({ height: 500, width: 500, fit: 'cover' })
+      .toBuffer();
+
+    const imageName = req.file?.originalname || '';
+    const randomImageName = bcrypt.hashSync(imageName, 10);
+    const encodedRandomImageName = encodeURIComponent(randomImageName);
+
+    const params = {
+      Bucket: process.env.BUCKET_NAME,
+      Key: randomImageName, // hashed image name in s3 bucket
+      Body: buffer,
+      ContentType: req.file?.mimetype,
+    };
+
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+
+    const imgSrc = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${encodedRandomImageName}`;
+
+    res.json({ message: 'Successfully saved to the closet!', imgSrc });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.post('/save-cloth',  async (req, res) => {
   const selectedItem = req.body;
   try {
     await addCloth(

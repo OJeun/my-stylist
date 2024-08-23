@@ -30,3 +30,18 @@ export const isDefaultImg = (cloth: ClosetItem) => {
     return false;
   }
 }
+
+export async function uploadImageToS3Bucket(imageFile: File): Promise<string | null> {
+  const formData = new FormData();
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+
+  const response = await fetch('/api/upload-image', {
+    method: 'POST',
+    body: formData,
+  });
+
+  const responseBody = await response.json();
+  return responseBody.imgSrc;
+}

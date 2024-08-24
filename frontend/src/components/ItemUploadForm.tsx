@@ -10,13 +10,13 @@ import { useAppDispatch } from '../stores/store';
 import { setCategory } from '../stores/features/category';
 import Input from './ui/Input';
 import imageCompression from 'browser-image-compression';
+import { uploadImageToS3Bucket } from '../utils/api/image';
 
 const seasons: InputProps[] = [
-  { id: "spring-fall", type: "checkbox", label: "Spring/Fall" },
-  { id: "summer", type: "checkbox", label: "Summer" },
-  { id: "winter", type: "checkbox", label: "Winter" },
+  { id: 'spring-fall', type: 'checkbox', label: 'Spring/Fall' },
+  { id: 'summer', type: 'checkbox', label: 'Summer' },
+  { id: 'winter', type: 'checkbox', label: 'Winter' },
 ];
-
 
 export default function ItemUploadForm({
   isModalOpen,
@@ -28,7 +28,7 @@ export default function ItemUploadForm({
   const handleSetSelectedCategory = (
     value: SetStateAction<string | string[]>
   ) => {
-    if (typeof value === "function") {
+    if (typeof value === 'function') {
       setSelectedCategory((prev) => value(prev) as string);
     } else if (Array.isArray(value)) {
       setSelectedCategory(value[0]);
@@ -54,19 +54,15 @@ export default function ItemUploadForm({
   const [selectedSeason, setSelectedSeason] = useState<string[]>([]);
   const [description, setDescription] = useState<string>('');
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const dispatch = useAppDispatch();
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    const reader = new FileReader();
-    const options = {maxSizeMB: 1, maxWidthOrHeight: 150, useWebWorker: true};
-    const compressedImageFile = await imageCompression(file, options);
-    reader.onload = () => {
-      const base64 = reader.result;
-      setImageBase64(base64 as string);
-    };
-    reader.readAsDataURL(compressedImageFile);
+    setImageFile(file);
+    setImageBase64(URL.createObjectURL(file));
   };
 
   const handleDeleteImage = () => {
@@ -77,26 +73,55 @@ export default function ItemUploadForm({
     e.preventDefault();
   };
 
-  const handleFormSubmit = async () => {
+  // const handleFormSubmit = async () => {
+  //   if (!selectedCategory || !selectedSeason) {
+  //     alert('Please select both a category and a season.');
+  //     return;
+  //   }
+
+  //   const data: ClosetItem = {
+  //     userId: localStorage.getItem('uid') as string,
+  //     imgSrc: imageBase64 as string,
+  //     seasonIds: selectedSeason as string[],
+  //     typeId: selectedCategory as string,
+  //     description: description as string,
+  //   };
+  //   dispatch(saveClosetItems(data));
+  //   dispatch(setCategory(selectedCategory));
+
+  //   setIsModalOpen(false);
+  // };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!selectedCategory || !selectedSeason) {
       alert('Please select both a category and a season.');
       return;
     }
 
+    if (!imageFile) {
+      alert('Image upload failed');
+      return;
+    }
+
+    const imageObjectUrl = await uploadImageToS3Bucket(imageFile);
+
     const data: ClosetItem = {
       userId: localStorage.getItem('uid') as string,
-      imgSrc: imageBase64 as string,
+      imgSrc: imageObjectUrl as string,
       seasonIds: selectedSeason as string[],
       typeId: selectedCategory as string,
       description: description as string,
     };
+    console.log('data: ', data);
     dispatch(saveClosetItems(data));
     dispatch(setCategory(selectedCategory));
 
-    setIsModalOpen(false);
-  };
-
-  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 

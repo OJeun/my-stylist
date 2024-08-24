@@ -9,7 +9,7 @@ import {
   updateCloth,
   getClothSeasons,
 } from '../database/clothes';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { s3, bucketName, bucketRegion } from '../database/s3Bucket';
 import bcrypt from 'bcrypt';
 import sharp from 'sharp';
@@ -33,7 +33,7 @@ router.post('/upload-image', uploadImage.single('image'), async (req, res) => {
     const encodedRandomImageName = encodeURIComponent(randomImageName);
 
     const params = {
-      Bucket: process.env.BUCKET_NAME,
+      Bucket: bucketName,
       Key: randomImageName, // hashed image name in s3 bucket
       Body: buffer,
       ContentType: req.file?.mimetype,
@@ -151,10 +151,18 @@ router.put('/delete-cloth/:clothId', async (req, res) => {
   const { clothId } = req.params;
   console.log('Deleting cloth for user:', userId, 'and cloth Id:', clothId);
   try {
-    const deletedItem = await getClothByUserIdAndClothId(
-      userId as string,
-      parseInt(clothId as string, 10)
-    );
+    const deletedItem = await getClothByUserIdAndClothId(userId as string, parseInt(clothId as string, 10));
+    const imageKey = decodeURIComponent(deletedItem.imgSrc.split('amazonaws.com/')[1]);
+
+    const params = {
+      Bucket: bucketName,
+      Key: imageKey,
+    };
+
+    // Delete image object in s3 bucket
+    const command = new DeleteObjectCommand(params);
+    await s3.send(command);
+
     await deleteCloth(userId as string, parseInt(typeId as string, 10), parseInt(clothId as string, 10));
     res.json(deletedItem);
   } catch (error) {

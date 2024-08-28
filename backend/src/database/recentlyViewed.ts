@@ -15,8 +15,6 @@ export async function addRecentlyViewedOutfitSuggestion(
 ): Promise<void> {
   const db = await getDbConnection();
   try {
-    await db.exec('BEGIN TRANSACTION');
-
     // Delete the oldest data row if it's more than 5
     await deleteOldRecentlyViewedOutfit(userId, 5);
 
@@ -28,27 +26,42 @@ export async function addRecentlyViewedOutfitSuggestion(
 
     const recentCombinationId = result.lastID;
 
-    const insertPromises = generatedItems.map((item) =>
-      db.run(
+    for (const item of generatedItems) {
+      await db.exec('BEGIN TRANSACTION');
+      try {
+        await db.run(
+          'INSERT INTO RecentlyViewedCombination (recentCombinationId, clothId, isGenerated) VALUES (?, ?, ?)',
+          recentCombinationId,
+          item.clothId,
+          true
+        );
+        await db.exec('COMMIT');
+      } catch (error) {
+        await db.exec('ROLLBACK');
+        throw error;
+      }
+    }
+
+    await db.exec('BEGIN TRANSACTION');
+    try {
+      await db.run(
         'INSERT INTO RecentlyViewedCombination (recentCombinationId, clothId, isGenerated) VALUES (?, ?, ?)',
         recentCombinationId,
-        item.clothId,
-        true
-      )
-    );
-    await Promise.all(insertPromises);
+        selectedItem.clothId,
+        false
+      );
+      await db.exec('COMMIT');
+    } catch (error) {
+      await db.exec('ROLLBACK');
+      throw error;
+    }
 
-    await db.run(
-      'INSERT INTO RecentlyViewedCombination (recentCombinationId, clothId, isGenerated) VALUES (?, ?, ?)',
-      recentCombinationId,
-      selectedItem.clothId,
-      false
+    console.log(
+      `Recently viewed is added with ${
+        generatedItems.length + 1
+      } generated items`
     );
-
-    await db.exec('COMMIT');
-    console.log(`Recently viewed is added with ${generatedItems.length+1} generated items`);
   } catch (error) {
-    await db.exec('ROLLBACK');
     console.error(
       'An error occurred while adding recently viewed outfit suggestion:',
       error

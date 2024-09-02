@@ -30,7 +30,7 @@ export default function OutfitGenerator() {
   const [fetchedGeneratedItems, setFetchedGeneratedItems] = useState<
     ClosetItem[]
   >([]);
-
+  const [explanation, setExplanation] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>('');
   const dispatch = useAppDispatch();
@@ -215,7 +215,7 @@ export default function OutfitGenerator() {
           </ul>
 
           {/* right container */}
-          <div>
+          <div className="w-[800px]">
             <h3 className="text-start mb-3 sm:text-xxs md:text-sm lg:text-lg font-medium text-gray-strong">
               Select the type of clothes to be matched!
             </h3>

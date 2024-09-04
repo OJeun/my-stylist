@@ -1,19 +1,17 @@
-import Configuration from "openai";
-import OpenAI from "openai";
-import { Cloth, getAllClothesByTypesAndSeasons } from "../database/clothes";
+import Configuration from 'openai';
+import OpenAI from 'openai';
+import { Cloth, getAllClothesByTypesAndSeasons } from '../database/clothes';
 
 import {
   convertSeasonIdsToSeasons,
   convertTypeIdsToCategories,
   convertTypeIdToCategory,
-} from "../utils/convertId";
+} from '../utils/convertId';
 import 'dotenv/config';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-
 
 export const aiRecommendation = async (
   userId: string,
@@ -25,44 +23,68 @@ export const aiRecommendation = async (
     selectedCategoryCheckbox
   );
   const selectedCategoryStr = convertTypeIdToCategory(selectedItem.typeId);
-  const clothesByTypeAndSeasons = getAllClothesByTypesAndSeasons(
+  const clothesByTypeAndSeasons = await getAllClothesByTypesAndSeasons(
     userId,
     selectedCategoryCheckbox,
     selectedItem.season
   );
   try {
     const prompt = `
-    You are given the following details:
-    1. Selected cloth description: ${selectedItem.description}
-    2. Selected cloth type: ${selectedCategoryStr}
-    3. Preferred seasons: ${seasonsStr}
-    
-    Additionally, the user has chosen to match this cloth with the following categories: ${toBeMatchedtypesStr}.
-    
-    From the list below, select the cloth that best matches the above criteria. Each item is represented by its ID and description:
-    
-    ${(await clothesByTypeAndSeasons)
+You are given the following details:
+1. Selected cloth description: ${selectedItem.description}
+2. Selected cloth type: ${selectedCategoryStr}
+3. Preferred seasons: ${seasonsStr}
+
+Additionally, the user has chosen to match this cloth with the following categories: ${toBeMatchedtypesStr.join(
+      ', '
+    )}.
+
+Your task is to select exactly one cloth for each of the following types from the list below:
+${toBeMatchedtypesStr.join(', ')}.
+
+- Ensure that all selected clothIds are present in the list of available clothes below.
+- The list of available clothes is provided to help you choose valid items.
+
+*Clothes available (Please choose only from these items):
+    ${clothesByTypeAndSeasons
       .map((item) => `${item.clothId}. ${item.description}`)
-      .join("\n")}
-    
-    Return only the clothId(s) as an array of integers. For example, if the best-matched clothes have IDs 5 and 10, return [5, 10]. 
-    Ensure that the response is formatted as a plain JSON array with no additional text.
-    `;
+      .join('\n')}
+
+*Please follow these instructions:
+1. Select one item for each of the listed types from the available clothes.
+2. Ensure that all selected clothIds are present in the list of available clothes.
+3. Return your response in the following format:
+   - An array of selected clothId(s) as a JSON array, like this: [1, 2, 3]
+   - A detailed explanation of why you chose these items, starting with "Explanation:" IN ONE SENTENCE.
+
+*Example format:
+[1, 2, 3]
+Explanation: I chose these items because...
+
+Please ensure that both parts are provided, with the explanation starting on a new line after the JSON array. You need to return ${
+      toBeMatchedtypesStr.length
+    } clothId(s) in the JSON array. You should not include the ${selectedCategoryStr} item in your response. The items' typeId in your reponse should not be repeated.
+`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
     });
 
     const recommendationText = response.choices[0].message?.content;
 
-    console.log("Recommendation:", recommendationText);
-    const clothIds: number[] = JSON.parse(recommendationText || "[]");
+    const [clothIdsOfRecommendation, explanation] = (
+      recommendationText || ''
+    ).split('Explanation:');
+
+    const clothIds: number[] = JSON.parse(clothIdsOfRecommendation.trim());
+
+    console.log('Recommendation:', clothIdsOfRecommendation);
+    console.log('Explanation:', explanation);
 
     return clothIds;
-    
   } catch (error) {
-    console.error("Error with OpenAI API:", error);
+    console.error('Error with OpenAI API:', error);
   }
 };
 

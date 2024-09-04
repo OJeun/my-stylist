@@ -59,7 +59,7 @@ export async function addRecentlyViewedOutfitSuggestion(
     console.log(
       `Recently viewed is added with ${
         generatedItems.length + 1
-      } generated items`
+      } items`
     );
   } catch (error) {
     console.error(

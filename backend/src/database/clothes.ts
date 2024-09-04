@@ -116,7 +116,6 @@ export async function getFirstClotheByUserIdAndTypeId(
   }
 }
 
-
 export async function getAllClothesByTypesAndSeasons(
   userId: string,
   typeIds: number[],
@@ -135,7 +134,7 @@ export async function getAllClothesByTypesAndSeasons(
       AND ClothesSeason.seasonId IN (${questionMarksForSeasons})
       AND Clothes.imgSrc IS NOT NULL
     `;
-    const clothes = await db.all(query, [userId, typeIds, ...seasonIds]);
+    const clothes = await db.all(query, [userId, ...typeIds, ...seasonIds]);
     return clothes;
   } catch (error) {
     console.error('Error getting all clothes by type and seasons:', error);
